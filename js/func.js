@@ -1,139 +1,87 @@
-// ---------- SUPABASE ----------
-const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR_ANON_KEY";
+// ===== SUPABASE CLIENT =====
+const SUPABASE_URL = 'https://bvnwaicdzfshnmrwxguw.supabase.co';
+const SUPABASE_ANON_KEY = 'PASTE_YOUR_ANON_KEY_HERE'; // <-- from Supabase Settings → API
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ---------- MISTRAL ----------
-const MISTRAL_API_KEY = "PASTE_YOUR_MISTRAL_KEY_HERE";
-const MISTRAL_URL = "https://api.mistral.ai/v1/chat/completions";
-
-// ---------- AUTH UI ----------
-let authMode = "login";
-
-function openModal(mode) {
-  authMode = mode;
-  document.getElementById("modalTitle").textContent = mode === "login" ? "Log In" : "Register";
-  document.getElementById("authBtn").textContent = mode === "login" ? "Log In" : "Register";
-  document.getElementById("modalSwitch").innerHTML = mode === "login"
-    ? 'No account? <a onclick="toggleModal()">Register</a>'
-    : 'Have an account? <a onclick="toggleModal()">Log In</a>';
-  document.getElementById("modal").classList.add("active");
-}
-
-function toggleModal() {
-  openModal(authMode === "login" ? "register" : "login");
-}
-
-async function submitAuth() {
-  const email = document.getElementById("authEmail").value;
-  const password = document.getElementById("authPassword").value;
-  const btn = document.getElementById("authBtn");
-  if (!email || !password) return alert("Fill email and password");
-
-  btn.disabled = true;
-  btn.textContent = "Please wait...";
-
-  const { data, error } = authMode === "login"
-    ? await supabase.auth.signInWithPassword({ email, password })
-    : await supabase.auth.signUp({ email, password });
-
-  btn.disabled = false;
-  btn.textContent = authMode === "login" ? "Log In" : "Register";
-
-  if (error) return alert(error.message);
-  document.getElementById("modal").classList.remove("active");
-  updateAuthUI();
-}
-
-async function logout() {
-  await supabase.auth.signOut();
-  updateAuthUI();
-}
-
-async function updateAuthUI() {
-  const { data: { user } } = await supabase.auth.getUser();
-  const authArea = document.getElementById("authArea");
-  const userBar = document.getElementById("userBar");
-
-  if (user) {
-    authArea.classList.add("hidden");
-    userBar.classList.remove("hidden");
-    document.getElementById("userEmail").textContent = user.email;
-  } else {
-    authArea.classList.remove("hidden");
-    userBar.classList.add("hidden");
+// ===== LOADING HELPER =====
+function setLoading(btn, loading) {
+  if (!btn) return;
+  btn.disabled = loading;
+  if (loading) {
+    btn._html = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner"></span><span>Please wait…</span>';
+  } else if (btn._html) {
+    btn.innerHTML = btn._html;
   }
 }
 
-// ---------- ANALYZE ----------
-async function analyze() {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return alert("Please log in first.");
+// ===== LOGIN =====
+async function handleLogin(btn) {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) return toast('Please fill in all fields', 'error');
 
-  const name = document.getElementById("name").value || "Student";
-  const skills = document.getElementById("skills").value;
-  const target = document.getElementById("target").value;
-  const out = document.getElementById("output");
-  const btn = document.getElementById("btn");
+  setLoading(btn, true);
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  setLoading(btn, false);
 
-  if (!skills || !target) { out.textContent = "⚠️ Fill skills and target role."; return; }
-
-  btn.disabled = true;
-  btn.textContent = "Thinking...";
-  out.textContent = "⏳ Mistral AI is analyzing...";
-
-  const prompt = `You are a career advisor. User: ${name}.
-Current skills: ${skills}
-Target role: ${target}
-
-Respond in this exact format:
-
-## Skill Gap Analysis
-- bullet list of missing skills
-
-## Personalized Learning Path
-1. step
-2. step
-
-## Recommended Resources
-- resource links
-
-## Estimated Time to Job-Ready
-X months
-
-Keep it concise and actionable.`;
-
-  try {
-    const res = await fetch(MISTRAL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + MISTRAL_API_KEY
-      },
-      body: JSON.stringify({
-        model: "mistral-tiny",
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
-    const data = await res.json();
-    const result = data.choices?.[0]?.message?.content || "No response.";
-    out.textContent = result;
-
-    // Save to Supabase
-    await supabase.from("profiles").upsert({
-      id: user.id,
-      name,
-      skills,
-      target_role: target,
-      ai_result: result
-    });
-  } catch (e) {
-    out.textContent = "❌ Request failed: " + e.message;
-  }
-
-  btn.disabled = false;
-  btn.textContent = "Analyze Skill Gap";
+  if (error) return toast(error.message, 'error');
+  toast('Welcome back!', 'success');
+  setTimeout(() => window.location.href = 'dashboard.html', 700);
 }
 
-// ---------- INIT ----------
-updateAuthUI();
+// ===== REGISTER =====
+async function handleRegister(btn) {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  if (!name || !email || !password) return toast('Please fill in all fields', 'error');
+  if (password.length < 6) return toast('Password must be at least 6 characters', 'error');
+
+  setLoading(btn, true);
+  const { error } = await supabase.auth.signUp({
+    email, password,
+    options: { data: { full_name: name } }
+  });
+  setLoading(btn, false);
+
+  if (error) return toast(error.message, 'error');
+  toast('Account created — check your email to verify.', 'success');
+}
+
+// ===== FORGOT PASSWORD =====
+async function handleForgot(btn) {
+  const email = document.getElementById('forgotEmail').value.trim();
+  if (!email) return toast('Enter your email', 'error');
+
+  setLoading(btn, true);
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname
+  });
+  setLoading(btn, false);
+
+  if (error) return toast(error.message, 'error');
+  toast('Reset link sent — check your inbox.', 'success');
+  setTimeout(() => showView('login'), 1400);
+}
+
+// ===== RESET PASSWORD (after clicking recovery link) =====
+async function handleReset(btn) {
+  const p1 = document.getElementById('newPassword').value;
+  const p2 = document.getElementById('confirmPassword').value;
+  if (p1.length < 6) return toast('Password must be at least 6 characters', 'error');
+  if (p1 !== p2) return toast('Passwords do not match', 'error');
+
+  setLoading(btn, true);
+  const { error } = await supabase.auth.updateUser({ password: p1 });
+  setLoading(btn, false);
+
+  if (error) return toast(error.message, 'error');
+  toast('Password updated!', 'success');
+  setTimeout(() => window.location.href = 'dashboard.html', 900);
+}
+
+// ===== HANDLE RECOVERY LINK =====
+supabase.auth.onAuthStateChange((event) => {
+  if (event === 'PASSWORD_RECOVERY') showView('reset');
+});
