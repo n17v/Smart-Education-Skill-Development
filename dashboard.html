@@ -37,9 +37,9 @@
             </linearGradient>
           </defs>
           <circle cx="32" cy="32" r="30" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.25" />
-          <path class="logo-stem" d="M32 50V22" stroke="url(#brand-grad)" stroke-width="3.5" stroke-linecap="round" />
-          <path class="logo-leaf" d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="url(#brand-grad)" />
-          <path class="logo-leaf" d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40" fill="url(#brand-grad)" />
+          <path d="M32 50V22" stroke="url(#brand-grad)" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="url(#brand-grad)" />
+          <path d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40" fill="url(#brand-grad)" />
         </svg>
         <span class="text-lg font-bold tracking-tight text-slate-900">SkillBridge <span class="text-brand-600 font-extrabold">AI</span></span>
       </div>
@@ -91,7 +91,7 @@
   <!-- Main Content Canvas -->
   <main class="flex-1 min-h-screen overflow-y-auto p-8 lg:p-12">
     
-    <!-- VIEW: Home -->
+    <!-- VIEW 1: Home -->
     <section id="section-home" class="max-w-5xl">
       <div class="mb-8">
         <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Dashboard</h1>
@@ -118,115 +118,72 @@
       </div>
     </section>
 
-    <!-- VIEW: Progress -->
+    <!-- VIEW 2: Progress -->
     <section id="section-progress" class="max-w-5xl hidden space-y-8">
-      <div class="flex items-center justify-between border-b border-slate-200 pb-6">
+      
+      <!-- Progress Header & Add Skill CTA -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
         <div>
           <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Progress</h1>
-          <p class="text-sm text-slate-500 mt-1">Track milestone mastery, documentation reading, and topic testing.</p>
+          <p class="text-sm text-slate-500 mt-1">View enrolled skills across your engineering streams, read docs, and take milestone tests.</p>
         </div>
-        <button id="btn-change-skill" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3.5 py-2 rounded-xl transition-colors">
-          <span>Change Active Skill</span>
+        <button id="btn-add-another-skill" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold shadow-sm transition-all shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span>Add Another Skill</span>
         </button>
       </div>
 
-      <!-- Skill Hero Card with Circular Progress -->
-      <div class="p-7 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="space-y-2 text-center md:text-left">
-          <span id="skill-badge-domain" class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800 tracking-wide uppercase">
-            Languages
-          </span>
-          <h2 id="skill-title-display" class="text-4xl font-extrabold capitalize tracking-tight text-emerald-600">
-            HTML
-          </h2>
-          <p class="text-sm text-slate-600 font-medium max-w-md">
-            Foundational hypertext markup for structuring web content, accessible semantics, and modern DOM elements.
-          </p>
-        </div>
-
-        <!-- Circular Progress Bar -->
-        <div class="relative flex items-center justify-center shrink-0">
-          <svg class="w-36 h-36 transform -rotate-90" viewBox="0 0 120 120">
-            <circle cx="60" cy="60" r="50" class="text-slate-100" stroke-width="10" stroke="currentColor" fill="transparent" />
-            <circle id="progress-circle-bar" cx="60" cy="60" r="50" class="text-emerald-500 transition-all duration-700 ease-out" stroke-width="10" stroke-dasharray="314.159" stroke-dashoffset="314.159" stroke-linecap="round" stroke="currentColor" fill="transparent" />
-          </svg>
-          <div class="absolute flex flex-col items-center justify-center">
-            <span id="progress-percentage-label" class="text-2xl font-extrabold text-slate-900">0%</span>
-            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Completed</span>
-          </div>
+      <!-- Compact Multi-Skill Enrolled Grid -->
+      <div class="space-y-3">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Enrolled Skills</h3>
+        <div id="enrolled-skills-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Populated dynamically with compact cards -->
         </div>
       </div>
 
-      <!-- Learn Section -->
-      <div class="space-y-4">
+      <!-- Active Skill Learn Section -->
+      <div id="active-skill-learn-section" class="space-y-4 pt-4 border-t border-slate-100">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-2xl font-bold text-slate-900 tracking-tight">Learn</h3>
-            <p class="text-xs text-slate-500 mt-0.5">Read the official documentation on W3Schools, then confirm completion.</p>
+            <div class="flex items-center gap-2">
+              <span id="active-skill-stream-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-brand-50 text-brand-700">Computer</span>
+              <span id="active-skill-domain-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600">Languages</span>
+            </div>
+            <h2 id="active-skill-name-heading" class="text-2xl font-bold text-slate-900 mt-1">HTML</h2>
           </div>
-          <span id="topics-completed-counter" class="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
-            0 / 6 Topics Done
+          <span id="active-skill-topics-counter" class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">
+            0 / 0 Completed
           </span>
         </div>
 
-        <!-- Topics Container -->
-        <div id="topics-list-container" class="space-y-3">
-          <!-- Dynamically populated -->
-        </div>
-
-        <!-- Assessment Trigger Card (Appears when active topic marked done) -->
-        <div id="assessment-cta-card" class="hidden p-6 rounded-2xl bg-gradient-to-r from-brand-50 to-emerald-100 border border-brand-200 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold">
-              ⚡
-            </div>
-            <div>
-              <h4 class="text-base font-bold text-slate-900">Topic Completed & Locked for Assessment!</h4>
-              <p class="text-xs text-slate-600 mt-0.5">Test your comprehension with the AI Assistant before unlocking the next milestone.</p>
-            </div>
-          </div>
-          <button id="btn-goto-ai-test" class="shrink-0 px-5 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-black font-semibold text-sm transition-all shadow-md flex items-center gap-2">
-            <span>Take Skill Assessment</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-          </button>
+        <!-- Topics List -->
+        <div id="topics-list-container" class="space-y-2.5">
+          <!-- Populated with locked/unlocked topics -->
         </div>
       </div>
     </section>
 
-    <!-- VIEW: AI Assistant -->
+    <!-- VIEW 3: AI Assistant (Clean Minimal Workspace for Later Expansion) -->
     <section id="section-assistant" class="max-w-4xl hidden space-y-6">
       <div class="border-b border-slate-200 pb-6">
         <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">AI Assistant</h1>
-        <p class="text-sm text-slate-500 mt-1">Interactive skill verification, knowledge testing, and automated feedback.</p>
+        <p class="text-sm text-slate-500 mt-1">AI-powered mentorship and skill gap analysis.</p>
       </div>
-
-      <div id="assistant-test-banner" class="p-6 bg-white rounded-2xl border border-brand-200 shadow-sm space-y-4">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-sm">
-            AI
-          </div>
-          <div>
-            <h3 id="assistant-assessment-title" class="text-lg font-bold text-slate-900">Skill Knowledge Check</h3>
-            <p class="text-xs text-slate-500">Ready to evaluate your recent milestone.</p>
-          </div>
+      <div class="p-8 bg-white rounded-2xl border border-slate-200 text-center py-16">
+        <div class="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center mx-auto mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
         </div>
-        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-          <p id="assistant-prompt-text" class="text-sm text-slate-700 leading-relaxed">
-            Click start to generate customized multiple-choice and conceptual scenarios based on your completed topic.
-          </p>
-        </div>
-        <button type="button" onclick="alert('Starting interactive verification session...')" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold transition-all">
-          Begin 5-Question Quiz
-        </button>
+        <h3 class="text-lg font-bold text-slate-900">AI Assistant Workspace</h3>
+        <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1">Interactive chat mentorship and personalized learning path generations are ready for integration.</p>
       </div>
     </section>
 
-    <!-- VIEW: Sources -->
+    <!-- VIEW 4: Sources -->
     <section id="section-sources" class="max-w-5xl hidden space-y-10">
       <div class="border-b border-slate-200 pb-6">
         <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Sources</h1>
         <p class="text-sm text-slate-500 mt-1">
-          Stream-aligned textbook recommendations and AI-indexed web resources for <span id="sources-stream-tag" class="font-semibold text-brand-600">your focus</span>.
+          Stream-aligned textbook recommendations and engineering web resources for <span id="sources-stream-tag" class="font-semibold text-brand-600">your stream</span>.
         </p>
       </div>
 
@@ -239,7 +196,7 @@
             </div>
             <div>
               <h2 class="text-xl font-bold text-slate-900">Store</h2>
-              <p class="text-xs text-slate-500">Curated textbooks & reference materials on Amazon</p>
+              <p class="text-xs text-slate-500">Curated textbooks on Amazon</p>
             </div>
           </div>
           
@@ -249,7 +206,7 @@
               <span id="btn-refresh-store-text">Refresh</span>
             </button>
             <a id="amazon-all-link" href="#" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition-colors">
-              <span>Explore all on Amazon</span>
+              <span>Explore on Amazon</span>
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
             </a>
           </div>
@@ -290,7 +247,7 @@
         </div>
         <div>
           <h2 class="text-xl font-bold text-slate-900">Welcome to SkillBridge AI</h2>
-          <p class="text-xs text-slate-500">Configure your learning profile to continue</p>
+          <p class="text-xs text-slate-500">Configure your primary engineering focus</p>
         </div>
       </div>
 
@@ -337,56 +294,55 @@
     </div>
   </div>
 
-  <!-- MODAL 2: Undeniable Skill Selection Modal (Progress Tab) -->
+  <!-- MODAL 2: Add Skill Modal (Stream-Adaptive) -->
   <div id="skill-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 lg:p-8 shadow-2xl border border-slate-100">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 font-bold">
+            +
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">Add Skill Track</h2>
+            <p class="text-xs text-slate-500">2026-27 Stream Curriculum</p>
+          </div>
         </div>
-        <div>
-          <h2 class="text-xl font-bold text-slate-900">Set Up Your Skill Track</h2>
-          <p class="text-xs text-slate-500">Pick your 2026-27 core curriculum target</p>
-        </div>
+        <button type="button" id="btn-close-skill-modal" class="text-slate-400 hover:text-slate-600 text-lg font-bold">✕</button>
       </div>
 
       <form id="skill-form" class="space-y-4">
-        <!-- Domain Category Dropdown -->
+        <!-- Stream Selection -->
         <div>
-          <label for="domain-select" class="block text-sm font-semibold text-slate-800 mb-1.5">
-            What skill domain are you learning?
-          </label>
-          <div class="relative">
-            <select id="domain-select" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 appearance-none focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 cursor-pointer">
-              <option value="" disabled selected>Select domain (e.g. Languages)</option>
-              <option value="Languages">Languages</option>
-              <option value="Frameworks">Modern Frameworks</option>
-              <option value="Systems & Architecture">Systems & Architecture</option>
-              <option value="AI & Data Engineering">AI & Data Engineering</option>
-              <option value="Cloud & Infrastructure">Cloud & Infrastructure</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            </div>
-          </div>
+          <label for="skill-modal-stream-select" class="block text-xs font-semibold text-slate-700 mb-1">Target Stream</label>
+          <select id="skill-modal-stream-select" required class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 cursor-pointer focus:outline-none focus:border-brand-500">
+            <option value="Computer Engineering">Computer Engineering</option>
+            <option value="Automobile Engineering">Automobile Engineering</option>
+            <option value="Robotics Engineering">Robotics Engineering</option>
+            <option value="Chemical Engineering">Chemical Engineering</option>
+            <option value="Civil Engineering">Civil Engineering</option>
+            <option value="Electric Engineering">Electric Engineering</option>
+            <option value="Biochemical Engineering">Biochemical Engineering</option>
+            <option value="Mechatronics Engineering">Mechatronics Engineering</option>
+          </select>
         </div>
 
-        <!-- Specific Skill Dropdown -->
+        <!-- Domain Selection (Dynamic) -->
         <div>
-          <label for="specific-skill-select" class="block text-sm font-semibold text-slate-800 mb-1.5">
-            Name the skill specifically
-          </label>
-          <div class="relative">
-            <select id="specific-skill-select" required disabled class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 appearance-none focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 cursor-pointer">
-              <option value="" disabled selected>Select domain first</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            </div>
-          </div>
+          <label for="domain-select" class="block text-xs font-semibold text-slate-700 mb-1">What skill domain are you learning?</label>
+          <select id="domain-select" required class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 cursor-pointer focus:outline-none focus:border-brand-500">
+            <option value="" disabled selected>Select domain</option>
+          </select>
         </div>
 
-        <button type="submit" id="btn-add-skill" class="w-full mt-2 py-3.5 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-500 to-brand-600 hover:-translate-y-0.5 shadow-md shadow-brand-500/20 cursor-pointer transition-all duration-200 inline-flex items-center justify-center gap-2">
+        <!-- Specific Skill (Dynamic) -->
+        <div>
+          <label for="specific-skill-select" class="block text-xs font-semibold text-slate-700 mb-1">Name the skill specifically</label>
+          <select id="specific-skill-select" required disabled class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 cursor-pointer focus:outline-none focus:border-brand-500">
+            <option value="" disabled selected>Choose domain first</option>
+          </select>
+        </div>
+
+        <button type="submit" id="btn-submit-add-skill" class="w-full mt-3 py-3 px-4 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-500 to-brand-600 hover:-translate-y-0.5 shadow-md shadow-brand-500/20 cursor-pointer transition-all duration-200 inline-flex items-center justify-center gap-2">
           <span>Add Skill</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </button>
@@ -394,100 +350,408 @@
     </div>
   </div>
 
+  <!-- MODAL 3: 5-Question Topic Assessment Modal -->
+  <div id="quiz-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 lg:p-8 shadow-2xl border border-slate-100 my-8">
+      
+      <!-- Quiz Header -->
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-brand-50 text-brand-700 mb-1">AI Knowledge Verification</span>
+          <h3 id="quiz-topic-title" class="text-lg font-bold text-slate-900">Topic Knowledge Check</h3>
+          <p class="text-xs text-slate-500">Answer at least 4 out of 5 questions correctly (80%) to unlock the next milestone.</p>
+        </div>
+        <button type="button" id="btn-close-quiz" class="text-slate-400 hover:text-slate-600 text-base font-bold">✕</button>
+      </div>
+
+      <!-- Result Alert Banner (Hidden by default) -->
+      <div id="quiz-result-banner" class="hidden p-4 rounded-xl mb-5 text-xs font-medium"></div>
+
+      <!-- Quiz Form -->
+      <form id="quiz-form" class="space-y-6">
+        <div id="quiz-questions-container" class="space-y-5">
+          <!-- 5 questions rendered here -->
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-xs text-slate-400 font-medium">Passing criterion: 4/5 Correct</span>
+          <button type="submit" id="btn-submit-quiz" class="px-5 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-black font-semibold text-xs shadow-md transition-all">
+            Submit Test
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
   <!-- Main Controller Script -->
   <script>
-    // Supabase Configuration
+    // Supabase Setup
     const SUPABASE_URL = 'https://bvnwaicdzfshnmrwxguw.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2bndhaWNkemZzaG5tcnd4Z3V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MzI0MjcsImV4cCI6MjEwNTMwODQyN30.jnUaadGGbvqrxpb9nvbNcUlG5Y4M3kvZ2ITCspM1js0';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const TINYFISH_API_KEY = 'sk-tinyfish-_qT52w5xTFdvuM4b74KLWnb7MV0Pk3KM';
-
     let currentUser = null;
     let userStream = 'Computer Engineering';
-    let userDomain = '';
-    let userSkill = '';
-    let completedTopics = [];
-    let activeTestTopic = null;
+    let enrolledSkills = [];
+    let activeSkillIndex = 0;
+    let currentQuiz = null;
 
-    // Palette of random vibrant accent colors for skill titles
-    const TITLE_COLORS = [
-      'text-emerald-600',
-      'text-teal-600',
-      'text-blue-600',
-      'text-indigo-600',
-      'text-violet-600',
-      'text-cyan-600',
-      'text-sky-600',
-      'text-rose-600'
+    // Palette of vibrant accent colors for skill cards
+    const ACCENT_COLORS = [
+      'text-emerald-600 bg-emerald-50 border-emerald-200',
+      'text-teal-600 bg-teal-50 border-teal-200',
+      'text-sky-600 bg-sky-50 border-sky-200',
+      'text-indigo-600 bg-indigo-50 border-indigo-200',
+      'text-violet-600 bg-violet-50 border-violet-200',
+      'text-amber-600 bg-amber-50 border-amber-200'
     ];
 
-    // 2026-27 Stream Curriculum & Skill Domains
-    const DOMAIN_SKILLS = {
-      'Languages': ['HTML', 'CSS', 'JavaScript', 'Python', 'Rust', 'TypeScript', 'C++', 'Go'],
-      'Frameworks': ['React', 'Next.js', 'TailwindCSS', 'Node.js', 'FastAPI', 'PyTorch'],
-      'Systems & Architecture': ['Linux Shell', 'Docker', 'Kubernetes', 'Operating Systems', 'Microservices'],
-      'AI & Data Engineering': ['Machine Learning', 'Data Structures', 'SQL & Databases', 'Vector Databases', 'Prompt Engineering'],
-      'Cloud & Infrastructure': ['AWS Fundamentals', 'CI/CD Pipelines', 'Distributed Networks', 'Web Security']
+    // ==========================================
+    // 1. STREAM-SPECIFIC DOMAINS & SKILLS
+    // ==========================================
+    const STREAM_CURRICULUM = {
+      'Computer Engineering': {
+        'Programming Languages': ['HTML', 'CSS', 'JavaScript', 'Python', 'Rust', 'TypeScript', 'C++', 'Java'],
+        'Web & Full Stack': ['React.js', 'Next.js', 'Node.js', 'TailwindCSS', 'Express.js'],
+        'Systems & OS': ['Linux Kernel & Bash', 'Operating Systems', 'Distributed Systems'],
+        'AI & Data': ['Data Structures & Algorithms', 'Machine Learning', 'SQL & Databases', 'PyTorch']
+      },
+      'Automobile Engineering': {
+        'Powertrain & ICE': ['IC Engine Thermodynamics', 'Fuel Injection Systems', 'Turbocharging & Supercharging'],
+        'EV & Battery Systems': ['EV Battery Management (BMS)', 'Electric Motor Drives', 'Regenerative Braking'],
+        'Chassis & Dynamics': ['Vehicle Dynamics & Handling', 'Suspension Geometry', 'Braking Systems & ABS'],
+        'Automotive Electronics': ['CAN & LIN Bus Protocols', 'ECU Diagnostics', 'ADAS Sensors']
+      },
+      'Robotics Engineering': {
+        'Kinematics & Dynamics': ['Forward & Inverse Kinematics', 'Trajectory Planning', 'Rigid Body Motion'],
+        'Software & ROS': ['ROS 2 Framework', 'Python for Robotics', 'Gazebo Simulation'],
+        'Perception & Vision': ['OpenCV Image Processing', 'LiDAR & Point Clouds', 'SLAM Algorithms'],
+        'Control Systems': ['PID & Feedback Controllers', 'State-Space Motion Control', 'Actuator Tuning']
+      },
+      'Chemical Engineering': {
+        'Thermodynamics & Kinetics': ['Chemical Reaction Engineering', 'Phase Equilibria', 'Heat & Mass Transfer'],
+        'Process Operations': ['Distillation & Fractionation', 'Absorption Columns', 'Heat Exchanger Design'],
+        'Process Simulation': ['Aspen Plus Simulation', 'Process Flow Diagrams (PFD)', 'Piping & Instrumentation'],
+        'Plant Safety': ['HAZOP Safety Analysis', 'Pressure Vessel Design', 'Industrial Wastewater Treatment']
+      },
+      'Civil Engineering': {
+        'Structural Design': ['Structural Analysis', 'Reinforced Concrete (RCC)', 'Structural Steel Design'],
+        'Geotechnical Engineering': ['Soil Mechanics & Foundations', 'Bearing Capacity Analysis', 'Slope Stability'],
+        'Transportation & Highway': ['Highway Alignment Design', 'Pavement Materials & Testing', 'Traffic Engineering'],
+        'Water & Hydraulics': ['Open Channel Flow', 'Hydrology & Drainage', 'Water Distribution Networks']
+      },
+      'Electric Engineering': {
+        'Power Systems': ['Power Transmission & Distribution', 'Smart Grid Architecture', 'Switchgear & Relays'],
+        'Electrical Machines': ['Transformers & Induction Motors', 'Variable Frequency Drives (VFD)', 'Synchronous Machines'],
+        'Power Electronics': ['Inverters & Rectifiers', 'DC-DC Buck/Boost Converters', 'Renewable Energy Inverters'],
+        'Control & DSP': ['Digital Signal Processing (DSP)', 'Linear Feedback Systems', 'Industrial SCADA & PLC']
+      },
+      'Biochemical Engineering': {
+        'Bioprocess & Fermentation': ['Bioreactor Design & Scale-up', 'Fermentation Kinetics', 'Aeration & Agitation Dynamics'],
+        'Downstream Purification': ['Chromatography & Separation', 'Ultrafiltration Membranes', 'Centrifugation & Crystallization'],
+        'Molecular Engineering': ['Enzyme Catalysis & Kinetics', 'Recombinant DNA Technology', 'Bioinformatics Pipelines']
+      },
+      'Mechatronics Engineering': {
+        'Industrial Automation': ['Siemens & AB PLC Ladder Logic', 'SCADA & HMI Systems', 'Industrial Pneumatics'],
+        'Embedded Systems': ['STM32 & ARM Microcontrollers', 'Real-Time OS (RTOS)', 'Embedded C Firmware'],
+        'Robotics & Motion': ['CNC Machine Tooling', 'Servo & Stepper Motor Tuning', 'Sensor Integration & DAQ']
+      }
     };
 
-    // 2026-27 Modern Curriculum Topics mapped with W3Schools Docs
+    // ==========================================
+    // 2. W3SCHOOLS CURRICULUM TOPICS & QUIZZES
+    // ==========================================
     const SKILL_TOPICS_DATABASE = {
       'HTML': [
-        { id: 'html-intro', title: 'HTML Introduction & Semantic Skeleton', link: 'https://www.w3schools.com/html/html_intro.asp' },
-        { id: 'html-elements', title: 'Modern Elements, Attributes & Hierarchy', link: 'https://www.w3schools.com/html/html_elements.asp' },
-        { id: 'html-forms', title: 'Forms, Validation & Modern Input Types', link: 'https://www.w3schools.com/html/html_forms.asp' },
-        { id: 'html-semantics', title: 'Semantic Tags (header, nav, article, main)', link: 'https://www.w3schools.com/html/html5_semantic_elements.asp' },
-        { id: 'html-media', title: 'Audio, Video & Accessible Canvas Media', link: 'https://www.w3schools.com/html/html5_video.asp' },
-        { id: 'html-api', title: 'HTML5 Web Storage & Geolocation APIs', link: 'https://www.w3schools.com/html/html5_webstorage.asp' }
+        {
+          id: 'html-1',
+          title: 'HTML Introduction & Semantic Skeleton',
+          link: 'https://www.w3schools.com/html/html_intro.asp',
+          questions: [
+            { q: 'What does the <!DOCTYPE html> declaration do in an HTML document?', options: ['Connects external CSS', 'Declares the document to be HTML5', 'Defines page title', 'Initializes JavaScript'], answer: 1 },
+            { q: 'Which element is the root container of an HTML webpage?', options: ['<head>', '<body>', '<html>', '<main>'], answer: 2 },
+            { q: 'Where are meta tags and webpage titles placed?', options: ['Inside <body>', 'Inside <head>', 'Inside <header>', 'Inside <footer>'], answer: 1 },
+            { q: 'Which is the correct element for inserting a line break?', options: ['<break>', '<lb>', '<br>', '<newline>'], answer: 2 },
+            { q: 'Which attribute defines alternative text for an image?', options: ['title', 'src', 'alt', 'desc'], answer: 2 }
+          ]
+        },
+        {
+          id: 'html-2',
+          title: 'Modern Elements, Attributes & Hierarchy',
+          link: 'https://www.w3schools.com/html/html_elements.asp',
+          questions: [
+            { q: 'Which attribute specifies a unique identifier for an HTML element?', options: ['class', 'id', 'key', 'name'], answer: 1 },
+            { q: 'What is the correct tag for the highest level heading?', options: ['<h6>', '<head>', '<heading>', '<h1>'], answer: 3 },
+            { q: 'Which HTML tag creates a clickable hyperlink?', options: ['<link>', '<a>', '<href>', '<url>'], answer: 1 },
+            { q: 'Which attribute determines where to open a linked document (e.g. new tab)?', options: ['rel', 'target', 'window', 'open'], answer: 1 },
+            { q: 'What element defines an unordered bulleted list?', options: ['<ol>', '<li>', '<ul>', '<list>'], answer: 2 }
+          ]
+        },
+        {
+          id: 'html-3',
+          title: 'Forms, Validation & Modern Input Types',
+          link: 'https://www.w3schools.com/html/html_forms.asp',
+          questions: [
+            { q: 'Which input type enforces a valid email format automatically?', options: ['text', 'mail', 'email', 'validate'], answer: 2 },
+            { q: 'Which attribute prevents a form from being submitted if a field is empty?', options: ['validate', 'mandatory', 'required', 'strict'], answer: 2 },
+            { q: 'What attribute connects an HTML <label> to an <input> element?', options: ['for', 'id', 'name', 'to'], answer: 0 },
+            { q: 'Which form method is best suited for transmitting sensitive data like passwords?', options: ['GET', 'POST', 'PUT', 'FETCH'], answer: 1 },
+            { q: 'Which tag creates a dropdown selection menu?', options: ['<menu>', '<dropdown>', '<select>', '<input type="dropdown">'], answer: 2 }
+          ]
+        },
+        {
+          id: 'html-4',
+          title: 'Semantic Tags (header, nav, main, article)',
+          link: 'https://www.w3schools.com/html/html5_semantic_elements.asp',
+          questions: [
+            { q: 'Which element is intended to wrap navigation links?', options: ['<nav>', '<links>', '<menu>', '<navbar>'], answer: 0 },
+            { q: 'What element should contain the dominant content unique to the document?', options: ['<section>', '<article>', '<main>', '<body>'], answer: 2 },
+            { q: 'Which element represents self-contained, distributable content (e.g. a blog post)?', options: ['<section>', '<article>', '<aside>', '<div>'], answer: 1 },
+            { q: 'Which tag represents content tangentially related to the content around it?', options: ['<sidebar>', '<aside>', '<subtopic>', '<extra>'], answer: 1 },
+            { q: 'Why are semantic elements preferred over generic <div> tags?', options: ['They speed up downloads', 'They provide accessibility & SEO meaning', 'They style without CSS', 'They are required by HTML3'], answer: 1 }
+          ]
+        }
       ],
       'Python': [
-        { id: 'py-intro', title: 'Python Syntax, Variables & Types', link: 'https://www.w3schools.com/python/python_intro.asp' },
-        { id: 'py-collections', title: 'Lists, Tuples, Sets & Dictionaries', link: 'https://www.w3schools.com/python/python_lists.asp' },
-        { id: 'py-functions', title: 'Functions, Lambda & Scope', link: 'https://www.w3schools.com/python/python_functions.asp' },
-        { id: 'py-oop', title: 'OOP Classes, Inheritance & Iterators', link: 'https://www.w3schools.com/python/python_classes.asp' },
-        { id: 'py-modules', title: 'File Handling, Modules & RegEx', link: 'https://www.w3schools.com/python/python_modules.asp' },
-        { id: 'py-numpy', title: 'NumPy Arrays & Data Processing', link: 'https://www.w3schools.com/python/numpy/default.asp' }
-      ],
-      'JavaScript': [
-        { id: 'js-intro', title: 'Modern Syntax, ES6+ & Strict Mode', link: 'https://www.w3schools.com/js/js_intro.asp' },
-        { id: 'js-dom', title: 'DOM Manipulation & Event Listeners', link: 'https://www.w3schools.com/js/js_htmldom.asp' },
-        { id: 'js-async', title: 'Promises, Async/Await & Fetch API', link: 'https://www.w3schools.com/js/js_async.asp' },
-        { id: 'js-objects', title: 'Objects, Prototypes & Classes', link: 'https://www.w3schools.com/js/js_classes.asp' },
-        { id: 'js-modules', title: 'ES Modules, Import/Export & Bundlers', link: 'https://www.w3schools.com/js/js_modules.asp' },
-        { id: 'js-json', title: 'JSON Web Tokens & LocalStorage', link: 'https://www.w3schools.com/js/js_json_intro.asp' }
-      ],
-      'CSS': [
-        { id: 'css-syntax', title: 'Selectors, Box Model & Specificity', link: 'https://www.w3schools.com/css/css_syntax.asp' },
-        { id: 'css-flexbox', title: 'Modern Flexbox Layouts', link: 'https://www.w3schools.com/css/css3_flexbox.asp' },
-        { id: 'css-grid', title: 'CSS Grid Architecture', link: 'https://www.w3schools.com/css/css_grid.asp' },
-        { id: 'css-responsive', title: 'Responsive Media Queries & Fluid Typography', link: 'https://www.w3schools.com/css/css_rwd_intro.asp' },
-        { id: 'css-animations', title: 'Transitions, Keyframes & 3D Transforms', link: 'https://www.w3schools.com/css/css3_animations.asp' },
-        { id: 'css-vars', title: 'CSS Variables & Modern Theming', link: 'https://www.w3schools.com/css/css3_variables.asp' }
+        {
+          id: 'py-1',
+          title: 'Python Syntax, Variables & Types',
+          link: 'https://www.w3schools.com/python/python_intro.asp',
+          questions: [
+            { q: 'How do you output text to the console in Python?', options: ['echo()', 'System.out.println()', 'print()', 'console.log()'], answer: 2 },
+            { q: 'How does Python indicate code blocks for loops and functions?', options: ['Curly brackets {}', 'Indentation', 'Parentheses ()', 'Square brackets []'], answer: 1 },
+            { q: 'Which character starts a single-line comment in Python?', options: ['//', '#', '/*', '--'], answer: 1 },
+            { q: 'What is the correct syntax to create a floating point variable?', options: ['x = float(5.0)', 'x = 5.0', 'Both are valid', 'Neither is valid'], answer: 2 },
+            { q: 'What function returns the data type of a variable in Python?', options: ['typeof()', 'type()', 'getType()', 'datatype()'], answer: 1 }
+          ]
+        },
+        {
+          id: 'py-2',
+          title: 'Collections: Lists, Tuples & Dictionaries',
+          link: 'https://www.w3schools.com/python/python_lists.asp',
+          questions: [
+            { q: 'Which Python collection is ordered, changeable, and allows duplicates?', options: ['Set', 'Tuple', 'List', 'Dictionary'], answer: 2 },
+            { q: 'Which collection is immutable (cannot be modified after creation)?', options: ['List', 'Tuple', 'Dictionary', 'Array'], answer: 1 },
+            { q: 'How do you add an item to the end of a list?', options: ['list.add()', 'list.append()', 'list.push()', 'list.insert()'], answer: 1 },
+            { q: 'What data structure stores key-value pairs in Python?', options: ['Tuple', 'Set', 'Dictionary', 'List'], answer: 2 },
+            { q: 'How do you retrieve the value of key "age" from dict person?', options: ['person["age"]', 'person.age', 'person(age)', 'person->age'], answer: 0 }
+          ]
+        }
       ]
     };
 
-    // Generic fallback for skills not explicitly defined in the map
-    function generateTopicsForSkill(skill) {
+    // Generic generator for any skill without hardcoded curriculum
+    function getCurriculumForSkill(skillName, domainName) {
+      if (SKILL_TOPICS_DATABASE[skillName]) {
+        return SKILL_TOPICS_DATABASE[skillName];
+      }
       return [
-        { id: `${skill.toLowerCase()}-1`, title: `${skill} Syntax & Core Principles`, link: 'https://www.w3schools.com/' },
-        { id: `${skill.toLowerCase()}-2`, title: `${skill} Data Handling & Control Structures`, link: 'https://www.w3schools.com/' },
-        { id: `${skill.toLowerCase()}-3`, title: `${skill} Architecture, Modules & Functions`, link: 'https://www.w3schools.com/' },
-        { id: `${skill.toLowerCase()}-4`, title: `${skill} Concurrency & Error Management`, link: 'https://www.w3schools.com/' },
-        { id: `${skill.toLowerCase()}-5`, title: `${skill} Production Patterns & Security`, link: 'https://www.w3schools.com/' }
+        {
+          id: `${skillName.toLowerCase().replace(/\s+/g, '-')}-1`,
+          title: `${skillName} Foundations & Architecture`,
+          link: 'https://www.w3schools.com/',
+          questions: [
+            { q: `What is the primary objective of studying ${skillName}?`, options: ['To memorize syntax only', `To master engineering fundamentals in ${domainName}`, 'To replace hardware', 'None of the above'], answer: 1 },
+            { q: `Which standard documentation hub is recommended for ${skillName}?`, options: ['W3Schools & Official Standards', 'Unverified forums', 'Random text files', 'Social media'], answer: 0 },
+            { q: `What is a best practice when writing solutions in ${skillName}?`, options: ['Ignore structure', 'Modular and documented design', 'Hardcode credentials', 'Avoid testing'], answer: 1 },
+            { q: `How do engineers verify correctness in ${skillName}?`, options: ['Unit testing & validation', 'Guessing output', 'Skipping compilers', 'Only visual review'], answer: 0 },
+            { q: `In real-world deployment, what is essential alongside ${skillName}?`, options: ['Version control & CI/CD', 'Manual uploads', 'No documentation', 'Single point of failure'], answer: 0 }
+          ]
+        },
+        {
+          id: `${skillName.toLowerCase().replace(/\s+/g, '-')}-2`,
+          title: `${skillName} Practical Methods & Standards`,
+          link: 'https://www.w3schools.com/',
+          questions: [
+            { q: `What is the secondary milestone for ${skillName}?`, options: ['Laboratory practice & implementation', 'Skipping experiments', 'Closing roadmaps', 'Manual calculation only'], answer: 0 },
+            { q: `Which metric is monitored in ${domainName} workflows?`, options: ['Efficiency & Reliability', 'Random numbers', 'File size only', 'Color scheme'], answer: 0 },
+            { q: `What is the role of automated analysis in ${skillName}?`, options: ['To eliminate bugs early', 'To slow down development', 'To replace engineers', 'It has no role'], answer: 0 },
+            { q: `How should documentation be referenced?`, options: ['Read before implementing', 'Ignored completely', 'Read after deprecation', 'Never'], answer: 0 },
+            { q: `What confirms mastery of this ${skillName} topic?`, options: ['Passing the 80% knowledge assessment', 'Opening the tab once', 'Closing the browser', 'Skipping questions'], answer: 0 }
+          ]
+        }
       ];
     }
 
-    // Books Library for Sources
+    // ==========================================
+    // 3. SOURCES: RICH TEXTBOOKS PER STREAM
+    // ==========================================
     const STREAM_BOOKS = {
       'Computer Engineering': [
         { title: 'Clean Architecture', author: 'Robert C. Martin', tag: 'Architecture' },
         { title: 'Operating Systems: Three Easy Pieces', author: 'Remzi Arpaci-Dusseau', tag: 'Systems' },
         { title: 'Computer Networking: A Top-Down Approach', author: 'James Kurose', tag: 'Networking' },
         { title: 'Introduction to Algorithms (CLRS)', author: 'Thomas H. Cormen', tag: 'Algorithms' },
-        { title: 'Designing Data-Intensive Applications', author: 'Martin Kleppmann', tag: 'Distributed Systems' }
+        { title: 'Designing Data-Intensive Applications', author: 'Martin Kleppmann', tag: 'Distributed Systems' },
+        { title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson', tag: 'Foundations' }
+      ],
+      'Automobile Engineering': [
+        { title: 'Automotive Engineering Fundamentals', author: 'Richard Stone', tag: 'Powertrain' },
+        { title: 'Vehicle Dynamics: Theory and Application', author: 'Reza N. Jazar', tag: 'Dynamics' },
+        { title: 'Automotive Embedded Systems Handbook', author: 'Nicolas Navet', tag: 'Electronics' },
+        { title: 'Internal Combustion Engine Fundamentals', author: 'John B. Heywood', tag: 'Combustion' },
+        { title: 'Electric and Hybrid Vehicles', author: 'Iqbal Husain', tag: 'EV Systems' },
+        { title: 'Chassis Design: Principles and Analysis', author: 'William F. Milliken', tag: 'Chassis' }
+      ],
+      'Robotics Engineering': [
+        { title: 'Introduction to Autonomous Mobile Robots', author: 'Roland Siegwart', tag: 'Navigation' },
+        { title: 'Modern Robotics: Mechanics, Planning, and Control', author: 'Kevin M. Lynch', tag: 'Kinematics' },
+        { title: 'Probabilistic Robotics', author: 'Sebastian Thrun', tag: 'Perception' },
+        { title: 'Robot Modeling and Control', author: 'Mark W. Spong', tag: 'Control' },
+        { title: 'ROS 2 Robotics By Example', author: 'Fairchild & Martin', tag: 'Software' },
+        { title: 'Springer Handbook of Robotics', author: 'Bruno Siciliano', tag: 'Reference' }
+      ],
+      'Chemical Engineering': [
+        { title: 'Elements of Chemical Reaction Engineering', author: 'H. Scott Fogler', tag: 'Reactions' },
+        { title: 'Unit Operations of Chemical Engineering', author: 'Warren McCabe', tag: 'Operations' },
+        { title: 'Chemical Engineering Design', author: 'Gavin Towler', tag: 'Plant Design' },
+        { title: 'Chemical Engineering Thermodynamics', author: 'J.M. Smith', tag: 'Thermodynamics' },
+        { title: 'Transport Phenomena', author: 'R. Byron Bird', tag: 'Transport' },
+        { title: 'Process Dynamics and Control', author: 'Dale E. Seborg', tag: 'Process Control' }
+      ],
+      'Civil Engineering': [
+        { title: 'Structural Analysis', author: 'Russell C. Hibbeler', tag: 'Structures' },
+        { title: 'Soil Mechanics and Foundations', author: 'Muni Budhu', tag: 'Geotechnical' },
+        { title: 'Design of Reinforced Concrete', author: 'Jack C. McCormac', tag: 'Materials' },
+        { title: 'Water Resources Engineering', author: 'Larry W. Mays', tag: 'Hydraulics' },
+        { title: 'Construction Planning, Equipment & Methods', author: 'Robert Peurifoy', tag: 'Management' },
+        { title: 'Surveying: Principles and Applications', author: 'Barry Kavanagh', tag: 'Surveying' }
+      ],
+      'Electric Engineering': [
+        { title: 'The Art of Electronics', author: 'Paul Horowitz', tag: 'Circuits' },
+        { title: 'Electric Machinery Fundamentals', author: 'Stephen J. Chapman', tag: 'Power Systems' },
+        { title: 'Signals and Systems', author: 'Alan V. Oppenheim', tag: 'DSP' },
+        { title: 'Microelectronic Circuits', author: 'Adel S. Sedra', tag: 'VLSI' },
+        { title: 'Power System Analysis', author: 'John J. Grainger', tag: 'Grid' },
+        { title: 'Electromagnetic Waves and Radiating Systems', author: 'Edward C. Jordan', tag: 'Electromagnetics' }
+      ],
+      'Biochemical Engineering': [
+        { title: 'Bioprocess Engineering: Basic Concepts', author: 'Michael L. Shuler', tag: 'Bioprocess' },
+        { title: 'Biochemical Engineering Fundamentals', author: 'James E. Bailey', tag: 'Kinetics' },
+        { title: 'Principles of Fermentation Technology', author: 'Peter F. Stanbury', tag: 'Microbiology' },
+        { title: 'Downstream Processing of Biotechnology Products', author: 'Michael R. Ladisch', tag: 'Purification' },
+        { title: 'Molecular Biology of the Cell', author: 'Bruce Alberts', tag: 'Cellular' },
+        { title: 'Bioreaction Engineering Principles', author: 'Jens Nielsen', tag: 'Kinetics' }
+      ],
+      'Mechatronics Engineering': [
+        { title: 'Mechatronics: Electronic Control Systems', author: 'W. Bolton', tag: 'Mechatronics' },
+        { title: 'Introduction to Mechatronics and Measurement', author: 'David G. Alciatore', tag: 'Sensors' },
+        { title: 'Feedback Control of Dynamic Systems', author: 'Gene F. Franklin', tag: 'Control' },
+        { title: 'Embedded Computing Systems', author: 'Wayne Wolf', tag: 'Embedded' },
+        { title: 'Applied Mechatronics', author: 'A. Smaili', tag: 'Actuators' },
+        { title: 'PLC and Industrial Automation', author: 'Frank Petruzella', tag: 'Automation' }
       ]
     };
+
+    // ==========================================
+    // 4. SOURCES: DIVERSE WEB ROTATIONS PER STREAM
+    // ==========================================
+    const STREAM_WEB_LINKS = {
+      'Computer Engineering': [
+        [
+          { title: 'Developer Roadmaps & Skill Milestones', url: 'https://roadmap.sh', snippet: 'Community-driven curricula and milestone paths for software and systems engineers.' },
+          { title: 'MIT OpenCourseWare: Computer Science & Systems', url: 'https://ocw.mit.edu/search/?q=computer+engineering', snippet: 'Lecture transcripts, assignments, and exams from MIT electrical and CS faculty.' },
+          { title: 'W3Schools Online Web Tutorials & Code Playground', url: 'https://www.w3schools.com', snippet: 'Interactive documentation, live code examples, and standard syntax guides.' }
+        ],
+        [
+          { title: 'GitHub Open Source Engineering Repositories', url: 'https://github.com/topics/computer-engineering', snippet: 'Explore active frameworks, developer tools, and real-world system implementations.' },
+          { title: 'IEEE Computer Society Standards & Tech Briefs', url: 'https://www.computer.org', snippet: 'Professional standards, microarchitecture reports, and technical symposium papers.' },
+          { title: 'Linux Documentation Project & Kernel Guides', url: 'https://www.kernel.org/doc/html/latest/', snippet: 'Definitive system call specifications, device driver models, and memory architectures.' }
+        ]
+      ],
+      'Automobile Engineering': [
+        [
+          { title: 'SAE International: Mobility & Automotive Engineering Standards', url: 'https://www.sae.org', snippet: 'Technical papers on vehicle electrification, ADAS safety, and chassis telemetry.' },
+          { title: 'NPTEL: Automobile Engineering Video Lectures', url: 'https://nptel.ac.in/courses/107/106/107106080/', snippet: 'Comprehensive university lectures covering engine kinematics, suspension, and EV integration.' },
+          { title: 'EV Design Hub: Battery Management & Powertrain Systems', url: 'https://evdesignhub.com', snippet: 'Calculations for battery pack sizing, thermal runaways, and motor efficiency maps.' }
+        ],
+        [
+          { title: 'Virtual Labs: Automotive Dynamics & IC Engine Testing', url: 'https://vlab.co.in', snippet: 'Interactive simulation experiments for dynamometer testing and valve timing diagrams.' },
+          { title: 'Autocar Technical & Vehicle Architecture Insights', url: 'https://www.autocar.co.uk', snippet: 'In-depth engineering reviews of next-generation electric skateboards and aerodynamics.' },
+          { title: 'Vector Informatik: Automotive CAN Bus & Embedded Protocols', url: 'https://www.vector.com', snippet: 'Guides and whitepapers on CAN FD, LIN, FlexRay, and AUTOSAR software layers.' }
+        ]
+      ],
+      'Robotics Engineering': [
+        [
+          { title: 'ROS 2 Official Documentation & Tutorials', url: 'https://docs.ros.org/en/rolling/', snippet: 'Architecture guides for nodes, topics, actions, and DDS communication middleware.' },
+          { title: 'IEEE Robotics & Automation Society (RAS)', url: 'https://www.ieee-ras.org', snippet: 'Latest breakthroughs in autonomous navigation, humanoids, and surgical robotics.' },
+          { title: 'Robohub: Global Robotics News & Research Reviews', url: 'https://robohub.org', snippet: 'Curated technical articles from leading robotics labs and universities worldwide.' }
+        ],
+        [
+          { title: 'Gazebo & Ignition Multi-Robot Simulation Guide', url: 'https://gazebosim.org', snippet: 'Physics engine setup, sensor simulation, and digital twin testing for robotic arms.' },
+          { title: 'OpenCV Computer Vision Library Documentation', url: 'https://docs.opencv.org', snippet: 'Comprehensive tutorials on optical flow, feature matching, and object tracking.' },
+          { title: 'Modern Robotics Code Library & Video Tutorials', url: 'http://hades.mech.northwestern.edu/index.php/Modern_Robotics', snippet: 'Northwestern University robotics repository with Python/MATLAB kinematics scripts.' }
+        ]
+      ],
+      'Chemical Engineering': [
+        [
+          { title: 'AIChE: American Institute of Chemical Engineers Resource Portal', url: 'https://www.aiche.org', snippet: 'Safety guidelines, CEP magazine articles, and process intensification papers.' },
+          { title: 'LearnChemE: University of Colorado Chemical Screencasts', url: 'https://www.learncheme.com', snippet: 'Over 1,500 interactive worked engineering problems in thermodynamics and separations.' },
+          { title: 'NIST Chemistry WebBook: Thermophysical Properties', url: 'https://webbook.nist.gov/chemistry/', snippet: 'Verified thermochemical and reaction data for thousands of chemical species.' }
+        ],
+        [
+          { title: 'Aspen Technology Process Engineering Whitepapers', url: 'https://www.aspentech.com', snippet: 'Dynamic flowsheet simulation best practices and digital twin plant optimization.' },
+          { title: 'Chemical Engineering Online: Practical Plant Design', url: 'https://www.chemengonline.com', snippet: 'Articles on pump curves, distillation tray efficiencies, and pressure relief sizing.' },
+          { title: 'Virtual Labs: Mass Transfer & Fluid Particle Mechanics', url: 'https://vlab.co.in', snippet: 'Hands-on simulation experiments for fluidization, packed columns, and heat exchangers.' }
+        ]
+      ],
+      'Civil Engineering': [
+        [
+          { title: 'ASCE: American Society of Civil Engineers Resources', url: 'https://www.asce.org', snippet: 'Infrastructure report cards, structural design codes, and geotechnical guidelines.' },
+          { title: 'The Structural World: Structural Design Guidelines & Calculators', url: 'https://thestructuralworld.com', snippet: 'ETABS tutorials, concrete beam-column joint detailing, and seismic design rules.' },
+          { title: 'NPTEL: Advanced Reinforced Concrete Design', url: 'https://nptel.ac.in', snippet: 'Full semester video courses from IIT faculties covering limit state design.' }
+        ],
+        [
+          { title: 'USGS Water Resources & Hydrologic Data', url: 'https://www.usgs.gov/mission-areas/water-resources', snippet: 'Real-time river streamflow, hydrology tools, and watershed modeling software.' },
+          { title: 'Geotechdata.info: Soil Mechanics & Testing Data', url: 'https://geotechdata.info', snippet: 'Standard penetration test values, soil friction angles, and permeability charts.' },
+          { title: 'CivilDigital: Modern Civil Engineering Software Tutorials', url: 'https://civildigital.com', snippet: 'Guides on BIM workflows, AutoCAD Civil 3D, and STAAD Pro structural modeling.' }
+        ]
+      ],
+      'Electric Engineering': [
+        [
+          { title: 'All About Circuits: Electrical Engineering Textbooks & Forum', url: 'https://www.allaboutcircuits.com', snippet: 'Free open-source textbooks on AC/DC circuits, semiconductor devices, and DSP.' },
+          { title: 'IEEE Power & Energy Society (PES)', url: 'https://www.ieee-pes.org', snippet: 'Smart grid integration, renewable interconnection, and high-voltage substation papers.' },
+          { title: 'Electronics Tutorials: Basic to Advanced Analogue Electronics', url: 'https://www.electronics-tutorials.ws', snippet: 'Clear schematics and equations for op-amps, filters, transistors, and transformers.' }
+        ],
+        [
+          { title: 'Texas Instruments Precision Labs Video Academy', url: 'https://www.ti.com/precision-labs', snippet: 'Hands-on instructional curriculum on operational amplifiers, ADCs, and isolation.' },
+          { title: 'Power Electronics Technology Magazine & Whitepapers', url: 'https://www.powerelectronics.com', snippet: 'Silicon Carbide (SiC) MOSFETs, Gallium Nitride (GaN) switching, and power supply design.' },
+          { title: 'Virtual Labs: Electrical Machines & Power Systems Simulation', url: 'https://vlab.co.in', snippet: 'Synchronous machine synchronizing, speed control of DC motors, and fault studies.' }
+        ]
+      ],
+      'Biochemical Engineering': [
+        [
+          { title: 'NCBI PubMed Central: Biochemical & Biotechnology Articles', url: 'https://pubmed.ncbi.nlm.nih.gov', snippet: 'Peer-reviewed studies on cell line engineering, metabolic fluxes, and bioreactors.' },
+          { title: 'BioProcess International Magazine & Technical Archives', url: 'https://bioprocessintl.com', snippet: 'Upstream cell culture, downstream monoclonal antibody purification, and single-use systems.' },
+          { title: 'Enzyme Portal (EMBL-EBI): Biochemical Reaction Catalysis', url: 'https://www.ebi.ac.uk/enzymeportal/', snippet: 'Curated enzyme mechanisms, kinetic constants, and biological pathway mapping.' }
+        ],
+        [
+          { title: 'NPTEL: Bioprocess Engineering Principles', url: 'https://nptel.ac.in', snippet: 'University lectures covering mass transfer in bioprocesses and continuous culture kinetics.' },
+          { title: 'GenScript Molecular Biology Knowledge Base', url: 'https://www.genscript.com', snippet: 'Guides on codon optimization, plasmid construction, and protein expression systems.' },
+          { title: 'FDA Center for Biologics Evaluation and Research (CBER)', url: 'https://www.fda.gov', snippet: 'Regulatory guidelines for good manufacturing practices (cGMP) in biopharmaceuticals.' }
+        ]
+      ],
+      'Mechatronics Engineering': [
+        [
+          { title: 'Contactless Sensors & Industrial IoT Whitepapers', url: 'https://www.sensorsmag.com', snippet: 'Industrial sensor specs, signal conditioning circuits, and telemetry protocols.' },
+          { title: 'PLC Academy: Siemens & Allen-Bradley Tutorials', url: 'https://www.plcacademy.com', snippet: 'Step-by-step ladder logic programming, timer/counter routines, and HMI tags.' },
+          { title: 'Mechatronics Zone: System Integration & Actuator Controls', url: 'https://www.mechatronicszone.com', snippet: 'Closed-loop servo tuning, encoder feedback, and stepper motor torque curves.' }
+        ],
+        [
+          { title: 'Embedded.com: Firmware & RTOS Architecture', url: 'https://www.embedded.com', snippet: 'Real-time operating system design, interrupt service routines, and memory protection.' },
+          { title: 'AutomationDirect Learning Center: Practical Automation', url: 'https://www.automationdirect.com', snippet: 'Variable frequency drive setup, safety relays, and pneumatic cylinder selection.' },
+          { title: 'Virtual Labs: Mechatronics & Vibration Signal Analysis', url: 'https://vlab.co.in', snippet: 'Fourier transform FFT analysis of machinery vibration and PID motor control experiments.' }
+        ]
+      ]
+    };
+
+    // Rate Limiting Config
+    const RATE_LIMIT_MS = 3000;
+    let lastStoreRefresh = 0;
+    let lastWebRefresh = 0;
+    let storeBookOffset = 0;
+    let webRotationIndex = 0;
 
     // DOM Elements Cache
     const navHome = document.getElementById('nav-home');
@@ -508,21 +772,25 @@
 
     const skillModal = document.getElementById('skill-modal');
     const skillForm = document.getElementById('skill-form');
+    const skillModalStreamSelect = document.getElementById('skill-modal-stream-select');
     const domainSelect = document.getElementById('domain-select');
     const specificSkillSelect = document.getElementById('specific-skill-select');
-    const btnChangeSkill = document.getElementById('btn-change-skill');
+    const btnAddAnotherSkill = document.getElementById('btn-add-another-skill');
+    const btnCloseSkillModal = document.getElementById('btn-close-skill-modal');
 
-    const skillBadgeDomain = document.getElementById('skill-badge-domain');
-    const skillTitleDisplay = document.getElementById('skill-title-display');
-    const progressCircleBar = document.getElementById('progress-circle-bar');
-    const progressPercentageLabel = document.getElementById('progress-percentage-label');
-    const topicsCompletedCounter = document.getElementById('topics-completed-counter');
+    const enrolledSkillsGrid = document.getElementById('enrolled-skills-grid');
+    const activeSkillStreamBadge = document.getElementById('active-skill-stream-badge');
+    const activeSkillDomainBadge = document.getElementById('active-skill-domain-badge');
+    const activeSkillNameHeading = document.getElementById('active-skill-name-heading');
+    const activeSkillTopicsCounter = document.getElementById('active-skill-topics-counter');
     const topicsListContainer = document.getElementById('topics-list-container');
-    const assessmentCtaCard = document.getElementById('assessment-cta-card');
-    const btnGotoAiTest = document.getElementById('btn-goto-ai-test');
 
-    const assistantAssessmentTitle = document.getElementById('assistant-assessment-title');
-    const assistantPromptText = document.getElementById('assistant-prompt-text');
+    const quizModal = document.getElementById('quiz-modal');
+    const quizTopicTitle = document.getElementById('quiz-topic-title');
+    const quizForm = document.getElementById('quiz-form');
+    const quizQuestionsContainer = document.getElementById('quiz-questions-container');
+    const quizResultBanner = document.getElementById('quiz-result-banner');
+    const btnCloseQuiz = document.getElementById('btn-close-quiz');
 
     const cardStreamName = document.getElementById('card-stream-name');
     const sourcesStreamTag = document.getElementById('sources-stream-tag');
@@ -530,7 +798,14 @@
     const webLinksContainer = document.getElementById('web-links-container');
     const amazonAllLink = document.getElementById('amazon-all-link');
 
-    // Navigation Switcher
+    const btnRefreshStore = document.getElementById('btn-refresh-store');
+    const btnRefreshStoreText = document.getElementById('btn-refresh-store-text');
+    const btnRefreshWeb = document.getElementById('btn-refresh-web');
+    const btnRefreshWebText = document.getElementById('btn-refresh-web-text');
+
+    // ==========================================
+    // 5. NAVIGATION SWITCHER
+    // ==========================================
     function setActiveTab(tab) {
       [sectionHome, sectionAssistant, sectionProgress, sectionSources].forEach(s => s.classList.add('hidden'));
       [navHome, navAssistant, navProgress, navSources].forEach(n => {
@@ -541,9 +816,10 @@
         sectionProgress.classList.remove('hidden');
         navProgress.className = 'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
         
-        // If user has not chosen skill yet, trigger modal immediately
-        if (!userSkill || !userDomain) {
-          skillModal.classList.remove('hidden');
+        if (!enrolledSkills.length) {
+          openSkillModal(userStream);
+        } else {
+          renderEnrolledSkills();
         }
       } else if (tab === 'assistant') {
         sectionAssistant.classList.remove('hidden');
@@ -562,20 +838,47 @@
     navProgress.addEventListener('click', () => setActiveTab('progress'));
     navSources.addEventListener('click', () => setActiveTab('sources'));
 
-    btnChangeSkill.addEventListener('click', () => {
+    // ==========================================
+    // 6. ADAPTIVE SKILL MODAL
+    // ==========================================
+    function openSkillModal(defaultStream) {
+      skillModalStreamSelect.value = defaultStream || userStream;
+      populateDomainsForStream(skillModalStreamSelect.value);
       skillModal.classList.remove('hidden');
+    }
+
+    function populateDomainsForStream(stream) {
+      const curriculum = STREAM_CURRICULUM[stream] || STREAM_CURRICULUM['Computer Engineering'];
+      const domains = Object.keys(curriculum);
+
+      domainSelect.innerHTML = '<option value="" disabled selected>Select domain</option>';
+      domains.forEach(dom => {
+        const opt = document.createElement('option');
+        opt.value = dom;
+        opt.textContent = dom;
+        domainSelect.appendChild(opt);
+      });
+
+      specificSkillSelect.innerHTML = '<option value="" disabled selected>Choose domain first</option>';
+      specificSkillSelect.disabled = true;
+      specificSkillSelect.classList.add('bg-slate-50');
+      specificSkillSelect.classList.remove('bg-white');
+    }
+
+    skillModalStreamSelect.addEventListener('change', () => {
+      populateDomainsForStream(skillModalStreamSelect.value);
     });
 
-    // Populate Specific Skills Dropdown on Domain change
     domainSelect.addEventListener('change', () => {
-      const domain = domainSelect.value;
-      const skills = DOMAIN_SKILLS[domain] || [];
+      const selectedStream = skillModalStreamSelect.value;
+      const selectedDomain = domainSelect.value;
+      const skills = (STREAM_CURRICULUM[selectedStream] && STREAM_CURRICULUM[selectedStream][selectedDomain]) || [];
 
       specificSkillSelect.innerHTML = '<option value="" disabled selected>Choose a skill</option>';
-      skills.forEach(s => {
+      skills.forEach(sk => {
         const opt = document.createElement('option');
-        opt.value = s;
-        opt.textContent = s;
+        opt.value = sk;
+        opt.textContent = sk;
         specificSkillSelect.appendChild(opt);
       });
 
@@ -584,146 +887,397 @@
       specificSkillSelect.classList.add('bg-white');
     });
 
-    // Skill Form Submission -> Saves to Supabase
+    btnAddAnotherSkill.addEventListener('click', () => openSkillModal(userStream));
+    btnCloseSkillModal.addEventListener('click', () => skillModal.classList.add('hidden'));
+
     skillForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const targetStream = skillModalStreamSelect.value;
       const domain = domainSelect.value;
       const skill = specificSkillSelect.value;
-      if (!domain || !skill || !currentUser) return;
+      if (!targetStream || !domain || !skill) return;
 
-      const submitBtn = document.getElementById('btn-add-skill');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Saving skill track...';
-
-      const { error } = await supabaseClient
-        .from('profiles')
-        .upsert({
-          id: currentUser.id,
-          skill_domain: domain,
-          skill_name: skill,
-          progress_percentage: 0,
-          completed_topics: []
-        });
-
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = `<span>Add Skill</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>`;
-
-      if (error) {
-        alert('Could not save skill: ' + error.message);
+      // Avoid duplicates
+      const exists = enrolledSkills.some(item => item.skill === skill && item.stream === targetStream);
+      if (exists) {
+        alert('You are already enrolled in this skill!');
         return;
       }
 
-      userDomain = domain;
-      userSkill = skill;
-      completedTopics = [];
-      activeTestTopic = null;
+      const newSkillObj = {
+        stream: targetStream,
+        domain: domain,
+        skill: skill,
+        progress: 0,
+        completed_topics: []
+      };
+
+      enrolledSkills.push(newSkillObj);
+      activeSkillIndex = enrolledSkills.length - 1;
+
+      // Save to Supabase
+      if (currentUser) {
+        await supabaseClient
+          .from('profiles')
+          .update({
+            skill_domain: domain,
+            skill_name: skill,
+            completed_topics: []
+          })
+          .eq('id', currentUser.id)
+          .catch(() => {});
+      }
 
       skillModal.classList.add('hidden');
-      renderSkillProgressView();
+      renderEnrolledSkills();
     });
 
-    // Render Progress Card & Learn Topics
-    function renderSkillProgressView() {
-      // Pick random title color from palette
-      const randomColor = TITLE_COLORS[Math.floor(Math.random() * TITLE_COLORS.length)];
-      skillTitleDisplay.className = `text-4xl font-extrabold capitalize tracking-tight ${randomColor}`;
-      skillTitleDisplay.textContent = userSkill;
-      skillBadgeDomain.textContent = userDomain;
+    // ==========================================
+    // 7. COMPACT MULTI-SKILL ENROLLED GRID
+    // ==========================================
+    function renderEnrolledSkills() {
+      if (!enrolledSkills.length) return;
 
-      const topics = SKILL_TOPICS_DATABASE[userSkill] || generateTopicsForSkill(userSkill);
-      const total = topics.length;
-      const doneCount = completedTopics.length;
-      const percentage = Math.round((doneCount / total) * 100);
+      enrolledSkillsGrid.innerHTML = '';
 
-      // Update Circular Progress
-      const circumference = 314.159; // 2 * pi * 50
-      const offset = circumference - (percentage / 100) * circumference;
-      progressCircleBar.style.strokeDashoffset = offset;
-      progressPercentageLabel.textContent = `${percentage}%`;
-      topicsCompletedCounter.textContent = `${doneCount} / ${total} Topics Done`;
+      enrolledSkills.forEach((item, index) => {
+        const isActive = index === activeSkillIndex;
+        const colorClass = ACCENT_COLORS[index % ACCENT_COLORS.length];
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
+          isActive
+            ? 'bg-white border-brand-500 shadow-md ring-2 ring-brand-500/10'
+            : 'bg-white border-slate-200 hover:border-slate-300'
+        }`;
 
-      // Render Topics List
+        const topics = getCurriculumForSkill(item.skill, item.domain);
+        const doneCount = (item.completed_topics || []).length;
+        const percent = Math.round((doneCount / topics.length) * 100);
+        item.progress = percent;
+
+        card.innerHTML = `
+          <div class="space-y-1">
+            <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${colorClass}">
+              ${item.stream.replace(' Engineering', '')} · ${item.domain}
+            </span>
+            <h4 class="text-base font-bold text-slate-900">${item.skill}</h4>
+            <p class="text-xs text-slate-400">${doneCount} of ${topics.length} topics done</p>
+          </div>
+
+          <!-- Compact Circular Progress -->
+          <div class="relative w-12 h-12 flex items-center justify-center shrink-0">
+            <svg class="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+              <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              <path class="text-brand-500 transition-all duration-500" stroke-dasharray="${percent}, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            </svg>
+            <span class="absolute text-[10px] font-bold text-slate-700">${percent}%</span>
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          activeSkillIndex = index;
+          renderEnrolledSkills();
+        });
+
+        enrolledSkillsGrid.appendChild(card);
+      });
+
+      renderActiveSkillCurriculum();
+    }
+
+    // ==========================================
+    // 8. ACTIVE SKILL TOPICS & LOCKING
+    // ==========================================
+    function renderActiveSkillCurriculum() {
+      const current = enrolledSkills[activeSkillIndex];
+      if (!current) return;
+
+      activeSkillStreamBadge.textContent = current.stream;
+      activeSkillDomainBadge.textContent = current.domain;
+      activeSkillNameHeading.textContent = current.skill;
+
+      const topics = getCurriculumForSkill(current.skill, current.domain);
+      const completed = current.completed_topics || [];
+      activeSkillTopicsCounter.textContent = `${completed.length} / ${topics.length} Completed`;
+
       topicsListContainer.innerHTML = '';
-      const isLockedForTest = Boolean(activeTestTopic);
 
-      topics.forEach((t) => {
-        const isDone = completedTopics.includes(t.id);
+      topics.forEach((top, idx) => {
+        const isDone = completed.includes(top.id);
+        // Only first topic or topics whose previous is done are unlocked
+        const isUnlocked = idx === 0 || completed.includes(topics[idx - 1].id);
+
         const card = document.createElement('div');
         card.className = `p-4 rounded-xl border transition-all flex items-center justify-between gap-4 ${
           isDone
-            ? 'bg-emerald-50/40 border-emerald-200 text-emerald-900'
-            : isLockedForTest
-            ? 'bg-slate-50 border-slate-200 opacity-60 pointer-events-none'
-            : 'bg-white border-slate-200 hover:border-brand-300'
+            ? 'bg-emerald-50/40 border-emerald-200'
+            : isUnlocked
+            ? 'bg-white border-slate-200 hover:border-brand-300'
+            : 'bg-slate-50/60 border-slate-200/60 opacity-60'
         }`;
 
         card.innerHTML = `
           <div class="flex items-center gap-3.5">
-            <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs ${
-              isDone ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500'
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 ${
+              isDone
+                ? 'bg-emerald-500 text-white'
+                : isUnlocked
+                ? 'bg-brand-50 text-brand-700 border border-brand-200'
+                : 'bg-slate-100 text-slate-400'
             }">
-              ${isDone ? '✓' : '•'}
+              ${isDone ? '✓' : idx + 1}
             </div>
             <div>
-              <h4 class="text-sm font-semibold text-slate-900">${t.title}</h4>
-              <a href="${t.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-brand-600 hover:underline mt-0.5">
+              <div class="flex items-center gap-2">
+                <h4 class="text-sm font-semibold text-slate-900">${top.title}</h4>
+                ${!isUnlocked ? '<span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">(Locked)</span>' : ''}
+              </div>
+              <a href="${top.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-brand-600 hover:underline mt-0.5">
                 <span>Read Documentation (W3Schools)</span>
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
               </a>
             </div>
           </div>
+
           <div>
             ${
               isDone
-                ? `<span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-3 py-1.5 rounded-lg">Completed</span>`
-                : `<button type="button" onclick="handleTopicDone('${t.id}', '${t.title}')" class="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-slate-900 hover:bg-black transition-colors ${
-                    isLockedForTest ? 'cursor-not-allowed opacity-50' : ''
-                  }">Done</button>`
+                ? `<span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-3 py-1.5 rounded-lg">Done</span>`
+                : isUnlocked
+                ? `<button type="button" onclick="startTopicAssessment('${top.id}')" class="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-slate-900 hover:bg-black transition-colors">Done</button>`
+                : `<span class="text-xs text-slate-400 font-medium px-3 py-1.5">Locked</span>`
             }
           </div>
         `;
+
         topicsListContainer.appendChild(card);
       });
-
-      // Toggle Assessment Callout Card
-      if (activeTestTopic) {
-        assessmentCtaCard.classList.remove('hidden');
-        assistantAssessmentTitle.textContent = `Skill Knowledge Check: ${activeTestTopic.title}`;
-        assistantPromptText.textContent = `You recently completed "${activeTestTopic.title}" under ${userSkill}. Let's evaluate your comprehension with an interactive verification quiz.`;
-      } else {
-        assessmentCtaCard.classList.add('hidden');
-      }
     }
 
-    // Handle "Done" on a Topic: Locks other topics & presents test CTA
-    window.handleTopicDone = async function (topicId, topicTitle) {
-      if (!completedTopics.includes(topicId)) {
-        completedTopics.push(topicId);
-      }
+    // ==========================================
+    // 9. 5-QUESTION TOPIC ASSESSMENT ENGINE
+    // ==========================================
+    window.startTopicAssessment = function(topicId) {
+      const current = enrolledSkills[activeSkillIndex];
+      const topics = getCurriculumForSkill(current.skill, current.domain);
+      const targetTopic = topics.find(t => t.id === topicId);
+      if (!targetTopic) return;
 
-      activeTestTopic = { id: topicId, title: topicTitle };
+      currentQuiz = {
+        skill: current.skill,
+        topicId: targetTopic.id,
+        topicTitle: targetTopic.title,
+        questions: targetTopic.questions
+      };
 
-      const topics = SKILL_TOPICS_DATABASE[userSkill] || generateTopicsForSkill(userSkill);
-      const percentage = Math.round((completedTopics.length / topics.length) * 100);
+      quizTopicTitle.textContent = `${current.skill} Assessment: ${targetTopic.title}`;
+      quizResultBanner.className = 'hidden';
+      quizQuestionsContainer.innerHTML = '';
 
-      // Persist in Supabase
-      await supabaseClient
-        .from('profiles')
-        .update({
-          completed_topics: completedTopics,
-          progress_percentage: percentage
-        })
-        .eq('id', currentUser.id);
+      currentQuiz.questions.forEach((qObj, qIdx) => {
+        const qBlock = document.createElement('div');
+        qBlock.className = 'p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5';
+        
+        let optionsHtml = '';
+        qObj.options.forEach((opt, optIdx) => {
+          optionsHtml += `
+            <label class="flex items-center gap-3 p-2 rounded-lg bg-white border border-slate-200 hover:border-brand-500 cursor-pointer text-xs font-medium text-slate-700 select-none">
+              <input type="radio" name="question_${qIdx}" value="${optIdx}" required class="w-3.5 h-3.5 text-brand-600 focus:ring-brand-500" />
+              <span>${opt}</span>
+            </label>
+          `;
+        });
 
-      renderSkillProgressView();
+        qBlock.innerHTML = `
+          <p class="text-xs font-bold text-slate-900">${qIdx + 1}. ${qObj.q}</p>
+          <div class="space-y-1.5 pt-1">${optionsHtml}</div>
+        `;
+        quizQuestionsContainer.appendChild(qBlock);
+      });
+
+      quizModal.classList.remove('hidden');
     };
 
-    // Direct assessment button to AI Assistant section
-    btnGotoAiTest.addEventListener('click', () => {
-      setActiveTab('assistant');
+    btnCloseQuiz.addEventListener('click', () => {
+      quizModal.classList.add('hidden');
     });
 
-    // Profile & Session Verifier
+    quizForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentQuiz) return;
+
+      let correctCount = 0;
+      currentQuiz.questions.forEach((qObj, qIdx) => {
+        const selected = document.querySelector(`input[name="question_${qIdx}"]:checked`);
+        if (selected && parseInt(selected.value, 10) === qObj.answer) {
+          correctCount++;
+        }
+      });
+
+      const current = enrolledSkills[activeSkillIndex];
+
+      // Criteria: User must answer at least 4 out of 5 correctly
+      if (correctCount >= 4) {
+        // PASS
+        quizResultBanner.className = 'p-4 rounded-xl mb-5 text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
+        quizResultBanner.innerHTML = `
+          <strong class="font-bold text-emerald-900">Passed! (${correctCount}/5 Correct)</strong><br />
+          Congratulations! You've demonstrated competence on this topic. The milestone is confirmed and the next topic is unlocked.
+        `;
+
+        if (!current.completed_topics.includes(currentQuiz.topicId)) {
+          current.completed_topics.push(currentQuiz.topicId);
+        }
+
+        setTimeout(() => {
+          quizModal.classList.add('hidden');
+          renderEnrolledSkills();
+        }, 1400);
+
+      } else {
+        // FAIL: Score < 4. Revert progress, prompt to re-read docs.
+        quizResultBanner.className = 'p-4 rounded-xl mb-5 text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200';
+        quizResultBanner.innerHTML = `
+          <strong class="font-bold text-rose-900">Score: ${correctCount}/5 (Need 4/5 to pass)</strong><br />
+          You did not reach the 80% threshold. Please review the official documentation on W3Schools and take the test again. Progress has not been marked.
+        `;
+
+        // Ensure topic remains uncompleted
+        current.completed_topics = current.completed_topics.filter(id => id !== currentQuiz.topicId);
+      }
+
+      // Persist in Supabase
+      if (currentUser) {
+        await supabaseClient
+          .from('profiles')
+          .update({
+            completed_topics: current.completed_topics
+          })
+          .eq('id', currentUser.id)
+          .catch(() => {});
+      }
+    });
+
+    // ==========================================
+    // 10. SOURCES SECTION CONTROLLER
+    // ==========================================
+    function applyStreamData(stream) {
+      cardStreamName.textContent = stream;
+      sourcesStreamTag.textContent = stream;
+
+      const amazonSearchQuery = encodeURIComponent(`${stream} textbooks fundamentals`);
+      amazonAllLink.href = `https://www.amazon.com/s?k=${amazonSearchQuery}`;
+
+      renderStoreBooks(stream, 0);
+      renderWebLinks(stream, 0);
+    }
+
+    function renderStoreBooks(stream, offset = 0) {
+      const books = STREAM_BOOKS[stream] || STREAM_BOOKS['Computer Engineering'];
+      storeCardsContainer.innerHTML = '';
+
+      const count = 3;
+      const booksToShow = [];
+      for (let i = 0; i < count; i++) {
+        booksToShow.push(books[(offset + i) % books.length]);
+      }
+
+      booksToShow.forEach(book => {
+        const bookQuery = encodeURIComponent(`${book.title} ${book.author}`);
+        const amazonUrl = `https://www.amazon.com/s?k=${bookQuery}`;
+
+        const card = document.createElement('div');
+        card.className = 'p-5 bg-white rounded-2xl border border-slate-200 hover:border-brand-500/40 hover:shadow-md transition-all flex flex-col justify-between';
+        card.innerHTML = `
+          <div>
+            <span class="inline-block px-2.5 py-1 rounded-md text-[11px] font-semibold bg-brand-50 text-brand-700 mb-3">${book.tag}</span>
+            <h4 class="font-bold text-slate-900 text-base leading-snug line-clamp-2">${book.title}</h4>
+            <p class="text-xs text-slate-500 mt-1.5">Author: ${book.author}</p>
+          </div>
+          <div class="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-400">Amazon Store</span>
+            <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-bold text-brand-600 hover:text-brand-700">
+              <span>View Book</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        `;
+        storeCardsContainer.appendChild(card);
+      });
+    }
+
+    function renderWebLinks(stream, rotationIndex = 0) {
+      const sets = STREAM_WEB_LINKS[stream] || STREAM_WEB_LINKS['Computer Engineering'];
+      const currentSet = sets[rotationIndex % sets.length];
+
+      webLinksContainer.innerHTML = '';
+      currentSet.forEach(item => {
+        const linkCard = document.createElement('a');
+        linkCard.href = item.url;
+        linkCard.target = '_blank';
+        linkCard.rel = 'noopener noreferrer';
+        linkCard.className = 'block p-4 bg-white rounded-xl border border-slate-200 hover:border-brand-500/50 hover:bg-brand-50/20 transition-all';
+        linkCard.innerHTML = `
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h4 class="text-sm font-semibold text-slate-900">${item.title}</h4>
+              <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.snippet}</p>
+              <span class="text-[11px] font-mono text-brand-600 mt-2 inline-block">${item.url}</span>
+            </div>
+            <svg class="w-4 h-4 text-slate-400 shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </div>
+        `;
+        webLinksContainer.appendChild(linkCard);
+      });
+    }
+
+    // Rate Limiting Cooldown Helper
+    function executeWithRateLimit(button, labelSpan, actionCallback, lastCallTimestamp) {
+      const now = Date.now();
+      if (now - lastCallTimestamp < RATE_LIMIT_MS) {
+        return lastCallTimestamp;
+      }
+
+      actionCallback();
+
+      button.disabled = true;
+      button.classList.add('opacity-50', 'cursor-not-allowed');
+
+      let remaining = Math.ceil(RATE_LIMIT_MS / 1000);
+      labelSpan.textContent = `Wait (${remaining}s)`;
+
+      const timer = setInterval(() => {
+        remaining -= 1;
+        if (remaining > 0) {
+          labelSpan.textContent = `Wait (${remaining}s)`;
+        } else {
+          clearInterval(timer);
+          button.disabled = false;
+          button.classList.remove('opacity-50', 'cursor-not-allowed');
+          labelSpan.textContent = 'Refresh';
+        }
+      }, 1000);
+
+      return Date.now();
+    }
+
+    btnRefreshStore.addEventListener('click', () => {
+      lastStoreRefresh = executeWithRateLimit(btnRefreshStore, btnRefreshStoreText, () => {
+        storeBookOffset += 3;
+        renderStoreBooks(userStream, storeBookOffset);
+      }, lastStoreRefresh);
+    });
+
+    btnRefreshWeb.addEventListener('click', () => {
+      lastWebRefresh = executeWithRateLimit(btnRefreshWeb, btnRefreshWebText, () => {
+        webRotationIndex += 1;
+        renderWebLinks(userStream, webRotationIndex);
+      }, lastWebRefresh);
+    });
+
+    // ==========================================
+    // 11. PROFILE AUTH & SESSION INITIALIZATION
+    // ==========================================
     async function checkUserProfile() {
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (!session) {
@@ -743,27 +1297,25 @@
         onboardingModal.classList.remove('hidden');
       } else {
         userStream = profile.stream;
-        cardStreamName.textContent = userStream;
-        sourcesStreamTag.textContent = userStream;
+        applyStreamData(userStream);
 
-        if (profile.skill_domain && profile.skill_name) {
-          userDomain = profile.skill_domain;
-          userSkill = profile.skill_name;
-          completedTopics = profile.completed_topics || [];
-          renderSkillProgressView();
+        // Populate initial enrolled skill if saved
+        if (profile.skill_name) {
+          enrolledSkills = [{
+            stream: profile.stream,
+            domain: profile.skill_domain || 'Foundations',
+            skill: profile.skill_name,
+            progress: profile.progress_percentage || 0,
+            completed_topics: profile.completed_topics || []
+          }];
+          renderEnrolledSkills();
         }
-
-        renderStoreBooks(userStream);
-        fetchTinyfishWebLinks(userStream);
       }
     }
 
-    // Stream Onboarding Sync & Form
-    function syncButtonState() {
-      const isChecked = termsCheckbox.checked;
-      const isStreamSelected = Boolean(streamSelect.value);
-
-      if (isChecked && isStreamSelected) {
+    // Onboarding Form Handling
+    function syncOnboardingButton() {
+      if (termsCheckbox.checked && streamSelect.value) {
         btnProceed.disabled = false;
         btnProceed.className = 'w-full py-3.5 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-500 to-brand-600 hover:-translate-y-0.5 shadow-md shadow-brand-500/20 cursor-pointer transition-all duration-200 inline-flex items-center justify-center gap-2';
       } else {
@@ -772,8 +1324,8 @@
       }
     }
 
-    termsCheckbox.addEventListener('change', syncButtonState);
-    streamSelect.addEventListener('change', syncButtonState);
+    termsCheckbox.addEventListener('change', syncOnboardingButton);
+    streamSelect.addEventListener('change', syncOnboardingButton);
 
     onboardingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -800,92 +1352,9 @@
       }
 
       userStream = selectedStream;
-      cardStreamName.textContent = userStream;
-      sourcesStreamTag.textContent = userStream;
+      applyStreamData(userStream);
       onboardingModal.classList.add('hidden');
-      renderStoreBooks(userStream);
-      fetchTinyfishWebLinks(userStream);
     });
-
-    // Sources Renderers
-    function renderStoreBooks(stream) {
-      const books = STREAM_BOOKS[stream] || STREAM_BOOKS['Computer Engineering'];
-      storeCardsContainer.innerHTML = '';
-      books.slice(0, 3).forEach(book => {
-        const bookQuery = encodeURIComponent(`${book.title} ${book.author}`);
-        const amazonUrl = `https://www.amazon.com/s?k=${bookQuery}`;
-        const card = document.createElement('div');
-        card.className = 'p-5 bg-white rounded-2xl border border-slate-200 hover:border-brand-500/40 hover:shadow-md transition-all flex flex-col justify-between';
-        card.innerHTML = `
-          <div>
-            <span class="inline-block px-2.5 py-1 rounded-md text-[11px] font-semibold bg-brand-50 text-brand-700 mb-3">${book.tag}</span>
-            <h4 class="font-bold text-slate-900 text-base leading-snug line-clamp-2">${book.title}</h4>
-            <p class="text-xs text-slate-500 mt-1.5">Author: ${book.author}</p>
-          </div>
-          <div class="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-xs font-semibold text-slate-400">Amazon Store</span>
-            <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-bold text-brand-600 hover:text-brand-700">
-              <span>View Book</span>
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </a>
-          </div>
-        `;
-        storeCardsContainer.appendChild(card);
-      });
-    }
-
-    async function fetchTinyfishWebLinks(stream) {
-      webLinksContainer.innerHTML = `
-        <div class="p-6 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">
-          <svg class="animate-spin w-5 h-5 mx-auto text-brand-500 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <span class="text-xs font-medium">Indexing resources for ${stream}...</span>
-        </div>
-      `;
-
-      try {
-        const response = await fetch('https://api.tinyfish.io/v1/search', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${TINYFISH_API_KEY}` },
-          body: JSON.stringify({ query: `${stream} roadmap documentation fundamentals`, limit: 4 })
-        });
-
-        if (!response.ok) throw new Error(`Status: ${response.status}`);
-        const data = await response.json();
-        const results = data.results || data.data || [];
-        if (!results.length) throw new Error('No items');
-        renderWebResults(results);
-      } catch (err) {
-        renderWebResults([
-          { title: `${stream} Comprehensive Roadmap & Foundations`, url: 'https://roadmap.sh', snippet: 'Interactive curriculum trees and prerequisites.' },
-          { title: `MIT OpenCourseWare — ${stream}`, url: `https://ocw.mit.edu/search/?q=${encodeURIComponent(stream)}`, snippet: 'Free syllabus, assignments, and exam problems.' }
-        ]);
-      }
-    }
-
-    function renderWebResults(results) {
-      webLinksContainer.innerHTML = '';
-      results.forEach(item => {
-        const linkCard = document.createElement('a');
-        linkCard.href = item.url || '#';
-        linkCard.target = '_blank';
-        linkCard.rel = 'noopener noreferrer';
-        linkCard.className = 'block p-4 bg-white rounded-xl border border-slate-200 hover:border-brand-500/50 hover:bg-brand-50/20 transition-all';
-        linkCard.innerHTML = `
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <h4 class="text-sm font-semibold text-slate-900 group-hover:text-brand-600">${item.title || 'Curated Resource'}</h4>
-              <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.snippet || item.description || 'Verified engineering documentation and learning roadmap.'}</p>
-              <span class="text-[11px] font-mono text-brand-600 mt-2 inline-block">${item.url || ''}</span>
-            </div>
-            <svg class="w-4 h-4 text-slate-400 shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </div>
-        `;
-        webLinksContainer.appendChild(linkCard);
-      });
-    }
 
     document.addEventListener('DOMContentLoaded', checkUserProfile);
   </script>
