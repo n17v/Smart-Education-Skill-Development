@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>SkillBridge AI — Dashboard</title>
 
   <!-- Favicon -->
@@ -26,6 +26,7 @@
   <script src="js/theme.js"></script>
 
   <style>
+    /* Markdown Styles */
     .ai-markdown h1, .ai-markdown h2, .ai-markdown h3, .ai-markdown h4 {
       font-weight: 700;
       color: #0f172a;
@@ -69,57 +70,155 @@
       padding-bottom: 0.4rem;
       margin-bottom: 0.85rem;
     }
+
+    /* AI Generated Markdown Table UI */
+    .ai-markdown table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 1rem 0;
+      font-size: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      overflow-x: auto;
+      display: block;
+    }
+    .ai-markdown th {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-weight: 700;
+      text-align: left;
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    .ai-markdown td {
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      white-space: nowrap;
+    }
+    .ai-markdown tr:last-child td {
+      border-bottom: none;
+    }
+    .ai-markdown tr:nth-child(even) td {
+      background-color: #fcfdfd;
+    }
+
+    /* Platform Table UI */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.875rem;
+      background: #ffffff;
+    }
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.75rem;
+    }
+    .custom-table th {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-weight: 700;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    .custom-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      white-space: nowrap;
+    }
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+    .custom-table tr:hover td {
+      background-color: #fcfdfd;
+    }
   </style>
 </head>
-<body class="bg-slate-50/70 text-slate-900 antialiased font-['Inter'] min-h-screen flex">
+<body class="bg-slate-50/70 text-slate-900 antialiased font-['Inter'] min-h-screen flex flex-col lg:flex-row">
 
-  <!-- Left Sidebar -->
-  <aside class="w-64 bg-white border-r border-slate-200/80 flex flex-col justify-between shrink-0 min-h-screen sticky top-0 h-screen">
+  <!-- Mobile Top Header (Visible below lg) -->
+  <header class="lg:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="flex items-center gap-2.5">
+      <button type="button" id="btn-open-sidebar" aria-label="Open navigation menu" class="p-1.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="flex items-center gap-1.5">
+        <svg class="w-6 h-6 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="30" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.25" />
+          <path class="logo-stem" d="M32 50V22" stroke="#10b981" stroke-width="3.5" stroke-linecap="round"></path>
+          <path class="logo-leaf" d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="#10b981"></path>
+          <path class="logo-leaf" d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40" fill="#10b981"></path>
+        </svg>
+        <span class="text-sm font-bold tracking-tight text-slate-900">SkillBridge <span class="text-brand-600 font-extrabold text-[10px] uppercase bg-brand-50 px-1 py-0.5 rounded">AI</span></span>
+      </div>
+    </div>
+    <span id="mobile-top-stream-badge" class="text-[10px] font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-full truncate max-w-[130px]">
+      Loading...
+    </span>
+  </header>
+
+  <!-- Mobile Sidebar Backdrop -->
+  <div id="sidebar-backdrop" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-xs hidden lg:hidden transition-opacity"></div>
+
+  <!-- Left Sidebar (Desktop Fixed, Mobile Slide-over Drawer) -->
+  <aside id="main-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200/80 flex flex-col justify-between shrink-0 h-screen transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 lg:sticky lg:top-0">
     <div>
       <!-- Brand Header -->
-      <div class="h-16 flex items-center gap-3 px-6 border-b border-slate-100">
-        <svg class="w-8 h-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="brand-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#34d399" />
-              <stop offset="100%" stop-color="#047857" />
-            </linearGradient>
-          </defs>
-          <circle cx="32" cy="32" r="30" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.25" />
-          <path class="logo-stem" d="M32 50V22" stroke="url(#brand-grad)" stroke-width="3.5" stroke-linecap="round"></path>
-          <path class="logo-leaf" d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="url(#brand-grad)"></path>
-          <path class="logo-leaf" d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40" fill="url(#brand-grad)"></path>
-        </svg>
-        <div class="flex items-center gap-1.5">
-          <span class="text-base font-bold tracking-tight text-slate-900">SkillBridge</span>
-          <span class="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-brand-50 text-brand-700 uppercase tracking-wide">AI</span>
+      <div class="h-16 flex items-center justify-between px-5 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <svg class="w-8 h-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="brand-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#34d399" />
+                <stop offset="100%" stop-color="#047857" />
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="30" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.25" />
+            <path class="logo-stem" d="M32 50V22" stroke="url(#brand-grad)" stroke-width="3.5" stroke-linecap="round"></path>
+            <path class="logo-leaf" d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="url(#brand-grad)"></path>
+            <path class="logo-leaf" d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40" fill="url(#brand-grad)"></path>
+          </svg>
+          <div class="flex items-center gap-1.5">
+            <span class="text-base font-bold tracking-tight text-slate-900">SkillBridge</span>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-brand-50 text-brand-700 uppercase tracking-wide">AI</span>
+          </div>
         </div>
+        <!-- Close Button (Mobile Only) -->
+        <button type="button" id="btn-close-sidebar" class="lg:hidden text-slate-400 hover:text-slate-600 p-1 font-bold">✕</button>
       </div>
 
       <!-- Navigation Items -->
       <nav class="p-3 space-y-1">
-        <button type="button" id="nav-home" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left">
+        <button type="button" id="nav-home" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left">
           <svg class="w-4 h-4 text-brand-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
           </svg>
           <span>Home</span>
         </button>
 
-        <button type="button" id="nav-assistant" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left">
+        <button type="button" id="nav-assistant" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left">
           <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
           <span>AI Assistant</span>
         </button>
 
-        <button type="button" id="nav-progress" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left">
+        <button type="button" id="nav-progress" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left">
           <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
           <span>Progress</span>
         </button>
 
-        <button type="button" id="nav-sources" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left">
+        <button type="button" id="nav-sources" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left">
           <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           </svg>
@@ -130,7 +229,7 @@
 
     <!-- Bottom Section: Settings & User Stream Status -->
     <div class="p-3 border-t border-slate-100 space-y-2">
-      <button type="button" id="nav-settings" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 transition-colors text-left group">
+      <button type="button" id="nav-settings" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 transition-colors text-left group">
         <svg class="w-4 h-4 text-slate-400 group-hover:text-slate-600 shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -146,15 +245,15 @@
   </aside>
 
   <!-- Main Content Canvas -->
-  <main class="flex-1 min-h-screen overflow-y-auto p-6 lg:p-10 max-w-6xl">
+  <main class="flex-1 min-h-screen overflow-y-auto p-4 sm:p-6 lg:p-10 max-w-6xl w-full">
     
-    <!-- Top Stream Header Badge -->
-    <div class="flex items-center justify-between pb-6 border-b border-slate-200/70 mb-8">
+    <!-- Top Stream Header Badge (Desktop & Tablet) -->
+    <div class="flex items-center justify-between pb-5 border-b border-slate-200/70 mb-6 sm:mb-8">
       <div>
-        <h1 id="page-title" class="text-2xl font-extrabold text-slate-900 tracking-tight">Overview</h1>
+        <h1 id="page-title" class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Overview</h1>
         <p id="page-subtitle" class="text-xs text-slate-500 mt-0.5">Your personalized learning environment.</p>
       </div>
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm text-xs font-medium text-slate-700">
+      <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 shadow-xs text-xs font-medium text-slate-700">
         <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
         <span id="top-stream-label">Engineering Focus</span>
       </div>
@@ -162,41 +261,41 @@
 
     <!-- VIEW 1: Home -->
     <section id="section-home" class="space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="p-5 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-          <span class="text-[11px] font-bold text-brand-600 uppercase tracking-wider">Primary Stream</span>
-          <h3 id="home-stream-display" class="text-lg font-bold text-slate-900 mt-1">Computer Engineering</h3>
-          <p class="text-xs text-slate-500 mt-1">Syllabus synced for 2026-27 curriculum.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+        <div class="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200/80 shadow-xs">
+          <span class="text-[10px] sm:text-[11px] font-bold text-brand-600 uppercase tracking-wider">Primary Stream</span>
+          <h3 id="home-stream-display" class="text-base sm:text-lg font-bold text-slate-900 mt-1 truncate">Computer Engineering</h3>
+          <p class="text-[11px] sm:text-xs text-slate-500 mt-1">Syllabus synced for 2026-27 curriculum.</p>
         </div>
 
-        <div class="p-5 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Active Skills</span>
-          <h3 id="home-skills-count" class="text-lg font-bold text-slate-900 mt-1">0 Tracked</h3>
-          <p class="text-xs text-slate-500 mt-1">Milestones verified through AI testing.</p>
+        <div class="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200/80 shadow-xs">
+          <span class="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">Active Skills</span>
+          <h3 id="home-skills-count" class="text-base sm:text-lg font-bold text-slate-900 mt-1">0 Tracked</h3>
+          <p class="text-[11px] sm:text-xs text-slate-500 mt-1">Milestones verified through AI testing.</p>
         </div>
 
-        <div class="p-5 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Learning Sources</span>
-          <h3 class="text-lg font-bold text-brand-600 mt-1">Amazon & Web Sync</h3>
-          <p class="text-xs text-slate-500 mt-1">Textbooks & live search indices active.</p>
+        <div class="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200/80 shadow-xs sm:col-span-2 lg:col-span-1">
+          <span class="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">Learning Sources</span>
+          <h3 class="text-base sm:text-lg font-bold text-brand-600 mt-1">Amazon & Web Sync</h3>
+          <p class="text-[11px] sm:text-xs text-slate-500 mt-1">Textbooks & live search indices active.</p>
         </div>
       </div>
 
       <!-- AI Planner Home Integration Card -->
-      <div class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-3">
-        <div class="flex items-center justify-between">
+      <div class="p-4 sm:p-6 bg-white rounded-2xl border border-slate-200/80 shadow-xs space-y-3.5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">✦</div>
+            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm shrink-0">✦</div>
             <div>
-              <h3 class="text-sm font-bold text-slate-900">Recommended AI Study Plan</h3>
-              <p class="text-[11px] text-slate-500">Formulated across your active skills by SkillBridge AI</p>
+              <h3 class="text-xs sm:text-sm font-bold text-slate-900">Recommended AI Study Plan</h3>
+              <p class="text-[10px] sm:text-[11px] text-slate-500">Formulated across your active skills by SkillBridge AI</p>
             </div>
           </div>
-          <button type="button" onclick="setActiveTab('assistant')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 px-3 py-1.5 rounded-lg transition-colors">
+          <button type="button" onclick="setActiveTab('assistant')" class="self-start sm:self-auto text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 px-3 py-1.5 rounded-lg transition-colors">
             Generate / Update Plan →
           </button>
         </div>
-        <div id="home-ai-plan-content" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50 p-5 rounded-xl border border-slate-200/60">
+        <div id="home-ai-plan-content" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200/60 overflow-x-auto">
           No AI plan generated yet. Head over to the AI Assistant tab to generate a multi-skill strategic roadmap!
         </div>
       </div>
@@ -204,30 +303,56 @@
 
     <!-- VIEW 2: Progress -->
     <section id="section-progress" class="hidden space-y-6">
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 class="text-lg font-bold text-slate-900">Enrolled Skills</h2>
-          <p class="text-xs text-slate-500 mt-0.5">Select a skill to view its roadmap and verify completed topics.</p>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">Enrolled Skills</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Track topic milestones, take AI assessments, or view your skill matrix.</p>
         </div>
-        <button id="btn-add-another-skill" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold shadow-sm transition-all">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          <span>Add Another Skill</span>
-        </button>
+        <div class="flex items-center gap-2">
+          <!-- Table/Cards View Toggle -->
+          <div class="flex p-0.5 bg-slate-100 rounded-xl text-xs font-semibold">
+            <button type="button" id="btn-view-cards" class="px-2.5 py-1.5 rounded-lg bg-white shadow-xs text-brand-700 transition-all">Cards</button>
+            <button type="button" id="btn-view-table" class="px-2.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all">Table</button>
+          </div>
+          <button id="btn-add-another-skill" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold shadow-xs transition-all shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Add Track</span>
+          </button>
+        </div>
       </div>
 
+      <!-- VIEW MODE A: Cards View -->
       <div id="enrolled-skills-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
 
-      <div id="curriculum-container" class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
-        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+      <!-- VIEW MODE B: Table UI View -->
+      <div id="enrolled-skills-table-container" class="hidden table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Domain</th>
+              <th>Skill Name</th>
+              <th>Verified Topics</th>
+              <th>Progress</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="skills-table-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Active Skill Curriculum Roadmap -->
+      <div id="curriculum-container" class="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-6 shadow-xs space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
           <div>
             <div class="flex items-center gap-2">
               <span id="active-skill-domain-pill" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-50 text-brand-700">Domain</span>
-              <h3 id="active-skill-title" class="text-xl font-bold text-slate-900">HTML</h3>
+              <h3 id="active-skill-title" class="text-lg sm:text-xl font-bold text-slate-900">HTML</h3>
             </div>
             <p class="text-xs text-slate-500 mt-1">Read the documentation, then click "Done" to initiate the 5-question test.</p>
           </div>
           
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-3 self-end sm:self-auto">
             <div class="relative w-10 h-10 flex items-center justify-center shrink-0">
               <svg class="w-10 h-10 transform -rotate-90" viewBox="0 0 36 36">
                 <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
@@ -247,8 +372,8 @@
 
     <!-- VIEW 3: AI Assistant -->
     <section id="section-assistant" class="hidden space-y-6">
-      <div class="flex p-1 bg-slate-100 rounded-xl max-w-sm">
-        <button type="button" id="tab-ai-planner" class="w-1/2 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-brand-700 transition-all">
+      <div class="flex p-1 bg-slate-100 rounded-xl max-w-xs sm:max-w-sm">
+        <button type="button" id="tab-ai-planner" class="w-1/2 py-2 text-xs font-bold rounded-lg bg-white shadow-xs text-brand-700 transition-all">
           AI Planner
         </button>
         <button type="button" id="tab-ai-summary" class="w-1/2 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all">
@@ -258,13 +383,13 @@
 
       <!-- PANEL 1: AI Planner -->
       <div id="panel-ai-planner" class="space-y-5">
-        <div class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="p-4 sm:p-6 bg-white rounded-2xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">SkillBridge AI</span>
-            <h3 class="text-base font-bold text-slate-900 mt-1">Holistic Multi-Skill Curriculum Planner</h3>
-            <p class="text-xs text-slate-500 mt-0.5">Synthesizes all your enrolled tracks into a connected, phased strategic execution roadmap.</p>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mt-1">Holistic Multi-Skill Curriculum Planner</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Synthesizes all your enrolled tracks into an interconnected execution roadmap.</p>
           </div>
-          <button type="button" id="btn-run-ai-planner" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-sm transition-all inline-flex items-center gap-2 shrink-0">
+          <button type="button" id="btn-run-ai-planner" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-xs transition-all inline-flex items-center justify-center gap-2 shrink-0">
             <span id="btn-planner-spinner" class="hidden">
               <svg class="animate-spin w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </span>
@@ -272,12 +397,12 @@
           </button>
         </div>
 
-        <div id="planner-output-container" class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-3">
+        <div id="planner-output-container" class="p-4 sm:p-6 bg-white rounded-2xl border border-slate-200/80 shadow-xs space-y-3">
           <div class="flex items-center justify-between pb-3 border-b border-slate-100">
             <span class="text-xs font-bold text-slate-900">Generated Multi-Skill Roadmap</span>
-            <span id="planner-sync-badge" class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Synced with Database & Home</span>
+            <span id="planner-sync-badge" class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Synced with Database</span>
           </div>
-          <div id="planner-output-body" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-6 rounded-xl border border-slate-200/60">
+          <div id="planner-output-body" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-4 sm:p-6 rounded-xl border border-slate-200/60 overflow-x-auto">
             Click "Generate Next-Step Plan" to let SkillBridge AI evaluate your active progress across all tracks.
           </div>
         </div>
@@ -285,11 +410,11 @@
 
       <!-- PANEL 2: AI Summary -->
       <div id="panel-ai-summary" class="hidden space-y-5">
-        <div class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-4">
+        <div class="p-4 sm:p-6 bg-white rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
           <div>
             <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">SkillBridge AI</span>
-            <h3 class="text-base font-bold text-slate-900 mt-1">In-Depth Skill & Concept Explainer</h3>
-            <p class="text-xs text-slate-500 mt-0.5">Select any domain and skill from your stream curriculum to receive a complete architectural breakdown.</p>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mt-1">In-Depth Skill & Concept Explainer</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Select any domain and skill from your curriculum to receive a complete architectural breakdown.</p>
           </div>
 
           <form id="summary-form" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -308,7 +433,7 @@
             </div>
 
             <div class="flex items-end">
-              <button type="submit" id="btn-run-ai-summary" class="w-full py-2 px-4 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-sm transition-all inline-flex items-center justify-center gap-2">
+              <button type="submit" id="btn-run-ai-summary" class="w-full py-2 px-4 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-xs transition-all inline-flex items-center justify-center gap-2">
                 <span id="btn-summary-spinner" class="hidden">
                   <svg class="animate-spin w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </span>
@@ -318,23 +443,23 @@
           </form>
         </div>
 
-        <div id="summary-output-container" class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-3">
+        <div id="summary-output-container" class="p-4 sm:p-6 bg-white rounded-2xl border border-slate-200/80 shadow-xs space-y-3">
           <div class="flex items-center justify-between pb-3 border-b border-slate-100">
             <span class="text-xs font-bold text-slate-900" id="summary-output-heading">AI Concept Breakdown</span>
             <span class="text-[10px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full">SkillBridge AI</span>
           </div>
 
-          <div id="summary-output-body" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-xl border border-slate-200/60">
+          <div id="summary-output-body" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-4 sm:p-5 rounded-xl border border-slate-200/60 overflow-x-auto">
             Select a domain and skill above, then click "Explain with AI" to generate an architectural deep dive.
           </div>
 
           <!-- Post-Answer AI Exploration Options -->
           <div id="summary-followup-container" class="hidden pt-4 mt-2 border-t border-slate-100 flex flex-wrap items-center gap-2.5">
             <span class="text-xs font-semibold text-slate-500">Ask SkillBridge AI further:</span>
-            <button type="button" id="btn-explain-whole-skill" class="px-3.5 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-brand-50 hover:border-brand-500 hover:text-brand-700 transition-all shadow-sm">
+            <button type="button" id="btn-explain-whole-skill" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-brand-50 hover:border-brand-500 hover:text-brand-700 transition-all shadow-xs">
               Explain whole skill
             </button>
-            <button type="button" id="btn-explain-subtopics" class="px-3.5 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-brand-50 hover:border-brand-500 hover:text-brand-700 transition-all shadow-sm flex items-center gap-1.5">
+            <button type="button" id="btn-explain-subtopics" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-brand-50 hover:border-brand-500 hover:text-brand-700 transition-all shadow-xs flex items-center gap-1.5">
               <span>Explain sub topics</span>
               <span class="text-[10px] text-slate-400">▾</span>
             </button>
@@ -347,31 +472,31 @@
     <!-- VIEW 4: Sources -->
     <section id="section-sources" class="hidden space-y-8">
       <div class="space-y-3.5">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div>
             <h3 class="text-base font-bold text-slate-900">Store</h3>
             <p class="text-xs text-slate-500">Textbooks tailored to your stream on Amazon</p>
           </div>
-          <div class="flex items-center gap-2.5">
+          <div class="flex items-center gap-2">
             <button id="btn-refresh-store" class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition-colors">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
               <span id="btn-refresh-store-text">Refresh</span>
             </button>
             <a id="amazon-all-link" href="#" target="_blank" class="text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 px-3 py-1.5 rounded-lg">
-              Explore on Amazon →
+              Amazon →
             </a>
           </div>
         </div>
-        <div id="store-cards-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+        <div id="store-cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-4"></div>
       </div>
 
       <div class="space-y-3.5 pt-4 border-t border-slate-200/70">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div>
             <h3 class="text-base font-bold text-slate-900">Web Links</h3>
             <p class="text-xs text-slate-500">Live search results fetched via Netlify Functions & verified roadmaps</p>
           </div>
-          <button id="btn-refresh-web" class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition-colors">
+          <button id="btn-refresh-web" class="self-start sm:self-auto inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             <span id="btn-refresh-web-text">Refresh</span>
           </button>
@@ -383,14 +508,14 @@
   </main>
 
   <!-- MODAL 1: First-Visit Stream Onboarding Modal -->
-  <div id="onboarding-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 lg:p-8 shadow-2xl border border-slate-100">
+  <div id="onboarding-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-7 shadow-2xl border border-slate-100">
       <div class="flex items-center gap-3 mb-4">
-        <div class="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center text-brand-600">
+        <div class="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center text-brand-600 shrink-0">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
         </div>
         <div>
-          <h2 class="text-xl font-bold text-slate-900">Welcome to SkillBridge AI</h2>
+          <h2 class="text-lg sm:text-xl font-bold text-slate-900">Welcome to SkillBridge AI</h2>
           <p class="text-xs text-slate-500">Select your engineering stream once to begin</p>
         </div>
       </div>
@@ -430,35 +555,35 @@
   </div>
 
   <!-- MODAL 2: Add Skill Modal -->
-  <div id="skill-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100">
+  <div id="skill-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 sm:p-6 shadow-2xl border border-slate-100">
       <div class="flex items-center justify-between mb-4">
         <div>
-          <h3 class="text-base font-bold text-slate-900">Add Skill Track</h3>
-          <div class="flex items-center gap-1.5 mt-1">
-            <span class="text-[11px] text-slate-400 font-medium">Stream:</span>
-            <span id="skill-modal-stream-tag" class="text-[11px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-md">Computer Engineering</span>
+          <h3 class="text-sm sm:text-base font-bold text-slate-900">Add Skill Track</h3>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span class="text-[10px] text-slate-400 font-medium">Stream:</span>
+            <span id="skill-modal-stream-tag" class="text-[10px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-md truncate max-w-[170px]">Computer Engineering</span>
           </div>
         </div>
-        <button type="button" id="btn-close-skill-modal" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
+        <button type="button" id="btn-close-skill-modal" class="text-slate-400 hover:text-slate-600 text-sm font-bold p-1">✕</button>
       </div>
 
       <form id="skill-form" class="space-y-4">
         <div>
-          <label for="domain-select" class="block text-xs font-semibold text-slate-700 mb-1">What skill domain are you learning?</label>
+          <label for="domain-select" class="block text-xs font-semibold text-slate-700 mb-1">Skill domain</label>
           <select id="domain-select" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 cursor-pointer focus:outline-none focus:border-brand-500">
             <option value="" disabled selected>Select domain</option>
           </select>
         </div>
 
         <div>
-          <label for="specific-skill-select" class="block text-xs font-semibold text-slate-700 mb-1">Name the skill specifically</label>
+          <label for="specific-skill-select" class="block text-xs font-semibold text-slate-700 mb-1">Specific skill</label>
           <select id="specific-skill-select" required disabled class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 cursor-pointer focus:outline-none focus:border-brand-500">
             <option value="" disabled selected>Choose domain first</option>
           </select>
         </div>
 
-        <button type="submit" id="btn-submit-add-skill" class="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 transition-all shadow-sm">
+        <button type="submit" id="btn-submit-add-skill" class="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 transition-all shadow-xs">
           Add Skill
         </button>
       </form>
@@ -466,36 +591,36 @@
   </div>
 
   <!-- MODAL 3: Compact Stepper Test Modal -->
-  <div id="quiz-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 flex flex-col justify-between max-h-[90vh]">
+  <div id="quiz-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-100 flex flex-col justify-between max-h-[92vh]">
       <div>
         <div class="flex items-center justify-between pb-3 border-b border-slate-100">
           <div>
             <span id="quiz-step-counter" class="text-[10px] font-extrabold uppercase tracking-wider text-brand-600">Question 1 of 5</span>
-            <h4 id="quiz-modal-topic-title" class="text-sm font-bold text-slate-900 truncate">Topic Knowledge Check</h4>
+            <h4 id="quiz-modal-topic-title" class="text-xs sm:text-sm font-bold text-slate-900 truncate max-w-[260px]">Topic Knowledge Check</h4>
           </div>
-          <button type="button" id="btn-close-quiz" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
+          <button type="button" id="btn-close-quiz" class="text-slate-400 hover:text-slate-600 text-sm font-bold p-1">✕</button>
         </div>
 
-        <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden my-3.5">
+        <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden my-3">
           <div id="quiz-progress-bar" class="bg-brand-500 h-full transition-all duration-300" style="width: 20%;"></div>
         </div>
       </div>
 
-      <div id="quiz-question-area" class="py-2 space-y-4 my-auto">
+      <div id="quiz-question-area" class="py-2 space-y-3.5 my-auto">
         <p id="quiz-question-text" class="text-xs font-bold text-slate-900 leading-relaxed">Loading question...</p>
-        <div id="quiz-options-container" class="space-y-2"></div>
+        <div id="quiz-options-container" class="space-y-2 max-h-[50vh] overflow-y-auto"></div>
       </div>
 
       <div id="quiz-result-area" class="hidden py-6 text-center space-y-3">
         <div id="quiz-result-icon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center font-extrabold text-lg"></div>
-        <h4 id="quiz-result-title" class="text-base font-bold text-slate-900"></h4>
+        <h4 id="quiz-result-title" class="text-sm sm:text-base font-bold text-slate-900"></h4>
         <p id="quiz-result-desc" class="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto"></p>
         <div id="quiz-result-actions" class="pt-2"></div>
       </div>
 
       <div id="quiz-footer-controls" class="pt-3 border-t border-slate-100 flex items-center justify-between">
-        <span class="text-[11px] text-slate-400 font-medium">Pass target: ≥ 4/5 Correct</span>
+        <span class="text-[10px] sm:text-[11px] text-slate-400 font-medium">Target: ≥ 4/5 (80%)</span>
         <div class="flex items-center gap-2">
           <button type="button" id="btn-prev-question" disabled class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-300 cursor-not-allowed">Back</button>
           <button type="button" id="btn-next-question" class="px-3.5 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-black text-xs font-semibold transition-all">Next</button>
@@ -505,43 +630,43 @@
   </div>
 
   <!-- MODAL 4: Sub-topics Pop-up Menu Modal -->
-  <div id="subtopics-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+  <div id="subtopics-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-100">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
         <div>
           <span class="text-[10px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Sub-Topics</span>
-          <h4 id="subtopics-modal-title" class="text-base font-bold text-slate-900 mt-1">Select a Sub-topic</h4>
+          <h4 id="subtopics-modal-title" class="text-sm sm:text-base font-bold text-slate-900 mt-1 truncate max-w-[260px]">Select a Sub-topic</h4>
         </div>
-        <button type="button" id="btn-close-subtopics-modal" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
+        <button type="button" id="btn-close-subtopics-modal" class="text-slate-400 hover:text-slate-600 text-sm font-bold p-1">✕</button>
       </div>
-      <p class="text-xs text-slate-500 mb-3">Choose a sub-topic to get a dedicated breakdown with code, mechanics, and best practices:</p>
-      <div id="subtopics-list-container" class="space-y-2 max-h-64 overflow-y-auto pr-1"></div>
+      <p class="text-xs text-slate-500 mb-3">Choose a sub-topic for a dedicated technical breakdown:</p>
+      <div id="subtopics-list-container" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
     </div>
   </div>
 
   <!-- MODAL 5: Custom Settings Pop-up Modal -->
-  <div id="settings-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 lg:p-7 shadow-2xl border border-slate-100">
+  <div id="settings-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-7 shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto">
       
       <!-- Modal Header -->
-      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-5">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600 shrink-0">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
           <div>
-            <h3 class="text-base font-bold text-slate-900">Account Settings</h3>
-            <p class="text-[11px] text-slate-500">Your profile and credentials overview</p>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900">Account Settings</h3>
+            <p class="text-[11px] text-slate-500">Profile & credentials</p>
           </div>
         </div>
-        <button type="button" id="btn-close-settings-modal" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
+        <button type="button" id="btn-close-settings-modal" class="text-slate-400 hover:text-slate-600 text-sm font-bold p-1">✕</button>
       </div>
 
-      <!-- User Profile Information Grid -->
-      <div class="space-y-3 mb-5">
+      <!-- User Profile Grid -->
+      <div class="space-y-2.5 mb-4">
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-center justify-between">
           <div>
             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Full Name</span>
@@ -553,7 +678,7 @@
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-center justify-between">
           <div>
             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Email Address</span>
-            <span id="settings-email-display" class="text-xs font-mono font-semibold text-slate-800 mt-0.5 block">Loading...</span>
+            <span id="settings-email-display" class="text-xs font-mono font-semibold text-slate-800 mt-0.5 block truncate max-w-[180px]">Loading...</span>
           </div>
           <span class="text-[10px] font-semibold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-md">Censored</span>
         </div>
@@ -568,27 +693,27 @@
       </div>
 
       <!-- Inline Change Password Drawer -->
-      <div id="settings-password-drawer" class="hidden mb-5 p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2.5">
+      <div id="settings-password-drawer" class="hidden mb-4 p-3 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2">
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold text-slate-900">Set New Password</span>
-          <span class="text-[10px] text-slate-400">Min. 6 characters</span>
+          <span class="text-[10px] text-slate-400">Min. 6 chars</span>
         </div>
         <input type="password" id="settings-new-password-input" placeholder="Type new password" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-brand-500" />
         <div class="flex items-center gap-2 pt-1">
-          <button type="button" id="btn-submit-new-password" class="flex-1 py-2 px-3 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold shadow-sm transition-all">Save New Password</button>
+          <button type="button" id="btn-submit-new-password" class="flex-1 py-2 px-3 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold shadow-xs transition-all">Save Password</button>
           <button type="button" id="btn-cancel-new-password" class="py-2 px-3 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-all">Cancel</button>
         </div>
         <p id="settings-password-feedback" class="text-[11px] font-medium hidden"></p>
       </div>
 
       <!-- Actions Footer -->
-      <div class="pt-3 border-t border-slate-100 flex items-center gap-3">
-        <button type="button" id="btn-open-password-drawer" class="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-all shadow-sm flex items-center justify-center gap-1.5">
+      <div class="pt-3 border-t border-slate-100 flex items-center gap-2.5">
+        <button type="button" id="btn-open-password-drawer" class="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-all shadow-xs flex items-center justify-center gap-1.5">
           <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
-          <span>Change Password</span>
+          <span>Password</span>
         </button>
 
-        <button type="button" id="btn-logout" class="flex-1 py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200/80 text-xs font-semibold transition-all shadow-sm flex items-center justify-center gap-1.5">
+        <button type="button" id="btn-logout" class="flex-1 py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200/80 text-xs font-semibold transition-all shadow-xs flex items-center justify-center gap-1.5">
           <svg class="w-3.5 h-3.5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
           <span>Log Out</span>
         </button>
@@ -605,13 +730,33 @@
     let enrolledSkills = [];
     let activeSkillIndex = 0;
     let savedAiPlan = '';
+    let isTableViewActive = false;
 
-    // Active AI Summary tracking
     let currentSummarySkill = '';
     let currentSummaryDomain = '';
-
-    // Rate Limiter Helper
     let isAiCooldownActive = false;
+
+    // Mobile Sidebar Elements
+    const btnOpenSidebar = document.getElementById('btn-open-sidebar');
+    const btnCloseSidebar = document.getElementById('btn-close-sidebar');
+    const mainSidebar = document.getElementById('main-sidebar');
+    const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+    const mobileTopStreamBadge = document.getElementById('mobile-top-stream-badge');
+
+    function toggleMobileSidebar(open) {
+      if (!mainSidebar || !sidebarBackdrop) return;
+      if (open) {
+        mainSidebar.classList.remove('-translate-x-full');
+        sidebarBackdrop.classList.remove('hidden');
+      } else {
+        mainSidebar.classList.add('-translate-x-full');
+        sidebarBackdrop.classList.add('hidden');
+      }
+    }
+
+    if (btnOpenSidebar) btnOpenSidebar.addEventListener('click', () => toggleMobileSidebar(true));
+    if (btnCloseSidebar) btnCloseSidebar.addEventListener('click', () => toggleMobileSidebar(false));
+    if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', () => toggleMobileSidebar(false));
 
     function startCooldown(buttonEl, spinnerEl, labelEl, defaultText, cooldownSeconds = 3) {
       isAiCooldownActive = true;
@@ -634,7 +779,6 @@
       }, 1000);
     }
 
-    // Email Censor Helper
     function censorEmail(email) {
       if (!email || typeof email !== 'string' || !email.includes('@')) return 'N/A';
       const [local, domain] = email.split('@');
@@ -647,7 +791,6 @@
       return `${start}${'*'.repeat(maskCount)}${end}@${domain}`;
     }
 
-    // Markdown Parser Helper Function
     function renderMarkdownToElement(element, markdownText) {
       if (!element) return;
       if (window.marked && window.marked.parse) {
@@ -657,7 +800,6 @@
       }
     }
 
-    // Dynamic Progress Color Computation (< 30%: Red, 30-68%: Yellow, > 68%: Green)
     function getProgressColor(percent) {
       if (percent < 30) {
         return { stroke: 'text-rose-500', text: 'text-rose-600', bg: 'bg-rose-50', border: 'border-rose-200' };
@@ -668,7 +810,6 @@
       }
     }
 
-    // Stream-adaptive Curricula
     const STREAM_CURRICULUM = {
       'Computer Engineering': {
         'Languages': ['HTML', 'CSS', 'JavaScript', 'Python', 'Rust', 'TypeScript', 'C++'],
@@ -713,7 +854,6 @@
       }
     };
 
-    // Topics & 5-question database per skill
     const SKILL_TOPICS_DATABASE = {
       'HTML': [
         {
@@ -750,58 +890,6 @@
             { q: 'What attribute connects an HTML <label> to an <input>?', options: ['id', 'for', 'name', 'connect'], answer: 1 },
             { q: 'Which HTTP method is best suited for sensitive form credentials?', options: ['GET', 'POST', 'PUT', 'HEAD'], answer: 1 },
             { q: 'Which tag creates a dropdown selection menu?', options: ['<menu>', '<dropdown>', '<select>', '<picker>'], answer: 2 }
-          ]
-        }
-      ],
-      'CSS': [
-        {
-          id: 'css-1',
-          title: 'CSS Box Model & Selectors',
-          link: 'https://www.w3schools.com/css/css_boxmodel.asp',
-          questions: [
-            { q: 'Which component represents the innermost area of the CSS box model?', options: ['Margin', 'Border', 'Padding', 'Content'], answer: 3 },
-            { q: 'What is the space between the content and the border called?', options: ['Margin', 'Padding', 'Outline', 'Gap'], answer: 1 },
-            { q: 'Which CSS selector selects elements with an id named "navbar"?', options: ['.navbar', '#navbar', '*navbar', 'navbar'], answer: 1 },
-            { q: 'How does margin differ from padding?', options: ['Margin is outside the border', 'Padding is outside the border', 'They are identical', 'Margin is inside content'], answer: 0 },
-            { q: 'Which property sets background color?', options: ['color', 'bgcolor', 'background-color', 'fill'], answer: 2 }
-          ]
-        },
-        {
-          id: 'css-2',
-          title: 'Flexbox & Modern Layouts',
-          link: 'https://www.w3schools.com/css/css3_flexbox.asp',
-          questions: [
-            { q: 'Which display value enables Flexbox layout?', options: ['display: flex', 'display: box', 'display: grid', 'display: inline'], answer: 0 },
-            { q: 'Which property aligns items along the primary axis in Flexbox?', options: ['align-items', 'justify-content', 'align-content', 'flex-align'], answer: 1 },
-            { q: 'Which property controls alignment along the cross axis in Flexbox?', options: ['justify-content', 'align-items', 'flex-direction', 'gap'], answer: 1 },
-            { q: 'What does flex-direction: column do?', options: ['Stacks items horizontally', 'Stacks items vertically', 'Reverses order', 'Removes wrap'], answer: 1 },
-            { q: 'Which property specifies space between flex items directly?', options: ['spacing', 'padding', 'gap', 'margin-between'], answer: 2 }
-          ]
-        }
-      ],
-      'JavaScript': [
-        {
-          id: 'js-1',
-          title: 'JavaScript Variables & Data Types',
-          link: 'https://www.w3schools.com/js/js_variables.asp',
-          questions: [
-            { q: 'Which keyword declares a block-scoped reassignable variable?', options: ['var', 'let', 'const', 'static'], answer: 1 },
-            { q: 'Which keyword declares a block-scoped read-only constant?', options: ['let', 'const', 'var', 'immutable'], answer: 1 },
-            { q: 'What is the result of typeof NaN in JavaScript?', options: ['number', 'nan', 'undefined', 'object'], answer: 0 },
-            { q: 'Which comparison operator checks both value and type equality?', options: ['==', '===', '=', '!='], answer: 1 },
-            { q: 'Which primitive type represents truth values?', options: ['string', 'boolean', 'symbol', 'integer'], answer: 1 }
-          ]
-        },
-        {
-          id: 'js-2',
-          title: 'Functions, Arrays & Promises',
-          link: 'https://www.w3schools.com/js/js_promise.asp',
-          questions: [
-            { q: 'Which syntax defines a modern ES6 arrow function?', options: ['function() => {}', '() => {}', '=> function()', 'def() => {}'], answer: 1 },
-            { q: 'Which array method transforms elements into a new array?', options: ['filter()', 'map()', 'forEach()', 'reduce()'], answer: 1 },
-            { q: 'Which state is NOT a valid Promise state?', options: ['pending', 'fulfilled', 'rejected', 'paused'], answer: 3 },
-            { q: 'Which keyword handles async Promises inside an async function?', options: ['await', 'defer', 'hold', 'promise'], answer: 0 },
-            { q: 'Which method appends an element to the end of an array?', options: ['push()', 'pop()', 'shift()', 'unshift()'], answer: 0 }
           ]
         }
       ],
@@ -860,66 +948,24 @@
       return [
         `${skill} Syntax & Core Abstractions`,
         `${skill} Architectural Patterns & State Flow`,
-        `${skill} Error Handling, Performance & Optimization`,
-        `${skill} Real-World Industry Testing & Production Deployment`
+        `${skill} Error Handling & Optimization`,
+        `${skill} Production Deployment & Verification`
       ];
     }
 
-    // Books per Stream
     const STREAM_BOOKS = {
       'Computer Engineering': [
         { title: 'Clean Architecture', author: 'Robert C. Martin', tag: 'Architecture' },
         { title: 'Operating Systems: Three Easy Pieces', author: 'Remzi Arpaci-Dusseau', tag: 'Systems' },
-        { title: 'Computer Networking: A Top-Down Approach', author: 'James Kurose', tag: 'Networking' },
-        { title: 'Introduction to Algorithms (CLRS)', author: 'Thomas H. Cormen', tag: 'Algorithms' },
-        { title: 'Designing Data-Intensive Applications', author: 'Martin Kleppmann', tag: 'Distributed' }
-      ],
-      'Automobile Engineering': [
-        { title: 'Automotive Engineering Fundamentals', author: 'Richard Stone', tag: 'Powertrain' },
-        { title: 'Vehicle Dynamics: Theory and Application', author: 'Reza N. Jazar', tag: 'Dynamics' },
-        { title: 'Automotive Embedded Systems Handbook', author: 'Nicolas Navet', tag: 'Electronics' },
-        { title: 'Internal Combustion Engine Fundamentals', author: 'John B. Heywood', tag: 'Combustion' },
-        { title: 'Electric and Hybrid Vehicles', author: 'Iqbal Husain', tag: 'EV Systems' }
-      ],
-      'Robotics Engineering': [
-        { title: 'Introduction to Autonomous Mobile Robots', author: 'Roland Siegwart', tag: 'Navigation' },
-        { title: 'Modern Robotics: Mechanics and Control', author: 'Kevin M. Lynch', tag: 'Kinematics' },
-        { title: 'Probabilistic Robotics', author: 'Sebastian Thrun', tag: 'Perception' },
-        { title: 'Robot Modeling and Control', author: 'Mark W. Spong', tag: 'Control' }
-      ],
-      'Chemical Engineering': [
-        { title: 'Elements of Chemical Reaction Engineering', author: 'H. Scott Fogler', tag: 'Reactions' },
-        { title: 'Unit Operations of Chemical Engineering', author: 'Warren McCabe', tag: 'Operations' },
-        { title: 'Chemical Engineering Thermodynamics', author: 'J.M. Smith', tag: 'Thermo' }
-      ],
-      'Civil Engineering': [
-        { title: 'Structural Analysis', author: 'Russell C. Hibbeler', tag: 'Structures' },
-        { title: 'Soil Mechanics and Foundations', author: 'Muni Budhu', tag: 'Geotechnical' },
-        { title: 'Design of Reinforced Concrete', author: 'Jack C. McCormac', tag: 'Materials' }
-      ],
-      'Electric Engineering': [
-        { title: 'The Art of Electronics', author: 'Paul Horowitz', tag: 'Circuits' },
-        { title: 'Electric Machinery Fundamentals', author: 'Stephen J. Chapman', tag: 'Machines' },
-        { title: 'Signals and Systems', author: 'Alan V. Oppenheim', tag: 'DSP' }
-      ],
-      'Biochemical Engineering': [
-        { title: 'Bioprocess Engineering: Basic Concepts', author: 'Michael L. Shuler', tag: 'Bioprocess' },
-        { title: 'Biochemical Engineering Fundamentals', author: 'James E. Bailey', tag: 'Kinetics' },
-        { title: 'Principles of Fermentation Technology', author: 'Peter F. Stanbury', tag: 'Fermentation' }
-      ],
-      'Mechatronics Engineering': [
-        { title: 'Mechatronics: Electronic Control Systems', author: 'W. Bolton', tag: 'Mechatronics' },
-        { title: 'Introduction to Mechatronics and Measurement', author: 'David G. Alciatore', tag: 'Sensors' },
-        { title: 'Feedback Control of Dynamic Systems', author: 'Gene F. Franklin', tag: 'Control' }
+        { title: 'Computer Networking: A Top-Down Approach', author: 'James Kurose', tag: 'Networking' }
       ]
     };
 
     const STREAM_WEB_LINKS_ROTATION = {
       'Computer Engineering': [
         [
-          { title: 'Developer Roadmaps & Career Paths', url: 'https://roadmap.sh', snippet: 'Step-by-step pathways and prerequisite trees for software engineers.' },
-          { title: 'MIT OpenCourseWare: EECS Repository', url: 'https://ocw.mit.edu', snippet: 'Lecture transcripts, problem sets, and syllabi from MIT faculty.' },
-          { title: 'W3Schools Official Documentation Hub', url: 'https://www.w3schools.com', snippet: 'Web and software language tutorials with interactive code sandboxes.' }
+          { title: 'Developer Roadmaps & Career Paths', url: 'https://roadmap.sh', snippet: 'Step-by-step pathways and prerequisite trees for engineers.' },
+          { title: 'MIT OpenCourseWare: EECS Repository', url: 'https://ocw.mit.edu', snippet: 'Lecture transcripts, problem sets, and syllabi from MIT.' }
         ]
       ]
     };
@@ -929,8 +975,7 @@
       if (sets && sets.length) return sets[page % sets.length];
       return [
         { title: `${stream} Comprehensive Roadmap & Syllabi`, url: 'https://roadmap.sh', snippet: `Curated learning pathways, semester tracks, and prerequisites for ${stream}.` },
-        { title: `MIT OpenCourseWare: ${stream} Series`, url: `https://ocw.mit.edu/search/?q=${encodeURIComponent(stream)}`, snippet: 'Free syllabus, assignments, and exam problems from MIT professors.' },
-        { title: `National Virtual Labs: ${stream}`, url: 'https://vlab.co.in', snippet: 'Interactive simulation experiments, lab practicals, and telemetry analysis.' }
+        { title: `MIT OpenCourseWare: ${stream} Series`, url: `https://ocw.mit.edu/search/?q=${encodeURIComponent(stream)}`, snippet: 'Free syllabus, assignments, and exam problems from MIT professors.' }
       ];
     }
 
@@ -968,7 +1013,12 @@
     const btnAddAnotherSkill = document.getElementById('btn-add-another-skill');
     const btnCloseSkillModal = document.getElementById('btn-close-skill-modal');
 
+    const btnViewCards = document.getElementById('btn-view-cards');
+    const btnViewTable = document.getElementById('btn-view-table');
     const enrolledSkillsGrid = document.getElementById('enrolled-skills-grid');
+    const enrolledSkillsTableContainer = document.getElementById('enrolled-skills-table-container');
+    const skillsTableBody = document.getElementById('skills-table-body');
+
     const activeSkillDomainPill = document.getElementById('active-skill-domain-pill');
     const activeSkillTitle = document.getElementById('active-skill-title');
     const activeSkillCounter = document.getElementById('active-skill-counter');
@@ -1069,16 +1119,18 @@
     }
 
     function setActiveTab(tab) {
+      toggleMobileSidebar(false);
+
       [sectionHome, sectionAssistant, sectionProgress, sectionSources].forEach(s => s.classList.add('hidden'));
       [navHome, navAssistant, navProgress, navSources].forEach(n => {
-        n.className = 'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left';
+        n.className = 'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left';
       });
 
       if (tab === 'progress') {
         sectionProgress.classList.remove('hidden');
-        navProgress.className = 'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
+        navProgress.className = 'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
         pageTitle.textContent = 'Curriculum & Progress';
-        pageSubtitle.textContent = 'Track topics, review W3Schools documentation, and verify milestones.';
+        pageSubtitle.textContent = 'Track topics, verify milestones, or review your skills matrix.';
         if (!enrolledSkills.length) {
           openSkillModal();
         } else {
@@ -1086,18 +1138,18 @@
         }
       } else if (tab === 'assistant') {
         sectionAssistant.classList.remove('hidden');
-        navAssistant.className = 'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
+        navAssistant.className = 'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
         pageTitle.textContent = 'AI Assistant';
         pageSubtitle.textContent = 'Automated study planning & concept deep-dives.';
         initAiAssistantSection();
       } else if (tab === 'sources') {
         sectionSources.classList.remove('hidden');
-        navSources.className = 'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
+        navSources.className = 'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
         pageTitle.textContent = 'Curated Sources';
         pageSubtitle.textContent = 'Recommended textbooks and web repositories for your engineering stream.';
       } else {
         sectionHome.classList.remove('hidden');
-        navHome.className = 'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
+        navHome.className = 'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
         pageTitle.textContent = 'Overview';
         pageSubtitle.textContent = 'Your personalized learning environment.';
       }
@@ -1108,8 +1160,28 @@
     navProgress.addEventListener('click', () => setActiveTab('progress'));
     navSources.addEventListener('click', () => setActiveTab('sources'));
 
+    // Progress View Switcher (Cards vs Table)
+    if (btnViewCards && btnViewTable) {
+      btnViewCards.addEventListener('click', () => {
+        isTableViewActive = false;
+        btnViewCards.className = 'px-2.5 py-1.5 rounded-lg bg-white shadow-xs text-brand-700 transition-all';
+        btnViewTable.className = 'px-2.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all';
+        enrolledSkillsGrid.classList.remove('hidden');
+        enrolledSkillsTableContainer.classList.add('hidden');
+      });
+
+      btnViewTable.addEventListener('click', () => {
+        isTableViewActive = true;
+        btnViewTable.className = 'px-2.5 py-1.5 rounded-lg bg-white shadow-xs text-brand-700 transition-all';
+        btnViewCards.className = 'px-2.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all';
+        enrolledSkillsGrid.classList.add('hidden');
+        enrolledSkillsTableContainer.classList.remove('hidden');
+      });
+    }
+
     function openSettingsModal() {
       if (!currentUser) return;
+      toggleMobileSidebar(false);
 
       const userName = (currentUser.user_metadata && currentUser.user_metadata.full_name)
         ? currentUser.user_metadata.full_name
@@ -1176,7 +1248,7 @@
         settingsPasswordFeedback.classList.remove('hidden');
       } finally {
         btnSubmitNewPassword.disabled = false;
-        btnSubmitNewPassword.textContent = 'Save New Password';
+        btnSubmitNewPassword.textContent = 'Save Password';
       }
     });
 
@@ -1191,7 +1263,7 @@
 
     function generateDynamicAIPlan() {
       if (!enrolledSkills || enrolledSkills.length === 0) {
-        return `### 1. Holistic Portfolio Assessment\nNo skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Track"** to build your custom engineering stack for **${userStream}**.`;
+        return `### 1. Holistic Portfolio Assessment\nNo skills enrolled yet. Head to the **Progress** tab and click **"Add Track"** to build your engineering stack for **${userStream}**.`;
       }
 
       const now = new Date();
@@ -1225,75 +1297,41 @@
         ? Math.round((totalCompletedAcrossStack / totalTopicsAcrossStack) * 100) 
         : 0;
 
-      const completedSkills = detailedAnalysis.filter(a => a.isFinished);
-      const inProgressSkills = detailedAnalysis.filter(a => !a.isFinished && a.completedCount > 0);
-
       let markdown = `> **Status: Holistic Multi-Skill Roadmap** · *Generated at ${timeStr}* · *Stack Coverage: ${overallStackPercent}% (${totalCompletedAcrossStack}/${totalTopicsAcrossStack} Topics Across ${enrolledSkills.length} Skills)*\n\n`;
 
-      markdown += `### 1. Comprehensive Portfolio Assessment (${userStream})\n`;
-      markdown += `You currently have **${enrolledSkills.length} active skills** enrolled in your curriculum. Here is the exact status of each track:\n\n`;
+      markdown += `### 1. Comprehensive Portfolio Assessment (${userStream})\n\n`;
+      markdown += `| Skill Name | Domain | Verified Topics | Progress | Status |\n`;
+      markdown += `| :--- | :--- | :--- | :--- | :--- |\n`;
       detailedAnalysis.forEach(item => {
-        const statusBadge = item.isFinished ? '✅ **Mastered (100%)**' : item.percent > 0 ? `⚡ **In Progress (${item.percent}%)**` : '⏳ **Not Started (0%)**';
-        markdown += `- **${item.skill}** (*${item.domain}*): ${statusBadge} — ${item.completedCount}/${item.total} topics verified.\n`;
+        const statusBadge = item.isFinished ? 'Mastered' : item.percent > 0 ? 'In Progress' : 'Not Started';
+        markdown += `| **${item.skill}** | ${item.domain} | ${item.completedCount} / ${item.total} | ${item.percent}% | ${statusBadge} |\n`;
       });
 
       markdown += `\n### 2. Cross-Skill Synergy & Dependency Analysis\n`;
-      markdown += `In **${userStream}**, your ${enrolledSkills.length} skills do not operate in isolation. They form a cohesive stack:\n`;
       const skillNames = detailedAnalysis.map(a => a.skill).join(' + ');
-      markdown += `- **Architectural Interlock:** Combining **${skillNames}** provides complete coverage from foundational syntax up to system-level execution and testing.\n`;
-      if (completedSkills.length > 0) {
-        markdown += `- **Solid Foundation:** Your completed milestone(s) in **${completedSkills.map(c => c.skill).join(', ')}** serve as the anchor for real-world interface designs.\n`;
-      }
-      if (inProgressSkills.length > 0) {
-        markdown += `- **Active Priority Gate:** Your primary bottleneck sits in **${inProgressSkills.map(c => c.skill).join(', ')}**. Clearing these modules will unlock full integration capacity.\n`;
-      }
+      markdown += `- **Architectural Interlock:** Combining **${skillNames}** covers the complete lifecycle of ${userStream}.\n`;
 
       markdown += `\n### 3. Phased Strategic Execution Roadmap\n`;
       markdown += `#### Phase 1: High-Priority Topic Sprints (Immediate)\n`;
       const immediateActions = detailedAnalysis.filter(a => !a.isFinished);
       if (immediateActions.length > 0) {
         immediateActions.forEach(act => {
-          markdown += `- **${act.skill}:** Unlock and complete the knowledge check for **"${act.nextTopic}"** (Target: ≥ 80% passing score).\n`;
+          markdown += `- **${act.skill}:** Target milestone: **"${act.nextTopic}"** (Score ≥ 80% to pass).\n`;
         });
       } else {
-        markdown += `- All currently tracked topics are 100% verified. Proceed directly to system integration testing.\n`;
+        markdown += `- All currently tracked topics are 100% verified. Proceed directly to capstone construction.\n`;
       }
 
-      markdown += `\n#### Phase 2: Cross-Track Integration & Bridge (Mid-Term)\n`;
-      markdown += `- Connect data inputs and interface logic across your active tools (${skillNames}).\n`;
-      markdown += `- Establish structured error handling and boundary assertions between layers.\n`;
-
-      markdown += `\n#### Phase 3: Production Readiness & Quality Assurance (Final)\n`;
-      markdown += `- Implement end-to-end automated unit tests and benchmark throughput against 2026-27 performance targets.\n`;
-
-      markdown += `\n### 4. Unified Multi-Skill Capstone Project\n`;
-      markdown += `- **Project Name:** Modular ${userStream} Control & Telemetry Suite\n`;
-      markdown += `- **Architecture:** Combines **${skillNames}** into an end-to-end pipeline with validated inputs, deterministic business logic, and structured telemetry feedback.\n`;
-
-      markdown += `\n### 5. Weekly Time Allocation & Study Matrix\n`;
-      markdown += `- **Active Skill Deep-Dives:** 50% of time divided equally among non-completed tracks (${detailedAnalysis.filter(a => !a.isFinished).map(a => a.skill).join(', ') || 'Capstone refinement'}).\n`;
-      markdown += `- **Interactive Knowledge Checks:** 20% of time verifying documentation and clearing W3Schools milestone tests.\n`;
-      markdown += `- **Capstone Architecture:** 30% of time writing clean, test-driven implementations integrating all active skills.\n`;
-
-      markdown += `\n### 6. Critical Engineering Pitfall to Avoid\n`;
-      markdown += `- **Isolation Trap:** Do not study one skill in a vacuum. Always write companion code that tests how your completed tracks (${completedSkills.map(c => c.skill).join(', ') || 'baseline modules'}) interact with in-progress modules.`;
+      markdown += `\n### 4. Unified Full-Stack Capstone Project\n`;
+      markdown += `- **Project:** Modular ${userStream} Control & Telemetry Suite combining **${skillNames}** into a unified test-driven solution.\n`;
 
       return markdown;
     }
 
     function generateOfflineConceptResponse(messages) {
       const userPrompt = messages[messages.length - 1].content;
-      if (userPrompt.includes('comprehensive, holistic masterclass')) {
-        const skillName = currentSummarySkill || 'Engineering Skill';
-        return `### Comprehensive Mastery: ${skillName}\n\n#### 1. Architectural Foundations\n**${skillName}** forms the core backbone of modern ${userStream} systems.\n\n#### 2. End-to-End System Lifecycle\n- **Setup & Standardization:** Establishes strict modular interfaces.\n- **Runtime Execution:** Manages memory boundaries and predictable state transitions.\n\n#### 3. Core Sub-disciplines to Master\n- Data types, scoping, memory primitives, and asynchronous concurrency.\n\n#### 4. Practical Hands-On Roadmap\nBuild a verified prototype adhering to 2026-27 engineering standards.`;
-      } else {
-        const match = userPrompt.match(/sub-topic "([^"]+)"/);
-        const subTopic = match ? match[1] : null;
-        const skillName = currentSummarySkill || 'Selected Skill';
-        const domainName = currentSummaryDomain || 'Domain';
-
-        return `### Sub-Topic Deep Dive: ${subTopic || skillName}\n\n#### 1. Core Mechanics & Concept\nCrucial operational mechanics of **${skillName}** within **${domainName}**.\n\n#### 2. Technical Breakdown & Principles\nEnsures decoupled logic, predictable throughput, and high fault tolerance.\n\n#### 3. Real-World Engineering Exercise\nReview the specification and complete the knowledge test under the Progress tab!`;
-      }
+      const skillName = currentSummarySkill || 'Engineering Skill';
+      return `### Technical Deep-Dive: ${skillName}\n\n#### 1. Core Principles\n**${skillName}** forms the foundation of modern ${userStream} systems.\n\n#### 2. Practical Verification\nReview standard syntax, run automated unit tests, and confirm knowledge checks in the **Progress** tab.`;
     }
 
     async function callAIAPI(messages, isPlanner = false) {
@@ -1322,14 +1360,14 @@
     }
 
     tabAiPlanner.addEventListener('click', () => {
-      tabAiPlanner.className = 'w-1/2 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-brand-700 transition-all';
+      tabAiPlanner.className = 'w-1/2 py-2 text-xs font-bold rounded-lg bg-white shadow-xs text-brand-700 transition-all';
       tabAiSummary.className = 'w-1/2 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all';
       panelAiPlanner.classList.remove('hidden');
       panelAiSummary.classList.add('hidden');
     });
 
     tabAiSummary.addEventListener('click', () => {
-      tabAiSummary.className = 'w-1/2 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-brand-700 transition-all';
+      tabAiSummary.className = 'w-1/2 py-2 text-xs font-bold rounded-lg bg-white shadow-xs text-brand-700 transition-all';
       tabAiPlanner.className = 'w-1/2 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all';
       panelAiSummary.classList.remove('hidden');
       panelAiPlanner.classList.add('hidden');
@@ -1375,7 +1413,7 @@
 
       btnRunAiPlanner.disabled = true;
       btnPlannerSpinner.classList.remove('hidden');
-      btnPlannerLabel.textContent = 'Analyzing All Skills...';
+      btnPlannerLabel.textContent = 'Analyzing Stack...';
 
       const detailedSkillsContext = enrolledSkills.map(s => {
         const topics = getSkillCurriculum(s.skill, s.domain);
@@ -1386,7 +1424,7 @@
       const promptMessages = [
         {
           role: 'system',
-          content: 'You are SkillBridge AI, a university engineering mentor. Provide exhaustive, multi-skill architectural learning roadmaps across all enrolled tracks simultaneously.'
+          content: 'You are SkillBridge AI, a university engineering mentor. Provide exhaustive, multi-skill architectural learning roadmaps and structured Markdown comparison tables across all tracks.'
         },
         {
           role: 'user',
@@ -1395,14 +1433,11 @@
 - Total Active Skills Enrolled: ${enrolledSkills.length}
 - Complete Skill Portfolio: ${detailedSkillsContext}
 
-Do NOT limit your plan to only one skill. Analyze all enrolled skills together as an interconnected full-stack engineering portfolio.
-Structure your extensive masterplan into:
-### 1. Comprehensive Portfolio Assessment
-### 2. Cross-Skill Synergy & Dependency Analysis
+Format response in clean Markdown with:
+### 1. Comprehensive Portfolio Assessment (Include a Markdown table of all skills, progress, and verification status)
+### 2. Cross-Skill Synergy Analysis
 ### 3. Phased Strategic Execution Roadmap
-### 4. Unified Multi-Skill Capstone Project
-### 5. Weekly Time Allocation & Study Matrix
-### 6. Critical Engineering Pitfall to Avoid`
+### 4. Unified Full-Stack Capstone Project`
         }
       ];
 
@@ -1422,16 +1457,9 @@ Structure your extensive masterplan into:
           } catch (e) {}
 
           try {
-            const { error: updateErr } = await supabaseClient
+            await supabaseClient
               .from('profiles')
-              .update({ ai_planner_response: planText })
-              .eq('id', currentUser.id);
-
-            if (updateErr) {
-              await supabaseClient
-                .from('profiles')
-                .upsert({ id: currentUser.id, ai_planner_response: planText });
-            }
+              .upsert({ id: currentUser.id, ai_planner_response: planText });
           } catch (e) {}
         }
       } catch (err) {
@@ -1470,8 +1498,7 @@ Structure your extensive masterplan into:
 Structure into:
 ### 1. Core Concept & Architectural Importance
 ### 2. Fundamental Mechanics & Principles
-### 3. Real-World Engineering Applications
-### 4. Recommended Hands-on Practice & Best Practices`
+### 3. Real-World Applications & Best Practices`
         }
       ];
 
@@ -1492,7 +1519,7 @@ Structure into:
       btnExplainWholeSkill.disabled = true;
       btnExplainWholeSkill.textContent = 'Compiling...';
       summaryOutputHeading.textContent = `Full Skill Masterclass: ${currentSummarySkill}`;
-      summaryOutputBody.textContent = `Compiling comprehensive breakdown for ${currentSummarySkill}...`;
+      summaryOutputBody.textContent = `Compiling breakdown for ${currentSummarySkill}...`;
 
       const promptMessages = [
         {
@@ -1501,14 +1528,7 @@ Structure into:
         },
         {
           role: 'user',
-          content: `Provide a comprehensive, holistic masterclass on the entire skill "${currentSummarySkill}" within domain "${currentSummaryDomain}" for ${userStream}.
-
-Structure cleanly into:
-### 1. High-Level Architectural Foundations & Scope
-### 2. The Complete End-to-End System Lifecycle
-### 3. Core Sub-disciplines & Key Mechanics
-### 4. Enterprise Best Practices & Common Failure Modes
-### 5. Practical Hands-On Project Roadmap`
+          content: `Provide a comprehensive masterclass on "${currentSummarySkill}" within "${currentSummaryDomain}" for ${userStream}.`
         }
       ];
 
@@ -1534,11 +1554,11 @@ Structure cleanly into:
         btn.type = 'button';
         btn.className = 'w-full text-left p-3 rounded-xl border border-slate-200 bg-white hover:border-brand-500 hover:bg-brand-50/40 text-xs font-semibold text-slate-800 transition-all flex items-center justify-between group';
         btn.innerHTML = `
-          <div class="flex items-center gap-2.5">
-            <span class="w-5 h-5 rounded-md bg-slate-100 text-slate-600 flex items-center justify-center text-[10px] font-bold group-hover:bg-brand-500 group-hover:text-white transition-colors">${idx + 1}</span>
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-5 h-5 rounded-md bg-slate-100 text-slate-600 flex items-center justify-center text-[10px] font-bold group-hover:bg-brand-500 group-hover:text-white transition-colors shrink-0">${idx + 1}</span>
             <span class="truncate">${topicName}</span>
           </div>
-          <span class="text-xs text-slate-400 group-hover:text-brand-600 font-bold">→</span>
+          <span class="text-xs text-slate-400 group-hover:text-brand-600 font-bold shrink-0">→</span>
         `;
 
         btn.addEventListener('click', () => {
@@ -1565,17 +1585,11 @@ Structure cleanly into:
       const promptMessages = [
         {
           role: 'system',
-          content: 'You are SkillBridge AI, a technical engineering educator. Provide detailed, laser-focused explanations with mechanics and code.'
+          content: 'You are SkillBridge AI, a technical engineering educator. Provide detailed, laser-focused explanations with mechanics.'
         },
         {
           role: 'user',
-          content: `Provide a detailed breakdown of "${subTopicName}" belonging to "${currentSummarySkill}" for a student in ${userStream}.
-
-Structure cleanly into:
-### 1. Conceptual Mechanics & Purpose
-### 2. Implementation Principles & Syntax / Schematics
-### 3. Practical Pitfalls to Avoid
-### 4. Real-World Engineering Exercise`
+          content: `Provide a detailed breakdown of "${subTopicName}" belonging to "${currentSummarySkill}" for ${userStream}.`
         }
       ];
 
@@ -1645,7 +1659,7 @@ Structure cleanly into:
       );
 
       if (exists) {
-        alert(`You are already enrolled in ${rawSkill}! Please choose a different skill.`);
+        alert(`You are already enrolled in ${rawSkill}!`);
         return;
       }
 
@@ -1666,10 +1680,13 @@ Structure cleanly into:
       homeSkillsCount.textContent = `${enrolledSkills.length} Tracked`;
     });
 
+    // Renders Both Cards View & Table View
     function renderEnrolledSkills() {
       if (!enrolledSkills.length) return;
 
       enrolledSkillsGrid.innerHTML = '';
+      skillsTableBody.innerHTML = '';
+
       enrolledSkills.forEach((item, index) => {
         const isActive = index === activeSkillIndex;
         const topics = getSkillCurriculum(item.skill, item.domain);
@@ -1685,19 +1702,20 @@ Structure cleanly into:
 
         const color = getProgressColor(percent);
 
+        // 1. Render Card Component
         const card = document.createElement('div');
         card.className = `p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
           isActive
-            ? 'bg-white border-brand-500 shadow-sm ring-2 ring-brand-500/10'
+            ? 'bg-white border-brand-500 shadow-xs ring-2 ring-brand-500/10'
             : 'bg-white border-slate-200/80 hover:border-slate-300'
         }`;
 
         card.innerHTML = `
-          <div>
+          <div class="min-w-0 mr-2">
             <span class="text-[10px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
               ${item.domain}
             </span>
-            <h4 class="text-sm font-bold text-slate-900 mt-1">${item.skill}</h4>
+            <h4 class="text-sm font-bold text-slate-900 mt-1 truncate">${item.skill}</h4>
             <p class="text-[11px] text-slate-400 mt-0.5">${doneCount} of ${topics.length} topics</p>
           </div>
 
@@ -1716,6 +1734,40 @@ Structure cleanly into:
         });
 
         enrolledSkillsGrid.appendChild(card);
+
+        // 2. Render Table Row Component
+        const tr = document.createElement('tr');
+        tr.className = isActive ? 'bg-brand-50/40 font-medium' : '';
+        tr.innerHTML = `
+          <td class="font-semibold text-slate-900">${item.domain}</td>
+          <td class="font-bold text-slate-950">${item.skill}</td>
+          <td>${doneCount} / ${topics.length}</td>
+          <td>
+            <div class="flex items-center gap-2">
+              <div class="w-16 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                <div class="h-full bg-brand-500" style="width: ${percent}%;"></div>
+              </div>
+              <span class="text-[10px] font-bold ${color.text}">${percent}%</span>
+            </div>
+          </td>
+          <td>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${percent === 100 ? 'bg-emerald-50 text-emerald-700' : percent > 0 ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-500'}">
+              ${percent === 100 ? 'Mastered' : percent > 0 ? 'Active' : 'Not Started'}
+            </span>
+          </td>
+          <td>
+            <button type="button" class="text-xs font-semibold text-brand-600 hover:text-brand-700 underline">
+              ${isActive ? 'Selected' : 'Select'}
+            </button>
+          </td>
+        `;
+
+        tr.addEventListener('click', () => {
+          activeSkillIndex = index;
+          renderEnrolledSkills();
+        });
+
+        skillsTableBody.appendChild(tr);
       });
 
       renderActiveSkillCurriculum();
@@ -1753,7 +1805,7 @@ Structure cleanly into:
         const isUnlocked = idx === 0 || validCompleted.includes(topics[idx - 1].id);
 
         const card = document.createElement('div');
-        card.className = `p-3.5 rounded-xl border transition-all flex items-center justify-between gap-3 ${
+        card.className = `p-3 sm:p-3.5 rounded-xl border transition-all flex items-center justify-between gap-2.5 ${
           isDone
             ? 'bg-emerald-50/40 border-emerald-200'
             : isUnlocked
@@ -1762,8 +1814,8 @@ Structure cleanly into:
         }`;
 
         card.innerHTML = `
-          <div class="flex items-center gap-3 min-w-0">
-            <div class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 ${
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 ${
               isDone
                 ? 'bg-emerald-500 text-white'
                 : isUnlocked
@@ -1775,7 +1827,7 @@ Structure cleanly into:
             <div class="min-w-0">
               <h5 class="text-xs font-semibold text-slate-900 truncate">${t.title}</h5>
               <a href="${t.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] text-brand-600 hover:underline mt-0.5">
-                <span>Read Documentation (W3Schools)</span>
+                <span>Read Docs</span>
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
               </a>
             </div>
@@ -1784,10 +1836,10 @@ Structure cleanly into:
           <div class="shrink-0">
             ${
               isDone
-                ? `<span class="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg">Done</span>`
+                ? `<span class="text-[10px] sm:text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 sm:px-2.5 py-1 rounded-lg">Done</span>`
                 : isUnlocked
-                ? `<button type="button" onclick="startCompactQuiz('${t.id}')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-slate-900 hover:bg-black transition-all">Done</button>`
-                : `<span class="text-[11px] text-slate-400 font-medium px-2 py-1">Locked</span>`
+                ? `<button type="button" onclick="startCompactQuiz('${t.id}')" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-slate-900 hover:bg-black transition-all">Done</button>`
+                : `<span class="text-[10px] sm:text-[11px] text-slate-400 font-medium px-2 py-1">Locked</span>`
             }
           </div>
         `;
@@ -1912,7 +1964,7 @@ Structure cleanly into:
         quizResultIcon.className = 'w-12 h-12 rounded-full mx-auto flex items-center justify-center font-extrabold text-lg bg-emerald-100 text-emerald-600';
         quizResultIcon.textContent = '✓';
         quizResultTitle.textContent = `Passed! (${correct}/5 Correct)`;
-        quizResultDesc.textContent = 'Excellent! You achieved the required 80% passing score. This milestone is confirmed and the next topic is unlocked.';
+        quizResultDesc.textContent = 'Great work! You scored ≥ 80%. This milestone is officially verified and the next topic is unlocked.';
 
         if (!current.completed_topics.includes(activeQuizData.topicId)) {
           current.completed_topics.push(activeQuizData.topicId);
@@ -1932,7 +1984,7 @@ Structure cleanly into:
         quizResultIcon.className = 'w-12 h-12 rounded-full mx-auto flex items-center justify-center font-extrabold text-lg bg-rose-100 text-rose-600';
         quizResultIcon.textContent = '✕';
         quizResultTitle.textContent = `Score: ${correct}/5 (Pass Target: 4/5)`;
-        quizResultDesc.textContent = 'You did not reach the 80% threshold. Please review the official documentation and retake the check. The topic remains unverified.';
+        quizResultDesc.textContent = 'You did not meet the 80% passing threshold. Please review the documentation and retake the test.';
 
         quizResultActions.innerHTML = `
           <button type="button" onclick="retakeCurrentQuiz()" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-semibold text-xs hover:bg-black transition-all">
@@ -1959,6 +2011,7 @@ Structure cleanly into:
     function applyStreamSources(stream) {
       topStreamLabel.textContent = stream;
       sidebarStreamName.textContent = stream;
+      if (mobileTopStreamBadge) mobileTopStreamBadge.textContent = stream;
       homeStreamDisplay.textContent = stream;
 
       const q = encodeURIComponent(`${stream} textbooks fundamentals`);
@@ -1978,15 +2031,15 @@ Structure cleanly into:
         const amazonUrl = `https://www.amazon.com/s?k=${encodeURIComponent(book.title + ' ' + book.author)}`;
 
         const card = document.createElement('div');
-        card.className = 'p-4 bg-white rounded-2xl border border-slate-200/80 hover:border-brand-500/40 hover:shadow-sm transition-all flex flex-col justify-between';
+        card.className = 'p-3.5 sm:p-4 bg-white rounded-2xl border border-slate-200/80 hover:border-brand-500/40 hover:shadow-xs transition-all flex flex-col justify-between';
         card.innerHTML = `
           <div>
             <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-brand-50 text-brand-700 mb-2">${book.tag}</span>
             <h4 class="font-bold text-slate-900 text-xs leading-snug line-clamp-2">${book.title}</h4>
             <p class="text-[11px] text-slate-500 mt-1">Author: ${book.author}</p>
           </div>
-          <div class="pt-4 mt-3 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-[11px] font-semibold text-slate-400">Amazon</span>
+          <div class="pt-3 mt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[10px] font-semibold text-slate-400">Amazon</span>
             <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-brand-600 hover:text-brand-700">
               View Book →
             </a>
@@ -1999,8 +2052,7 @@ Structure cleanly into:
     async function fetchLiveOrCuratedWebLinks(stream, rotationIdx = 0) {
       const queryAngles = [
         `${stream} syllabus curriculum documentation 2026-27`,
-        `${stream} laboratory practical experiments virtual labs`,
-        `${stream} open source github frameworks industry tools`
+        `${stream} laboratory practical experiments virtual labs`
       ];
 
       const activeQuery = queryAngles[rotationIdx % queryAngles.length];
@@ -2036,13 +2088,13 @@ Structure cleanly into:
         linkCard.href = item.url;
         linkCard.target = '_blank';
         linkCard.rel = 'noopener noreferrer';
-        linkCard.className = 'block p-3.5 bg-white rounded-xl border border-slate-200/80 hover:border-brand-500/50 hover:bg-brand-50/20 transition-all';
+        linkCard.className = 'block p-3 sm:p-3.5 bg-white rounded-xl border border-slate-200/80 hover:border-brand-500/50 hover:bg-brand-50/20 transition-all';
         linkCard.innerHTML = `
           <div class="flex items-start justify-between gap-3">
-            <div>
-              <h5 class="text-xs font-semibold text-slate-900">${item.title}</h5>
+            <div class="min-w-0">
+              <h5 class="text-xs font-semibold text-slate-900 truncate">${item.title}</h5>
               <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">${item.snippet || 'Official verified engineering roadmap & laboratory portal.'}</p>
-              <span class="text-[10px] font-mono text-brand-600 mt-1.5 inline-block">${item.url}</span>
+              <span class="text-[10px] font-mono text-brand-600 mt-1 inline-block truncate max-w-full">${item.url}</span>
             </div>
             <svg class="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           </div>
@@ -2091,7 +2143,6 @@ Structure cleanly into:
       }, lastWebRefresh);
     });
 
-    // Dynamic Initialization via Netlify Config
     async function initDashboardSession() {
       try {
         const cfgRes = await fetch('/.netlify/functions/config');
