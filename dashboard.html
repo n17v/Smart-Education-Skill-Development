@@ -208,15 +208,15 @@
 
       currentUser = session.user;
 
-      // 2. Fetch profile data
+      // 2. Fetch profile data (safe query)
       const { data: profile, error } = await supabaseClient
         .from('profiles')
-        .select('stream, terms_accepted')
+        .select('*')
         .eq('id', currentUser.id)
         .maybeSingle();
 
-      // 3. If stream or terms missing, enforce modal
-      if (!profile || !profile.stream || !profile.terms_accepted) {
+      // 3. If stream or terms missing or error occurred, enforce modal
+      if (error || !profile || !profile.stream || !profile.terms_accepted) {
         modal.classList.remove('hidden');
       } else {
         userStatusText.textContent = `Active Stream: ${profile.stream}`;
@@ -232,14 +232,13 @@
 
       const selectedStream = streamSelect.value;
 
-      // Upsert profile data
+      // Upsert only id, stream, and terms_accepted
       const { error } = await supabaseClient
         .from('profiles')
         .upsert({
           id: currentUser.id,
           stream: selectedStream,
-          terms_accepted: true,
-          updated_at: new Date().toISOString()
+          terms_accepted: true
         });
 
       if (error) {
