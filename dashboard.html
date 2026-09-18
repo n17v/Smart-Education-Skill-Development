@@ -151,7 +151,7 @@
 
       <!-- Compact Multi-Skill Cards Grid -->
       <div id="enrolled-skills-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-        <!-- Rendered dynamically -->
+        <!-- Rendered dynamically with dynamic color rings -->
       </div>
 
       <!-- Active Skill Curriculum Section -->
@@ -164,9 +164,20 @@
             </div>
             <p class="text-xs text-slate-500 mt-1">Read the documentation, then click "Done" to initiate the 5-question test.</p>
           </div>
-          <span id="active-skill-counter" class="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
-            0 / 0 Completed
-          </span>
+          
+          <!-- Dynamic Color Graph in Curriculum Header -->
+          <div class="flex items-center gap-3">
+            <div class="relative w-10 h-10 flex items-center justify-center shrink-0">
+              <svg class="w-10 h-10 transform -rotate-90" viewBox="0 0 36 36">
+                <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                <path id="active-skill-header-circle" class="text-rose-500 transition-all duration-500" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              </svg>
+              <span id="active-skill-header-percent" class="absolute text-[10px] font-bold text-rose-600">0%</span>
+            </div>
+            <span id="active-skill-counter" class="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+              0 / 0 Completed
+            </span>
+          </div>
         </div>
 
         <!-- Topics List -->
@@ -227,7 +238,7 @@
 
   </main>
 
-  <!-- MODAL 1: Undeniable First-Visit Stream Onboarding Modal -->
+  <!-- MODAL 1: First-Visit Stream Onboarding Modal -->
   <div id="onboarding-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 lg:p-8 shadow-2xl border border-slate-100">
       <div class="flex items-center gap-3 mb-4">
@@ -383,6 +394,35 @@
     let enrolledSkills = [];
     let activeSkillIndex = 0;
 
+    // ==========================================
+    // DYNAMIC COLOR COMPUTATION ENGINE
+    // < 30%: Red | 30% - 68%: Yellow | > 68%: Green
+    // ==========================================
+    function getProgressColor(percent) {
+      if (percent < 30) {
+        return {
+          stroke: 'text-rose-500',
+          text: 'text-rose-600',
+          bg: 'bg-rose-50',
+          border: 'border-rose-200'
+        };
+      } else if (percent <= 68) {
+        return {
+          stroke: 'text-amber-500',
+          text: 'text-amber-600',
+          bg: 'bg-amber-50',
+          border: 'border-amber-200'
+        };
+      } else {
+        return {
+          stroke: 'text-emerald-500',
+          text: 'text-emerald-600',
+          bg: 'bg-emerald-50',
+          border: 'border-emerald-200'
+        };
+      }
+    }
+
     // Stream-adaptive Curricula
     const STREAM_CURRICULUM = {
       'Computer Engineering': {
@@ -530,8 +570,7 @@
         { title: 'Vehicle Dynamics: Theory and Application', author: 'Reza N. Jazar', tag: 'Dynamics' },
         { title: 'Automotive Embedded Systems Handbook', author: 'Nicolas Navet', tag: 'Electronics' },
         { title: 'Internal Combustion Engine Fundamentals', author: 'John B. Heywood', tag: 'Combustion' },
-        { title: 'Electric and Hybrid Vehicles', author: 'Iqbal Husain', tag: 'EV Systems' },
-        { title: 'Chassis Design: Principles and Analysis', author: 'William F. Milliken', tag: 'Chassis' }
+        { title: 'Electric and Hybrid Vehicles', author: 'Iqbal Husain', tag: 'EV Systems' }
       ],
       'Robotics Engineering': [
         { title: 'Introduction to Autonomous Mobile Robots', author: 'Roland Siegwart', tag: 'Navigation' },
@@ -543,20 +582,17 @@
       'Chemical Engineering': [
         { title: 'Elements of Chemical Reaction Engineering', author: 'H. Scott Fogler', tag: 'Reactions' },
         { title: 'Unit Operations of Chemical Engineering', author: 'Warren McCabe', tag: 'Operations' },
-        { title: 'Chemical Engineering Thermodynamics', author: 'J.M. Smith', tag: 'Thermo' },
-        { title: 'Transport Phenomena', author: 'R. Byron Bird', tag: 'Transport' }
+        { title: 'Chemical Engineering Thermodynamics', author: 'J.M. Smith', tag: 'Thermo' }
       ],
       'Civil Engineering': [
         { title: 'Structural Analysis', author: 'Russell C. Hibbeler', tag: 'Structures' },
         { title: 'Soil Mechanics and Foundations', author: 'Muni Budhu', tag: 'Geotechnical' },
-        { title: 'Design of Reinforced Concrete', author: 'Jack C. McCormac', tag: 'Materials' },
-        { title: 'Water Resources Engineering', author: 'Larry W. Mays', tag: 'Hydraulics' }
+        { title: 'Design of Reinforced Concrete', author: 'Jack C. McCormac', tag: 'Materials' }
       ],
       'Electric Engineering': [
         { title: 'The Art of Electronics', author: 'Paul Horowitz', tag: 'Circuits' },
         { title: 'Electric Machinery Fundamentals', author: 'Stephen J. Chapman', tag: 'Machines' },
-        { title: 'Signals and Systems', author: 'Alan V. Oppenheim', tag: 'DSP' },
-        { title: 'Power System Analysis', author: 'John J. Grainger', tag: 'Grid' }
+        { title: 'Signals and Systems', author: 'Alan V. Oppenheim', tag: 'DSP' }
       ],
       'Biochemical Engineering': [
         { title: 'Bioprocess Engineering: Basic Concepts', author: 'Michael L. Shuler', tag: 'Bioprocess' },
@@ -582,40 +618,22 @@
           { title: 'Linux Kernel Documentation & Architecture', url: 'https://www.kernel.org/doc/html/latest/', snippet: 'System call specifications, virtual memory subsystems, and kernel internals.' },
           { title: 'IEEE Computer Society Technical Library', url: 'https://www.computer.org', snippet: 'Peer-reviewed articles, computing standards, and modern compiler optimizations.' },
           { title: 'GitHub Open Source Engineering Hub', url: 'https://github.com/topics/computer-engineering', snippet: 'Production architectures, open source compilers, and microservices repos.' }
-        ],
-        [
-          { title: 'Virtual Labs: Computer Programming & CS', url: 'https://vlab.co.in', snippet: 'Interactive algorithm visualizers, memory heaps, and data structure labs.' },
-          { title: 'Stanford Online Engineering Courseware', url: 'https://online.stanford.edu/free-courses', snippet: 'Advanced database management, distributed systems, and computer vision.' },
-          { title: 'ACM Digital Library Computing Standards', url: 'https://dl.acm.org', snippet: 'Association for Computing Machinery research papers and software metrics.' }
         ]
       ],
       'Automobile Engineering': [
         [
           { title: 'SAE International Mobility Knowledge Base', url: 'https://www.sae.org', snippet: 'Global automotive standards, EV powertrain papers, and ADAS guides.' },
-          { title: 'NPTEL: Automotive Dynamics & Powertrain', url: 'https://nptel.ac.in', snippet: 'Semester-long video lectures on vehicle kinetics and electric conversions.' },
-          { title: 'EV Design Hub: Battery Pack Calculations', url: 'https://evdesignhub.com', snippet: 'Formulas and telemetry for battery thermal management and motor sizing.' }
-        ],
-        [
-          { title: 'Virtual Labs: IC Engine & Chassis Simulation', url: 'https://vlab.co.in', snippet: 'Dynamometer testing, valve timing diagrams, and suspension tuning simulations.' },
-          { title: 'Vector Informatik: CAN & LIN Protocols', url: 'https://www.vector.com', snippet: 'Technical whitepapers on automotive networks, CAN FD, and AUTOSAR modules.' },
-          { title: 'Autocar Technical & Vehicle Architecture Insights', url: 'https://www.autocar.co.uk', snippet: 'In-depth engineering reviews of next-generation electric skateboard platforms.' }
+          { title: 'NPTEL: Automotive Dynamics & Powertrain', url: 'https://nptel.ac.in', snippet: 'Semester-long video lectures on vehicle kinetics and electric conversions.' }
         ]
       ],
       'Robotics Engineering': [
         [
           { title: 'ROS 2 Official Rolling Documentation', url: 'https://docs.ros.org', snippet: 'Nodes, topics, actions, and DDS middleware tutorials for robotics.' },
-          { title: 'IEEE Robotics and Automation Society', url: 'https://www.ieee-ras.org', snippet: 'Conference proceedings and state-of-the-art autonomous research.' },
-          { title: 'Gazebo & Ignition Multi-Robot Simulation', url: 'https://gazebosim.org', snippet: 'Physics engine setup, LiDAR emulation, and digital twin testing.' }
-        ],
-        [
-          { title: 'OpenCV Computer Vision Library Guides', url: 'https://docs.opencv.org', snippet: 'Point clouds, feature matching, and real-time object tracking algorithms.' },
-          { title: 'Modern Robotics Code Library (Northwestern)', url: 'http://hades.mech.northwestern.edu', snippet: 'Kinematics, dynamics, and trajectory scripts in Python and MATLAB.' },
-          { title: 'Robohub: Global Robotics Research Papers', url: 'https://robohub.org', snippet: 'Curated technical breakthroughs from leading academic robotics laboratories.' }
+          { title: 'IEEE Robotics and Automation Society', url: 'https://www.ieee-ras.org', snippet: 'Conference proceedings and state-of-the-art autonomous research.' }
         ]
       ]
     };
 
-    // Generic fallback for any other streams
     function getWebLinksForStream(stream, page) {
       const sets = STREAM_WEB_LINKS_ROTATION[stream];
       if (sets && sets.length) {
@@ -664,6 +682,8 @@
     const activeSkillDomainPill = document.getElementById('active-skill-domain-pill');
     const activeSkillTitle = document.getElementById('active-skill-title');
     const activeSkillCounter = document.getElementById('active-skill-counter');
+    const activeSkillHeaderCircle = document.getElementById('active-skill-header-circle');
+    const activeSkillHeaderPercent = document.getElementById('active-skill-header-percent');
     const topicsListContainer = document.getElementById('topics-list-container');
 
     const quizModal = document.getElementById('quiz-modal');
@@ -697,20 +717,16 @@
     let lastWebRefresh = 0;
     const RATE_LIMIT_MS = 3000;
 
-    // ==========================================
-    // DATABASE PERSISTENCE HELPER
-    // ==========================================
+    // Database Persistence Helper
     async function persistSkillsToDatabase() {
       if (!currentUser) return;
 
-      // Always save to localStorage immediately
       try {
         localStorage.setItem(`sb_enrolled_skills_${currentUser.id}`, JSON.stringify(enrolledSkills));
       } catch (e) {}
 
       const active = enrolledSkills[activeSkillIndex] || enrolledSkills[0];
 
-      // Upsert full array to Supabase
       try {
         const payload = {
           enrolled_skills: enrolledSkills
@@ -727,7 +743,7 @@
           .update(payload)
           .eq('id', currentUser.id);
       } catch (err) {
-        console.warn('Database save warning:', err.message);
+        console.warn('Database sync status:', err.message);
       }
     }
 
@@ -772,7 +788,7 @@
     navSources.addEventListener('click', () => setActiveTab('sources'));
 
     // ==========================================
-    // ADD SKILL MODAL (BOUND DIRECTLY TO userStream)
+    // ADD SKILL MODAL
     // ==========================================
     function openSkillModal() {
       skillModalStreamTag.textContent = userStream;
@@ -815,7 +831,6 @@
     btnAddAnotherSkill.addEventListener('click', openSkillModal);
     btnCloseSkillModal.addEventListener('click', () => skillModal.classList.add('hidden'));
 
-    // Fixed Duplicate Skill Logic
     skillForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const domain = (domainSelect.value || '').trim();
@@ -826,7 +841,6 @@
         return;
       }
 
-      // Exact case-insensitive validation
       const exists = enrolledSkills.some(s => 
         s && s.skill && s.skill.trim().toLowerCase() === rawSkill.toLowerCase()
       );
@@ -846,7 +860,6 @@
       enrolledSkills.push(newSkillObj);
       activeSkillIndex = enrolledSkills.length - 1;
 
-      // Persist to Supabase and LocalStorage
       await persistSkillsToDatabase();
 
       skillModal.classList.add('hidden');
@@ -854,9 +867,9 @@
       homeSkillsCount.textContent = `${enrolledSkills.length} Tracked`;
     });
 
-    // ==========================================
-    // PROGRESS: ENROLLED SKILLS GRID & CURRICULUM
-    // ==========================================
+    // ===================================================
+    // PROGRESS: ENROLLED SKILLS GRID (DYNAMIC COLORS)
+    // ===================================================
     function renderEnrolledSkills() {
       if (!enrolledSkills.length) return;
 
@@ -864,9 +877,19 @@
       enrolledSkills.forEach((item, index) => {
         const isActive = index === activeSkillIndex;
         const topics = getSkillCurriculum(item.skill, item.domain);
-        const doneCount = (item.completed_topics || []).length;
-        const percent = Math.round((doneCount / topics.length) * 100);
+
+        // Filter completed_topics strictly to valid topic IDs in this skill
+        const validCompleted = (item.completed_topics || []).filter(id => 
+          topics.some(t => t.id === id)
+        );
+        item.completed_topics = validCompleted;
+
+        const doneCount = validCompleted.length;
+        const percent = topics.length > 0 ? Math.round((doneCount / topics.length) * 100) : 0;
         item.progress = percent;
+
+        // Compute dynamic color (< 30% Red, 30%-68% Yellow, > 68% Green)
+        const color = getProgressColor(percent);
 
         const card = document.createElement('div');
         card.className = `p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
@@ -884,12 +907,13 @@
             <p class="text-[11px] text-slate-400 mt-0.5">${doneCount} of ${topics.length} topics</p>
           </div>
 
+          <!-- Dynamic Micro SVG Progress Ring -->
           <div class="relative w-11 h-11 flex items-center justify-center shrink-0">
             <svg class="w-11 h-11 transform -rotate-90" viewBox="0 0 36 36">
               <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-              <path class="text-brand-500 transition-all duration-500" stroke-dasharray="${percent}, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              <path class="${color.stroke} transition-all duration-500" stroke-dasharray="${percent}, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
             </svg>
-            <span class="absolute text-[10px] font-bold text-slate-700">${percent}%</span>
+            <span class="absolute text-[10px] font-bold ${color.text}">${percent}%</span>
           </div>
         `;
 
@@ -904,6 +928,9 @@
       renderActiveSkillCurriculum();
     }
 
+    // ===================================================
+    // ACTIVE SKILL CURRICULUM & STRICT PROGRESS SYNC
+    // ===================================================
     function renderActiveSkillCurriculum() {
       const current = enrolledSkills[activeSkillIndex];
       if (!current) return;
@@ -912,14 +939,30 @@
       activeSkillTitle.textContent = current.skill;
 
       const topics = getSkillCurriculum(current.skill, current.domain);
-      const completed = current.completed_topics || [];
-      activeSkillCounter.textContent = `${completed.length} / ${topics.length} Completed`;
+
+      // Sanitize completed topics against valid IDs
+      const validCompleted = (current.completed_topics || []).filter(id => 
+        topics.some(t => t.id === id)
+      );
+      current.completed_topics = validCompleted;
+
+      const percent = topics.length > 0 ? Math.round((validCompleted.length / topics.length) * 100) : 0;
+      current.progress = percent;
+
+      // Update counter and header circle with dynamic color
+      const color = getProgressColor(percent);
+      activeSkillCounter.textContent = `${validCompleted.length} / ${topics.length} Completed`;
+      
+      activeSkillHeaderCircle.className = `${color.stroke} transition-all duration-500`;
+      activeSkillHeaderCircle.setAttribute('stroke-dasharray', `${percent}, 100`);
+      activeSkillHeaderPercent.className = `absolute text-[10px] font-bold ${color.text}`;
+      activeSkillHeaderPercent.textContent = `${percent}%`;
 
       topicsListContainer.innerHTML = '';
 
       topics.forEach((t, idx) => {
-        const isDone = completed.includes(t.id);
-        const isUnlocked = idx === 0 || completed.includes(topics[idx - 1].id);
+        const isDone = validCompleted.includes(t.id);
+        const isUnlocked = idx === 0 || validCompleted.includes(topics[idx - 1].id);
 
         const card = document.createElement('div');
         card.className = `p-3.5 rounded-xl border transition-all flex items-center justify-between gap-3 ${
@@ -1067,7 +1110,7 @@
       quizModal.classList.add('hidden');
     });
 
-    // Passing criterion: >= 4/5
+    // Score Evaluation (≥ 4/5 required)
     async function evaluateQuizSubmission() {
       let correct = 0;
       activeQuizData.questions.forEach((qObj, idx) => {
@@ -1079,6 +1122,7 @@
       quizResultArea.classList.remove('hidden');
 
       const current = enrolledSkills[activeSkillIndex];
+      const topics = getSkillCurriculum(current.skill, current.domain);
 
       if (correct >= 4) {
         // PASS
@@ -1091,6 +1135,10 @@
           current.completed_topics.push(activeQuizData.topicId);
         }
 
+        // Sanitize to valid curriculum topics only
+        current.completed_topics = current.completed_topics.filter(id => topics.some(t => t.id === id));
+        current.progress = Math.round((current.completed_topics.length / topics.length) * 100);
+
         quizResultActions.innerHTML = `
           <button type="button" onclick="closeQuizAndRefresh()" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-semibold text-xs hover:bg-black transition-all">
             Continue Learning
@@ -1099,11 +1147,11 @@
 
         await persistSkillsToDatabase();
       } else {
-        // FAIL
+        // FAIL (< 4)
         quizResultIcon.className = 'w-12 h-12 rounded-full mx-auto flex items-center justify-center font-extrabold text-lg bg-rose-100 text-rose-600';
         quizResultIcon.textContent = '✕';
         quizResultTitle.textContent = `Score: ${correct}/5 (Pass Target: 4/5)`;
-        quizResultDesc.textContent = 'You did not reach the 80% threshold. Please review the official W3Schools documentation and retake the check. The topic remains locked.';
+        quizResultDesc.textContent = 'You did not reach the 80% threshold. Please review the official W3Schools documentation and retake the check. The topic remains unverified.';
 
         quizResultActions.innerHTML = `
           <button type="button" onclick="retakeCurrentQuiz()" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-semibold text-xs hover:bg-black transition-all">
@@ -1128,7 +1176,7 @@
     };
 
     // ==========================================
-    // SOURCES: AMAZON STORE & ROTATING WEB LINKS
+    // SOURCES: AMAZON STORE & WEB LINKS
     // ==========================================
     function applyStreamSources(stream) {
       topStreamLabel.textContent = stream;
@@ -1170,7 +1218,6 @@
       }
     }
 
-    // TinyFish live search with query rotation and failover
     async function fetchLiveOrCuratedWebLinks(stream, rotationIdx = 0) {
       const queryAngles = [
         `${stream} syllabus curriculum documentation 2026-27`,
@@ -1206,7 +1253,6 @@
 
         renderWebLinksCards(results.slice(0, 3));
       } catch (err) {
-        // Fallback to distinct rotating sets
         const fallbackSet = getWebLinksForStream(stream, rotationIdx);
         renderWebLinksCards(fallbackSet);
       }
@@ -1234,7 +1280,6 @@
       });
     }
 
-    // Rate Limit Cooldown Helper
     function executeRateLimited(btn, label, callback, lastTimestamp) {
       const now = Date.now();
       if (now - lastTimestamp < RATE_LIMIT_MS) return lastTimestamp;
@@ -1299,11 +1344,10 @@
         userStream = profile.stream;
         applyStreamSources(userStream);
 
-        // 1. Check if multiple skills are saved in Supabase
+        // Retrieve skills and sanitize completed topics
         if (Array.isArray(profile.enrolled_skills) && profile.enrolled_skills.length > 0) {
           enrolledSkills = profile.enrolled_skills;
         } else {
-          // 2. Check localStorage fallback
           let localSkills = null;
           try {
             localSkills = JSON.parse(localStorage.getItem(`sb_enrolled_skills_${currentUser.id}`));
@@ -1312,9 +1356,8 @@
           if (Array.isArray(localSkills) && localSkills.length > 0) {
             enrolledSkills = localSkills;
           } else if (profile.skill_name) {
-            // 3. Fallback to single skill columns
             enrolledSkills = [{
-              domain: profile.skill_domain || 'Foundations',
+              domain: profile.skill_domain || 'Core',
               skill: profile.skill_name,
               completed_topics: profile.completed_topics || [],
               progress: profile.progress_percentage || 0
