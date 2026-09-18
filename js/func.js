@@ -1,6 +1,6 @@
 // ===== SUPABASE CLIENT =====
 const SUPABASE_URL = 'https://bvnwaicdzfshnmrwxguw.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_ctl7qUMdyhyCEXZKRbXoeg_8sd4uAuH'; // <-- replace with yours
+const SUPABASE_ANON_KEY = 'sb_publishable_ctl7qUMdyhyCEXZKRbXoeg_8sd4uAuH'; // <-- paste yours
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ===== LOADING HELPER =====
@@ -9,7 +9,9 @@ function setLoading(btn, loading) {
   btn.disabled = loading;
   if (loading) {
     btn._html = btn.innerHTML;
-    btn.innerHTML = '<span class="spinner"></span><span>Please wait…</span>';
+    btn.innerHTML = `
+      <span class="inline-block w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin"></span>
+      <span>Please wait…</span>`;
   } else if (btn._html) {
     btn.innerHTML = btn._html;
   }
