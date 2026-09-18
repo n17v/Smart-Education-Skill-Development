@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>SkillBridge AI — Authentication</title>
 
   <!-- Google Fonts: Inter -->
@@ -21,12 +21,50 @@
 
   <!-- Theme Script (Tailwind Config & Dynamic Styles) -->
   <script src="js/theme.js"></script>
+
+  <style>
+    /* Responsive Table UI Component Styles */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.875rem;
+      background: #ffffff;
+    }
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.75rem;
+    }
+    .custom-table th {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-weight: 700;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    .custom-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      white-space: nowrap;
+    }
+    .custom-table tr:last-child td {
+      border-bottom: none;
+    }
+    .custom-table tr:hover td {
+      background-color: #fcfdfd;
+    }
+  </style>
 </head>
 <body class="bg-white text-slate-900 antialiased font-['Inter'] selection:bg-brand-100 selection:text-brand-900 min-h-screen">
 
-  <main class="min-h-screen grid lg:grid-cols-2">
-    <!-- LEFT PANEL: Brand / Showcase (Hidden on Mobile) -->
-    <section class="hidden lg:flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-brand-50 via-white to-brand-100 p-12 lg:p-16 border-r border-slate-100">
+  <main class="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+    <!-- LEFT PANEL: Brand / Showcase (Hidden on Mobile, Visible on lg+) -->
+    <section class="hidden lg:flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-brand-50 via-white to-brand-100 p-10 xl:p-16 border-r border-slate-100">
       <!-- Floating Ambient Background Blobs -->
       <div class="blob-float-1 absolute -top-20 -right-20 w-[380px] h-[380px] rounded-full bg-brand-300 opacity-50 blur-3xl pointer-events-none"></div>
       <div class="blob-float-2 absolute -bottom-24 -left-24 w-[320px] h-[320px] rounded-full bg-brand-200 opacity-50 blur-3xl pointer-events-none"></div>
@@ -50,29 +88,38 @@
       </div>
 
       <!-- Center: Value Propositions & Copy -->
-      <div class="relative z-10 my-auto py-12 max-w-lg">
-        <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
+      <div class="relative z-10 my-auto py-8 max-w-lg">
+        <h1 class="text-3xl xl:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
           Grow your skills.<br />
           <span class="text-brand-600">Bridge the gap.</span>
         </h1>
-        <p class="mt-4 text-slate-600 leading-relaxed text-base">
-          AI-powered skill gap analysis and personalized learning paths — built for the next generation of learners.
+        <p class="mt-3.5 text-slate-600 leading-relaxed text-sm xl:text-base">
+          AI-powered skill gap analysis and personalized learning paths — built for the next generation of engineers.
         </p>
 
-        <ul class="mt-8 space-y-3.5">
+        <ul class="mt-6 space-y-3">
           <li class="flex items-center gap-3">
             <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-            <span class="text-sm font-medium text-slate-700">Personalized learning paths</span>
+            <span class="text-xs xl:text-sm font-medium text-slate-700">Multi-track engineering curriculum alignment</span>
           </li>
           <li class="flex items-center gap-3">
             <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-            <span class="text-sm font-medium text-slate-700">AI-driven skill gap analysis</span>
+            <span class="text-xs xl:text-sm font-medium text-slate-700">AI-driven cross-skill dependency roadmaps</span>
           </li>
           <li class="flex items-center gap-3">
             <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-            <span class="text-sm font-medium text-slate-700">Career & course recommendations</span>
+            <span class="text-xs xl:text-sm font-medium text-slate-700">Knowledge checks with W3Schools live links</span>
           </li>
         </ul>
+
+        <!-- Track Matrix Table Trigger Button -->
+        <div class="mt-8 pt-6 border-t border-slate-200/60">
+          <button type="button" id="btn-open-matrix-desktop" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 hover:border-brand-500 text-slate-700 text-xs font-semibold shadow-sm transition-all group">
+            <svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            <span>View 2026 Engineering Streams Matrix</span>
+            <span class="text-slate-400 group-hover:translate-x-0.5 transition-transform">→</span>
+          </button>
+        </div>
       </div>
 
       <!-- Bottom: Hackathon Footer Attribution -->
@@ -81,14 +128,14 @@
       </div>
     </section>
 
-    <!-- RIGHT PANEL: Authentication Container -->
-    <section class="flex flex-col justify-center items-center p-6 sm:p-10 lg:p-16 bg-white">
-      <div class="w-full max-w-md auth-card">
+    <!-- RIGHT PANEL: Authentication Container (Mobile & Desktop) -->
+    <section class="flex flex-col justify-center items-center px-4 py-8 sm:p-10 lg:p-12 xl:p-16 bg-white min-h-screen">
+      <div class="w-full max-w-sm sm:max-w-md auth-card">
         
         <!-- Mobile Header (Visible below lg) -->
-        <div class="flex flex-col items-center mb-8 lg:hidden">
-          <div class="flex items-center gap-2 mb-2">
-            <svg class="w-9 h-9" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="flex flex-col items-center mb-6 lg:hidden">
+          <div class="flex items-center gap-2 mb-1.5">
+            <svg class="w-8 h-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="32" cy="32" r="30" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.25" />
               <path class="logo-stem" d="M32 50V22" stroke="url(#brand-grad)" stroke-width="3.5" stroke-linecap="round" />
               <path class="logo-leaf" d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="url(#brand-grad)" />
@@ -97,24 +144,30 @@
             <span class="text-lg font-bold tracking-tight text-slate-900">SkillBridge <span class="text-brand-600">AI</span></span>
           </div>
           <p class="text-xs text-slate-500">AI-powered skill gap analysis</p>
+
+          <!-- Mobile Matrix Table Button -->
+          <button type="button" id="btn-open-matrix-mobile" class="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-slate-600 text-[11px] font-semibold hover:bg-slate-100 transition-colors">
+            <span>Explore 8 Engineering Streams</span>
+            <span class="text-brand-600">📊</span>
+          </button>
         </div>
 
         <!-- Pill Tab Switcher (Log In / Register) -->
-        <div id="tab-switcher" class="relative flex p-1 rounded-full bg-brand-50 mb-8 border border-brand-100">
+        <div id="tab-switcher" class="relative flex p-1 rounded-full bg-brand-50 mb-6 sm:mb-8 border border-brand-100">
           <div id="tab-indicator" class="absolute top-1 left-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-full shadow-sm transition-transform duration-300 ease-out"></div>
-          <button id="tab-login" type="button" class="relative z-10 w-1/2 py-2 text-sm font-semibold text-brand-700 text-center transition-colors">
+          <button id="tab-login" type="button" class="relative z-10 w-1/2 py-2 text-xs sm:text-sm font-semibold text-brand-700 text-center transition-colors">
             Log In
           </button>
-          <button id="tab-register" type="button" class="relative z-10 w-1/2 py-2 text-sm font-semibold text-slate-500 text-center transition-colors">
+          <button id="tab-register" type="button" class="relative z-10 w-1/2 py-2 text-xs sm:text-sm font-semibold text-slate-500 text-center transition-colors">
             Register
           </button>
         </div>
 
         <!-- VIEW 1: Log In -->
         <div id="view-login" class="auth-view is-active">
-          <div class="mb-6">
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Welcome back</h2>
-            <p class="text-sm text-slate-500 mt-1">Please enter your details to sign in.</p>
+          <div class="mb-5 sm:mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Welcome back</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Please enter your details to sign in.</p>
           </div>
 
           <form id="form-login" class="space-y-4" novalidate>
@@ -128,9 +181,9 @@
               <label for="login-password">Password</label>
             </div>
 
-            <div class="flex items-center justify-between text-sm pt-1">
+            <div class="flex items-center justify-between text-xs sm:text-sm pt-1">
               <label class="inline-flex items-center gap-2 cursor-pointer text-slate-600 select-none">
-                <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+                <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500 cursor-pointer" />
                 <span>Remember me</span>
               </label>
               <button type="button" id="to-forgot" class="text-brand-600 font-semibold hover:text-brand-700 transition-colors">
@@ -138,7 +191,7 @@
               </button>
             </div>
 
-            <button type="submit" class="btn-primary w-full mt-6">
+            <button type="submit" class="btn-primary w-full mt-5 sm:mt-6">
               <span>Log In</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
@@ -147,9 +200,9 @@
 
         <!-- VIEW 2: Register -->
         <div id="view-register" class="auth-view hidden">
-          <div class="mb-6">
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Create account</h2>
-            <p class="text-sm text-slate-500 mt-1">Start your AI personalized growth journey.</p>
+          <div class="mb-5 sm:mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Create account</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Start your AI personalized growth journey.</p>
           </div>
 
           <form id="form-register" class="space-y-4" novalidate>
@@ -168,7 +221,7 @@
               <label for="reg-password">Password (min. 6 characters)</label>
             </div>
 
-            <button type="submit" class="btn-primary w-full mt-6">
+            <button type="submit" class="btn-primary w-full mt-5 sm:mt-6">
               <span>Create Account</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
@@ -177,9 +230,9 @@
 
         <!-- VIEW 3: Forgot Password -->
         <div id="view-forgot" class="auth-view hidden">
-          <div class="mb-6">
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Reset password</h2>
-            <p class="text-sm text-slate-500 mt-1">Enter your account email to receive a recovery link.</p>
+          <div class="mb-5 sm:mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Reset password</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Enter your account email to receive a recovery link.</p>
           </div>
 
           <form id="form-forgot" class="space-y-4" novalidate>
@@ -188,13 +241,13 @@
               <label for="forgot-email">Email address</label>
             </div>
 
-            <button type="submit" class="btn-primary w-full mt-6">
+            <button type="submit" class="btn-primary w-full mt-5 sm:mt-6">
               <span>Send Reset Link</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
 
             <div class="pt-4 text-center">
-              <button type="button" class="back-to-login inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-600 transition-colors">
+              <button type="button" class="back-to-login inline-flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 hover:text-brand-600 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                 <span>Back to login</span>
               </button>
@@ -204,9 +257,9 @@
 
         <!-- VIEW 4: New Password (Recovery) -->
         <div id="view-reset" class="auth-view hidden">
-          <div class="mb-6">
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Choose new password</h2>
-            <p class="text-sm text-slate-500 mt-1">Please enter and confirm your new secure password.</p>
+          <div class="mb-5 sm:mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Choose new password</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Please enter and confirm your new secure password.</p>
           </div>
 
           <form id="form-reset" class="space-y-4" novalidate>
@@ -220,7 +273,7 @@
               <label for="reset-confirm">Confirm new password</label>
             </div>
 
-            <button type="submit" class="btn-primary w-full mt-6">
+            <button type="submit" class="btn-primary w-full mt-5 sm:mt-6">
               <span>Update Password</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
@@ -231,12 +284,113 @@
     </section>
   </main>
 
+  <!-- MODAL: Stream Matrix Table (Mobile & Desktop Accessible) -->
+  <div id="matrix-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-5 sm:p-7 shadow-2xl border border-slate-100 max-h-[90vh] flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center text-sm font-bold">📊</span>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900">Supported Engineering Streams Matrix</h3>
+              <p class="text-[11px] text-slate-500">2026-27 Curricula & AI Analysis Modules</p>
+            </div>
+          </div>
+          <button type="button" id="btn-close-matrix" class="text-slate-400 hover:text-slate-600 text-sm font-bold p-1">✕</button>
+        </div>
+
+        <p class="text-xs text-slate-600 mb-3 leading-relaxed">
+          SkillBridge AI adapts its testing engine, roadmap generator, and textbook references based on your stream:
+        </p>
+
+        <!-- Responsive Table Container -->
+        <div class="table-container max-h-[50vh]">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Stream Name</th>
+                <th>Primary Focus</th>
+                <th>Core Modules</th>
+                <th>Assessment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-semibold text-slate-900">Computer Engineering</td>
+                <td><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700">Languages & Systems</span></td>
+                <td>HTML, CSS, JS, Python, Rust, Microservices</td>
+                <td>Interactive Stepper Test</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-slate-900">Automobile Engineering</td>
+                <td><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700">EV & Powertrain</span></td>
+                <td>BMS, Inverters, Vehicle Dynamics, Thermodynamics</td>
+                <td>Interactive Stepper Test</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-slate-900">Robotics Engineering</td>
+                <td><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700">ROS & Perception</span></td>
+                <td>Kinematics, Gazebo, OpenCV, LiDAR, SLAM</td>
+                <td>Interactive Stepper Test</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-slate-900">Chemical Engineering</td>
+                <td><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700">Reactions & Process</span></td>
+                <td>Thermodynamics, Aspen Plus, Heat Exchangers</td>
+                <td>Interactive Stepper Test</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-slate-900">Civil Engineering</td>
+                <td><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-50 text-teal-700">Structures & Soil</span></td>
+                <td>Structural Analysis, RCC, Soil Mechanics</td>
+                <td>Interactive Stepper Test</td>
+              </tr>
+              <tr>
+                <td class="font-semibold text-slate-900">Electric Engineering</td>
+                <td><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-50 text-cyan-700">Grid & Control</span></td>
+                <td>Transformers, Smart Grids, Inverters, DSP</td>
+                <td>Interactive Stepper Test</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="pt-4 mt-3 border-t border-slate-100 flex justify-end">
+        <button type="button" id="btn-close-matrix-bottom" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold transition-all">
+          Close Matrix
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Notification Toast Container -->
-  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full text-white text-sm font-medium shadow-lg pointer-events-none opacity-0 translate-y-8 transition-all duration-300">
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full text-white text-xs sm:text-sm font-medium shadow-lg pointer-events-none opacity-0 translate-y-8 transition-all duration-300">
     <span id="toast-message"></span>
   </div>
 
   <!-- Functional Logic Script -->
   <script src="js/func.js"></script>
+
+  <script>
+    // Matrix Modal Event Listeners
+    const matrixModal = document.getElementById('matrix-modal');
+    const btnOpenDesktop = document.getElementById('btn-open-matrix-desktop');
+    const btnOpenMobile = document.getElementById('btn-open-matrix-mobile');
+    const btnCloseMatrix = document.getElementById('btn-close-matrix');
+    const btnCloseMatrixBottom = document.getElementById('btn-close-matrix-bottom');
+
+    function toggleMatrix(show) {
+      if (matrixModal) {
+        if (show) matrixModal.classList.remove('hidden');
+        else matrixModal.classList.add('hidden');
+      }
+    }
+
+    if (btnOpenDesktop) btnOpenDesktop.addEventListener('click', () => toggleMatrix(true));
+    if (btnOpenMobile) btnOpenMobile.addEventListener('click', () => toggleMatrix(true));
+    if (btnCloseMatrix) btnCloseMatrix.addEventListener('click', () => toggleMatrix(false));
+    if (btnCloseMatrixBottom) btnCloseMatrixBottom.addEventListener('click', () => toggleMatrix(false));
+  </script>
 </body>
 </html>
