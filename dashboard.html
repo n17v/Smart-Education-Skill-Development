@@ -95,7 +95,6 @@
     <section id="section-home" class="max-w-5xl">
       <div class="mb-8">
         <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Dashboard</h1>
-        <p id="user-status-text" class="text-sm text-slate-500 mt-1">Loading your workspace...</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -142,10 +141,17 @@
               <p class="text-xs text-slate-500">Curated textbooks & reference materials on Amazon</p>
             </div>
           </div>
-          <a id="amazon-all-link" href="#" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition-colors">
-            <span>Explore all on Amazon</span>
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </a>
+          
+          <div class="flex items-center gap-3">
+            <button id="btn-refresh-store" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span id="btn-refresh-store-text">Refresh</span>
+            </button>
+            <a id="amazon-all-link" href="#" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition-colors">
+              <span>Explore all on Amazon</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </div>
         </div>
 
         <div id="store-cards-container" class="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -162,12 +168,11 @@
             </div>
             <div>
               <h2 class="text-xl font-bold text-slate-900">Web Link</h2>
-              <p class="text-xs text-slate-500">Live search results fetched via Tinyfish API</p>
             </div>
           </div>
           <button id="btn-refresh-web" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            <span>Refresh</span>
+            <span id="btn-refresh-web-text">Refresh</span>
           </button>
         </div>
 
@@ -256,50 +261,89 @@
 
     let currentUser = null;
     let userStream = 'Computer Engineering';
+    let currentStoreOffset = 0;
+    let currentWebTopicIndex = 0;
 
-    // Stream to Recommended Textbooks Map
+    // Stream to Expanded Recommended Textbooks Map (Multiple entries for real rotation)
     const STREAM_BOOKS = {
       'Computer Engineering': [
         { title: 'Clean Architecture', author: 'Robert C. Martin', tag: 'Architecture' },
         { title: 'Operating Systems: Three Easy Pieces', author: 'Remzi Arpaci-Dusseau', tag: 'Systems' },
-        { title: 'Computer Networking: A Top-Down Approach', author: 'James Kurose', tag: 'Networking' }
+        { title: 'Computer Networking: A Top-Down Approach', author: 'James Kurose', tag: 'Networking' },
+        { title: 'Introduction to Algorithms (CLRS)', author: 'Thomas H. Cormen', tag: 'Algorithms' },
+        { title: 'Designing Data-Intensive Applications', author: 'Martin Kleppmann', tag: 'Distributed Systems' },
+        { title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson', tag: 'Foundations' }
       ],
       'Automobile Engineering': [
         { title: 'Automotive Engineering Fundamentals', author: 'Richard Stone', tag: 'Powertrain' },
         { title: 'Vehicle Dynamics: Theory and Application', author: 'Reza N. Jazar', tag: 'Dynamics' },
-        { title: 'Automotive Embedded Systems Handbook', author: 'Nicolas Navet', tag: 'Electronics' }
+        { title: 'Automotive Embedded Systems Handbook', author: 'Nicolas Navet', tag: 'Electronics' },
+        { title: 'Internal Combustion Engine Fundamentals', author: 'John B. Heywood', tag: 'Combustion' },
+        { title: 'Electric and Hybrid Vehicles: Design Fundamentals', author: 'Iqbal Husain', tag: 'EV Systems' },
+        { title: 'Chassis Design: Principles and Analysis', author: 'William F. Milliken', tag: 'Chassis' }
       ],
       'Robotics Engineering': [
         { title: 'Introduction to Autonomous Mobile Robots', author: 'Roland Siegwart', tag: 'Navigation' },
         { title: 'Modern Robotics: Mechanics, Planning, and Control', author: 'Kevin M. Lynch', tag: 'Kinematics' },
-        { title: 'Probabilistic Robotics', author: 'Sebastian Thrun', tag: 'Perception' }
+        { title: 'Probabilistic Robotics', author: 'Sebastian Thrun', tag: 'Perception' },
+        { title: 'Robot Modeling and Control', author: 'Mark W. Spong', tag: 'Control' },
+        { title: 'ROS 2 Robotics By Example', author: 'Fairchild & Martin', tag: 'Software' },
+        { title: 'Springer Handbook of Robotics', author: 'Bruno Siciliano', tag: 'Reference' }
       ],
       'Chemical Engineering': [
         { title: 'Elements of Chemical Reaction Engineering', author: 'H. Scott Fogler', tag: 'Reactions' },
         { title: 'Unit Operations of Chemical Engineering', author: 'Warren McCabe', tag: 'Operations' },
-        { title: 'Chemical Engineering Design', author: 'Gavin Towler', tag: 'Plant Design' }
+        { title: 'Chemical Engineering Design', author: 'Gavin Towler', tag: 'Plant Design' },
+        { title: 'Chemical Engineering Thermodynamics', author: 'J.M. Smith', tag: 'Thermodynamics' },
+        { title: 'Transport Phenomena', author: 'R. Byron Bird', tag: 'Transport' },
+        { title: 'Process Dynamics and Control', author: 'Dale E. Seborg', tag: 'Process Control' }
       ],
       'Civil Engineering': [
         { title: 'Structural Analysis', author: 'Russell C. Hibbeler', tag: 'Structures' },
         { title: 'Soil Mechanics and Foundations', author: 'Muni Budhu', tag: 'Geotechnical' },
-        { title: 'Design of Reinforced Concrete', author: 'Jack C. McCormac', tag: 'Materials' }
+        { title: 'Design of Reinforced Concrete', author: 'Jack C. McCormac', tag: 'Materials' },
+        { title: 'Water Resources Engineering', author: 'Larry W. Mays', tag: 'Hydraulics' },
+        { title: 'Construction Planning, Equipment, and Methods', author: 'Robert Peurifoy', tag: 'Management' },
+        { title: 'Surveying: Principles and Applications', author: 'Barry Kavanagh', tag: 'Surveying' }
       ],
       'Electric Engineering': [
         { title: 'The Art of Electronics', author: 'Paul Horowitz', tag: 'Circuits' },
         { title: 'Electric Machinery Fundamentals', author: 'Stephen J. Chapman', tag: 'Power Systems' },
-        { title: 'Signals and Systems', author: 'Alan V. Oppenheim', tag: 'DSP' }
+        { title: 'Signals and Systems', author: 'Alan V. Oppenheim', tag: 'DSP' },
+        { title: 'Microelectronic Circuits', author: 'Adel S. Sedra', tag: 'VLSI' },
+        { title: 'Power System Analysis', author: 'John J. Grainger', tag: 'Grid' },
+        { title: 'Electromagnetic Waves and Radiating Systems', author: 'Edward C. Jordan', tag: 'Electromagnetics' }
       ],
       'Biochemical Engineering': [
         { title: 'Bioprocess Engineering: Basic Concepts', author: 'Michael L. Shuler', tag: 'Bioprocess' },
         { title: 'Biochemical Engineering Fundamentals', author: 'James E. Bailey', tag: 'Kinetics' },
-        { title: 'Principles of Fermentation Technology', author: 'Peter F. Stanbury', tag: 'Microbiology' }
+        { title: 'Principles of Fermentation Technology', author: 'Peter F. Stanbury', tag: 'Microbiology' },
+        { title: 'Downstream Processing of Biotechnology Products', author: 'Michael R. Ladisch', tag: 'Purification' },
+        { title: 'Molecular Biology of the Cell', author: 'Bruce Alberts', tag: 'Cellular' },
+        { title: 'Bioreaction Engineering Principles', author: 'Jens Nielsen', tag: 'Kinetics' }
       ],
       'Mechatronics Engineering': [
         { title: 'Mechatronics: Electronic Control Systems', author: 'W. Bolton', tag: 'Mechatronics' },
         { title: 'Introduction to Mechatronics and Measurement', author: 'David G. Alciatore', tag: 'Sensors' },
-        { title: 'Feedback Control of Dynamic Systems', author: 'Gene F. Franklin', tag: 'Control' }
+        { title: 'Feedback Control of Dynamic Systems', author: 'Gene F. Franklin', tag: 'Control' },
+        { title: 'Embedded Computing Systems: Architecture & Design', author: 'Wayne Wolf', tag: 'Embedded' },
+        { title: 'Applied Mechatronics', author: 'A. Smaili', tag: 'Actuators' },
+        { title: 'PLC and Industrial Automation', author: 'Frank Petruzella', tag: 'Automation' }
       ]
     };
+
+    // Diverse search themes for Web Link refresh rotation
+    const WEB_SEARCH_MODES = [
+      { suffix: 'syllabus roadmap foundational milestones', label: 'Curriculum & Roadmaps' },
+      { suffix: 'laboratory practical exercises documentation tutorial', label: 'Labs & Practical Guides' },
+      { suffix: 'open source projects GitHub frameworks tools', label: 'Industry Projects & Tools' },
+      { suffix: 'research trends IEEE modern standards', label: 'Academic & Research Standards' }
+    ];
+
+    // Rate Limiting Config: 1 action per 3 seconds
+    const RATE_LIMIT_MS = 3000;
+    let lastStoreRefresh = 0;
+    let lastWebRefresh = 0;
 
     // DOM Elements
     const navHome = document.getElementById('nav-home');
@@ -313,13 +357,16 @@
     const termsCheckbox = document.getElementById('terms-checkbox');
     const btnProceed = document.getElementById('btn-proceed');
 
-    const userStatusText = document.getElementById('user-status-text');
     const cardStreamName = document.getElementById('card-stream-name');
     const sourcesStreamTag = document.getElementById('sources-stream-tag');
     const storeCardsContainer = document.getElementById('store-cards-container');
     const webLinksContainer = document.getElementById('web-links-container');
     const amazonAllLink = document.getElementById('amazon-all-link');
+
+    const btnRefreshStore = document.getElementById('btn-refresh-store');
+    const btnRefreshStoreText = document.getElementById('btn-refresh-store-text');
     const btnRefreshWeb = document.getElementById('btn-refresh-web');
+    const btnRefreshWebText = document.getElementById('btn-refresh-web-text');
 
     // Navigation Switcher
     function setActiveTab(tab) {
@@ -382,26 +429,32 @@
       }
     }
 
-    // Populate Sources Content based on Stream
+    // Apply Stream Data
     function applyStreamData(stream) {
-      userStatusText.textContent = `Active Stream: ${stream}`;
       cardStreamName.textContent = stream;
       sourcesStreamTag.textContent = stream;
 
-      // 1. Amazon Store Query
       const amazonSearchQuery = encodeURIComponent(`${stream} textbooks fundamentals`);
       amazonAllLink.href = `https://www.amazon.com/s?k=${amazonSearchQuery}`;
 
-      renderStoreBooks(stream);
-      fetchTinyfishWebLinks(stream);
+      renderStoreBooks(stream, 0);
+      fetchTinyfishWebLinks(stream, 0);
     }
 
-    // Render Store Books
-    function renderStoreBooks(stream) {
-      const books = STREAM_BOOKS[stream] || STREAM_BOOKS['Computer Engineering'];
+    // Render Store Books with offset rotation
+    function renderStoreBooks(stream, offset = 0) {
+      const allBooks = STREAM_BOOKS[stream] || STREAM_BOOKS['Computer Engineering'];
+      const count = 3;
+      
+      // Select 3 consecutive books cyclically
+      const booksToShow = [];
+      for (let i = 0; i < count; i++) {
+        booksToShow.push(allBooks[(offset + i) % allBooks.length]);
+      }
+
       storeCardsContainer.innerHTML = '';
 
-      books.forEach(book => {
+      booksToShow.forEach(book => {
         const bookQuery = encodeURIComponent(`${book.title} ${book.author}`);
         const amazonUrl = `https://www.amazon.com/s?k=${bookQuery}`;
 
@@ -425,15 +478,18 @@
       });
     }
 
-    // Fetch Web Links using Tinyfish API
-    async function fetchTinyfishWebLinks(stream) {
+    // Fetch Web Links using Tinyfish API with query variety
+    async function fetchTinyfishWebLinks(stream, modeIndex = 0) {
+      const mode = WEB_SEARCH_MODES[modeIndex % WEB_SEARCH_MODES.length];
+      const activeQuery = `${stream} ${mode.suffix}`;
+
       webLinksContainer.innerHTML = `
         <div class="p-6 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">
           <svg class="animate-spin w-5 h-5 mx-auto text-brand-500 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          <span class="text-xs font-medium">Indexing web resources via Tinyfish for ${stream}...</span>
+          <span class="text-xs font-medium">Indexing ${mode.label.toLowerCase()} for ${stream}...</span>
         </div>
       `;
 
@@ -445,26 +501,25 @@
             'Authorization': `Bearer ${TINYFISH_API_KEY}`
           },
           body: JSON.stringify({
-            query: `${stream} roadmap syllabus learning documentation`,
+            query: activeQuery,
             limit: 4
           })
         });
 
         if (!response.ok) {
-          throw new Error(`Tinyfish response code: ${response.status}`);
+          throw new Error(`Tinyfish response: ${response.status}`);
         }
 
         const data = await response.json();
         const results = data.results || data.data || [];
 
         if (!results.length) {
-          throw new Error('No items returned');
+          throw new Error('Empty result set');
         }
 
         renderWebResults(results);
       } catch (err) {
-        console.warn('Tinyfish live request failed, rendering curated web fallbacks:', err.message);
-        renderCuratedWebLinks(stream);
+        renderRotatedWebFallbacks(stream, modeIndex);
       }
     }
 
@@ -481,7 +536,7 @@
           <div class="flex items-start justify-between gap-4">
             <div>
               <h4 class="text-sm font-semibold text-slate-900 group-hover:text-brand-600">${item.title || 'Curated Resource'}</h4>
-              <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.snippet || item.description || 'Verified engineering documentation and learning roadmap.'}</p>
+              <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.snippet || item.description || 'Engineering documentation and learning roadmap.'}</p>
               <span class="text-[11px] font-mono text-brand-600 mt-2 inline-block">${item.url || ''}</span>
             </div>
             <svg class="w-4 h-4 text-slate-400 shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -491,30 +546,130 @@
       });
     }
 
-    // Fallback Web Links when CORS/Quota hits
-    function renderCuratedWebLinks(stream) {
-      const fallbackData = [
-        {
-          title: `${stream} Comprehensive Roadmap & Core Fundamentals`,
-          url: `https://roadmap.sh`,
-          snippet: `Structured learning pathways, prerequisites, and milestone tracks tailored for modern ${stream} students.`
-        },
-        {
-          title: `MIT OpenCourseWare — ${stream} Lecture Series`,
-          url: `https://ocw.mit.edu/search/?q=${encodeURIComponent(stream)}`,
-          snippet: `Full undergraduate lecture notes, syllabus, assignments, and exam repositories.`
-        },
-        {
-          title: `IEEE Xplore Academic Topics & Standards in ${stream}`,
-          url: `https://ieeexplore.ieee.org`,
-          snippet: `Peer-reviewed publications, modern research directions, and industrial engineering standards.`
-        }
+    // Distinct web fallbacks per refresh iteration
+    function renderRotatedWebFallbacks(stream, modeIndex) {
+      const fallbackRotations = [
+        [
+          {
+            title: `${stream} Comprehensive Roadmap & Milestones`,
+            url: `https://roadmap.sh`,
+            snippet: `Step-by-step curriculum maps, prerequisites, and milestone tracks tailored for modern ${stream} engineering.`
+          },
+          {
+            title: `MIT OpenCourseWare — ${stream} Core Syllabus`,
+            url: `https://ocw.mit.edu/search/?q=${encodeURIComponent(stream)}`,
+            snippet: `Undergraduate and graduate lecture notes, exam problems, and reading materials from MIT.`
+          },
+          {
+            title: `National Programme on Technology Enhanced Learning (${stream})`,
+            url: `https://nptel.ac.in/courses`,
+            snippet: `Detailed semester lectures and syllabus coverage designed by premier engineering institutions.`
+          }
+        ],
+        [
+          {
+            title: `${stream} Practical Labs & Virtual Experiments`,
+            url: `https://vlab.co.in`,
+            snippet: `Interactive virtual simulation labs, hardware experiments, and step-by-step practical guides.`
+          },
+          {
+            title: `Instructables & Open Hardware Hub (${stream})`,
+            url: `https://www.instructables.com/circuits/`,
+            snippet: `Hands-on project schematics, hardware prototypes, and physical build teardowns.`
+          },
+          {
+            title: `Coursera Academic Specializations in ${stream}`,
+            url: `https://www.coursera.org/search?query=${encodeURIComponent(stream)}`,
+            snippet: `University-accredited project assignments, coding assessments, and applied project workflows.`
+          }
+        ],
+        [
+          {
+            title: `Curated ${stream} Awesome Frameworks & Tools`,
+            url: `https://github.com/topics/${encodeURIComponent(stream.toLowerCase().replace(/\s+/g, '-'))}`,
+            snippet: `Trending GitHub repositories, active community toolsets, utilities, and developer frameworks.`
+          },
+          {
+            title: `Kaggle Datasets & Benchmarks for Applied ${stream}`,
+            url: `https://www.kaggle.com/search?q=${encodeURIComponent(stream)}`,
+            snippet: `Real-world telemetry, experimental data sets, and mathematical analysis notebooks.`
+          },
+          {
+            title: `Engineering ToolBox — Calculations & Formulas`,
+            url: `https://www.engineeringtoolbox.com/`,
+            snippet: `Online design equations, material properties, fluid mechanics, and standard engineering units.`
+          }
+        ],
+        [
+          {
+            title: `IEEE Xplore Research & Technical Standards in ${stream}`,
+            url: `https://ieeexplore.ieee.org`,
+            snippet: `Peer-reviewed publications, modern research directions, and industrial compliance benchmarks.`
+          },
+          {
+            title: `arXiv Engineering & Computer Science Preprints`,
+            url: `https://arxiv.org/archive/cs`,
+            snippet: `The latest research breakthroughs, preprints, and algorithmic advances published worldwide.`
+          },
+          {
+            title: `ScienceDirect Open Articles for ${stream}`,
+            url: `https://www.sciencedirect.com/search?qs=${encodeURIComponent(stream)}`,
+            snippet: `Top-tier academic research journals covering experimental trials, systems, and materials.`
+          }
+        ]
       ];
-      renderWebResults(fallbackData);
+
+      const chosenSet = fallbackRotations[modeIndex % fallbackRotations.length];
+      renderWebResults(chosenSet);
     }
 
+    // Rate Limiting Helper (Cooldown Countdown)
+    function applyRateLimit(button, labelSpan, callback, lastCallTimestamp) {
+      const now = Date.now();
+      const elapsed = now - lastCallTimestamp;
+
+      if (elapsed < RATE_LIMIT_MS) {
+        return lastCallTimestamp; // Blocked
+      }
+
+      // Execute action
+      callback();
+
+      // Initiate 3-second lockout
+      button.disabled = true;
+      button.classList.add('opacity-50', 'cursor-not-allowed');
+
+      let remainingSeconds = Math.ceil(RATE_LIMIT_MS / 1000);
+      labelSpan.textContent = `Wait (${remainingSeconds}s)`;
+
+      const interval = setInterval(() => {
+        remainingSeconds -= 1;
+        if (remainingSeconds > 0) {
+          labelSpan.textContent = `Wait (${remainingSeconds}s)`;
+        } else {
+          clearInterval(interval);
+          button.disabled = false;
+          button.classList.remove('opacity-50', 'cursor-not-allowed');
+          labelSpan.textContent = 'Refresh';
+        }
+      }, 1000);
+
+      return Date.now();
+    }
+
+    // Refresh Listeners with Rate Limit
+    btnRefreshStore.addEventListener('click', () => {
+      lastStoreRefresh = applyRateLimit(btnRefreshStore, btnRefreshStoreText, () => {
+        currentStoreOffset = (currentStoreOffset + 3);
+        renderStoreBooks(userStream, currentStoreOffset);
+      }, lastStoreRefresh);
+    });
+
     btnRefreshWeb.addEventListener('click', () => {
-      fetchTinyfishWebLinks(userStream);
+      lastWebRefresh = applyRateLimit(btnRefreshWeb, btnRefreshWebText, () => {
+        currentWebTopicIndex += 1;
+        fetchTinyfishWebLinks(userStream, currentWebTopicIndex);
+      }, lastWebRefresh);
     });
 
     // Form Submission
