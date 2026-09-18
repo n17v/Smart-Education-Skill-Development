@@ -1,195 +1,166 @@
-/* =========================================================
-   Injected minimal styles (floating labels + button + spinner)
-   Only things Tailwind can't do cleanly. No external CSS file.
-   ========================================================= */
-(function injectStyles() {
+/**
+ * SkillBridge AI - Theme Configuration & Style Injector
+ * Injects required styles into <head> with zero external CSS files.
+ */
+
+// 1. Configure Tailwind CSS with the brand green palette & Inter font family
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
+      colors: {
+        brand: {
+          50: '#ecfdf5',
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981', // Primary brand color
+          600: '#059669', // Dark tone 1
+          700: '#047857', // Dark tone 2
+          800: '#065f46',
+          900: '#064e3b',
+        },
+      },
+      animation: {
+        'fade-up': 'fadeUp 550ms cubic-bezier(.2,.7,.3,1) forwards',
+      },
+      keyframes: {
+        fadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(12px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+    },
+  },
+};
+
+(function injectThemeStyles() {
   const css = `
-    /* --- Floating label fields --- */
-    .field { position: relative; }
+    /* Gentle floating keyframes for brand background blobs */
+    @keyframes blobFloat1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-28px, 32px) scale(1.08); }
+    }
+    @keyframes blobFloat2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(32px, -24px) scale(1.06); }
+    }
+    @keyframes blobFloat3 {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-45%, -55%) scale(1.12); }
+    }
+
+    .blob-1 { animation: blobFloat1 10s ease-in-out infinite alternate; }
+    .blob-2 { animation: blobFloat2 11s ease-in-out infinite alternate; }
+    .blob-3 { animation: blobFloat3 9s ease-in-out infinite alternate; }
+
+    /* Auth View Transition */
+    .auth-view.is-active {
+      display: block !important;
+      animation: viewFadeUp 320ms ease forwards;
+    }
+
+    @keyframes viewFadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Floating Label Inputs */
+    .field {
+      position: relative;
+      width: 100%;
+    }
+
     .field input {
       width: 100%;
-      padding: 22px 16px 8px;
-      font-size: 14px;
-      line-height: 1.2;
-      background: #ffffff;
+      background-color: #ffffff;
       border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      outline: none;
+      border-radius: 0.75rem; /* 12px */
+      padding: 22px 16px 8px 16px;
+      font-size: 0.875rem; /* 14px */
+      line-height: 1.25rem;
       color: #0f172a;
-      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
     }
-    .field input:hover { border-color: #cbd5e1; }
+
+    .field input:hover {
+      border-color: #cbd5e1; /* slate-300 */
+    }
+
     .field input:focus {
-      border-color: #10b981;
-      box-shadow: 0 0 0 4px rgba(16,185,129,.12);
+      border-color: #10b981; /* brand-500 */
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
     }
+
     .field label {
       position: absolute;
       left: 16px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 14px;
-      color: #94a3b8;
+      font-size: 0.875rem;
+      color: #94a3b8; /* slate-400 */
       pointer-events: none;
-      transition: top .18s ease, transform .18s ease, font-size .18s ease, color .18s ease;
+      transform-origin: left top;
+      transition: top 0.18s ease, transform 0.18s ease, color 0.18s ease, font-size 0.18s ease;
     }
-    .field input:focus + label,
-    .field input:not(:placeholder-shown) + label {
-      top: 11px;
-      transform: translateY(0) scale(.85);
-      transform-origin: left center;
-      color: #059669;
-    }
-    .field input:not(:focus):not(:placeholder-shown) + label { color: #64748b; }
 
-    /* --- Primary button (no shimmer, no black dot) --- */
+    /* Floating active state: input focused OR has non-empty value */
+    .field.is-floating label,
+    .field input:focus ~ label {
+      top: 11px;
+      transform: translateY(0) scale(0.85);
+      color: #059669; /* brand-600 */
+      font-weight: 500;
+    }
+
+    /* Primary CTA Button */
     .btn-primary {
       position: relative;
       width: 100%;
+      border-radius: 0.75rem; /* 12px */
+      padding: 14px 20px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.875rem;
+      box-shadow: 0 6px 20px -6px rgba(16, 185, 129, 0.5);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 14px 20px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #ffffff;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      border: none;
-      border-radius: 12px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
       cursor: pointer;
-      box-shadow: 0 6px 20px -6px rgba(16,185,129,.5);
-      transition: transform .15s ease, box-shadow .25s ease, filter .2s ease, opacity .2s ease;
+      border: none;
     }
+
     .btn-primary:hover:not(:disabled) {
       transform: translateY(-1px);
-      box-shadow: 0 10px 28px -8px rgba(16,185,129,.6);
+      box-shadow: 0 8px 24px -6px rgba(16, 185, 129, 0.6);
       filter: brightness(1.03);
     }
-    .btn-primary:active:not(:disabled) { transform: translateY(0); }
-    .btn-primary:disabled { opacity: .75; cursor: not-allowed; }
 
-    /* --- SVG leaf animation origin --- */
-    #leafL, #leafR { transform-box: fill-box; transform-origin: 50% 50%; }
-
-    /* --- View fade in on switch --- */
-    @keyframes viewFadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 4px 14px -4px rgba(16, 185, 129, 0.45);
     }
-    .auth-view.is-active { animation: viewFadeIn .32s ease both; }
+
+    .btn-primary:disabled {
+      opacity: 0.85;
+      cursor: not-allowed;
+    }
   `;
-  const tag = document.createElement('style');
-  tag.id = 'sb-injected-styles';
-  tag.textContent = css;
-  document.head.appendChild(tag);
+
+  const styleEl = document.createElement('style');
+  styleEl.setAttribute('type', 'text/css');
+  styleEl.textContent = css;
+  document.head.appendChild(styleEl);
 })();
-
-/* =========================================================
-   Logo animation (anime.js)
-   ========================================================= */
-window.addEventListener('load', () => {
-  if (typeof anime === 'undefined') return;
-  const stem = document.getElementById('stem');
-  const leafL = document.getElementById('leafL');
-  const leafR = document.getElementById('leafR');
-  if (!stem || !leafL || !leafR) return;
-
-  anime.timeline({ easing: 'easeOutExpo' })
-    .add({
-      targets: stem,
-      strokeDashoffset: [anime.setDashoffset, 0],
-      duration: 900
-    })
-    .add({
-      targets: [leafL, leafR],
-      scale: [0, 1],
-      opacity: [0, 1],
-      duration: 700,
-      easing: 'easeOutBack'
-    }, '-=500');
-});
-
-/* =========================================================
-   Tabs + view switching
-   ========================================================= */
-const _tabs = document.querySelectorAll('.tab-btn');
-const _pill = document.getElementById('tabPill');
-const _tabBar = document.getElementById('tabs');
-
-function _setActiveTab(name) {
-  _tabs.forEach(t => {
-    const active = t.dataset.tab === name;
-    t.classList.toggle('text-brand-700', active);
-    t.classList.toggle('text-slate-500', !active);
-  });
-  _pill.style.transform = name === 'register' ? 'translateX(calc(100% + 8px))' : 'translateX(0)';
-}
-
-_tabs.forEach(t => t.addEventListener('click', () => showView(t.dataset.tab)));
-
-function showView(name) {
-  document.querySelectorAll('.auth-view').forEach(v => {
-    v.classList.add('hidden');
-    v.classList.remove('is-active');
-  });
-
-  const el = document.getElementById('view-' + name);
-  if (!el) return;
-
-  el.classList.remove('hidden');
-  // retrigger animation
-  void el.offsetWidth;
-  el.classList.add('is-active');
-
-  if (name === 'login' || name === 'register') {
-    _tabBar.style.display = 'inline-flex';
-    _setActiveTab(name);
-  } else {
-    _tabBar.style.display = 'none';
-  }
-
-  // focus first input for nicety
-  const first = el.querySelector('input');
-  if (first) setTimeout(() => first.focus(), 60);
-}
-
-/* =========================================================
-   Toast
-   ========================================================= */
-function toast(msg, type = 'info') {
-  const t = document.getElementById('toast');
-  if (!t) return;
-  t.textContent = msg;
-
-  const colors = {
-    info:    'background:#0f172a',
-    success: 'background:#059669',
-    error:   'background:#dc2626'
-  };
-  t.style.cssText = `
-    position:fixed; left:50%; bottom:24px; z-index:50;
-    padding:12px 20px; border-radius:9999px;
-    font-size:13px; font-weight:500; color:#fff;
-    box-shadow:0 12px 30px -8px rgba(0,0,0,.3);
-    transition:transform .35s cubic-bezier(.2,.8,.2,1), opacity .25s ease;
-    max-width:90vw; text-align:center; pointer-events:none;
-    transform:translate(-50%, 200%); opacity:0;
-    ${colors[type] || colors.info};
-  `;
-
-  void t.offsetWidth;
-  t.style.transform = 'translate(-50%, 0)';
-  t.style.opacity = '1';
-
-  clearTimeout(t._tid);
-  t._tid = setTimeout(() => {
-    t.style.transform = 'translate(-50%, 200%)';
-    t.style.opacity = '0';
-  }, 3200);
-}
-
-/* =========================================================
-   Init
-   ========================================================= */
-showView('login');
