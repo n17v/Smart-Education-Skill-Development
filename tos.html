@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Terms &amp; Conditions — SkillBridge AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5FAF3;
+    --surface:#FFFFFF;
+    --border:#DCEBD8;
+    --text:#173321;
+    --text-dim:#4C6656;
+    --text-faint:#7E9C8C;
+    --green-deep:#1F8A4C;
+    --green:#3FB56A;
+    --green-lime:#8DD65B;
+    --grad: linear-gradient(135deg, var(--green-deep), var(--green-lime));
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 500px at 88% -8%, rgba(63,181,106,0.12), transparent 60%),
+      radial-gradient(700px 420px at -8% 18%, rgba(141,214,91,0.14), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', system-ui, sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--green-deep); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--green); outline-offset:3px; border-radius:4px;}
+
+  header.top{
+    position:sticky; top:0; z-index:10;
+    backdrop-filter: blur(10px);
+    background:rgba(245,250,243,0.85);
+    border-bottom:1px solid var(--border);
+  }
+  .top-inner{
+    max-width:880px; margin:0 auto; padding:16px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Sora', sans-serif; font-weight:700; font-size:1.05rem; color:var(--text);}
+  .brand svg{flex-shrink:0;}
+  nav.top-nav{display:flex; gap:22px; font-size:0.92rem;}
+  nav.top-nav a{color:var(--text-dim);}
+  nav.top-nav a.current{color:var(--text); position:relative;}
+  nav.top-nav a.current::after{
+    content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; background:var(--grad); border-radius:2px;
+  }
+
+  main{max-width:720px; margin:0 auto; padding:64px 24px 100px;}
+
+  .doc-head{margin-bottom:44px;}
+  .doc-head .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.85rem; color:var(--text-dim); margin-bottom:14px;
+  }
+  .doc-head .kicker .dot{width:6px; height:6px; border-radius:50%; background:var(--grad);}
+  h1{
+    font-family:'Sora', sans-serif; font-weight:800;
+    font-size:clamp(1.9rem, 4vw, 2.6rem);
+    line-height:1.15; margin:0 0 14px;
+    letter-spacing:-0.01em;
+    color:var(--text);
+  }
+  .doc-head p{color:var(--text-dim); margin:0; font-size:1.02rem; max-width:56ch;}
+
+  section.clause{
+    padding:34px 0; border-top:1px solid var(--border);
+    scroll-margin-top:90px;
+  }
+  section.clause:first-of-type{border-top:none;}
+  section.clause h2{
+    font-family:'Sora', sans-serif; font-weight:700; font-size:1.25rem;
+    display:flex; align-items:baseline; gap:10px; margin:0 0 14px;
+    color:var(--text);
+  }
+  section.clause h2 .idx{color:var(--green-deep); font-size:1rem; font-weight:600;}
+  section.clause p, section.clause li{color:var(--text-dim); font-size:0.98rem;}
+  section.clause p{margin:0 0 14px;}
+  section.clause ul{margin:0 0 14px; padding-left:22px;}
+  section.clause li{margin:6px 0;}
+  section.clause strong{color:var(--text); font-weight:600;}
+
+  .callout{
+    border:1px solid var(--border); border-left:3px solid; border-image: var(--grad) 1;
+    background:var(--surface); border-radius:10px; padding:16px 18px; margin:22px 0 8px;
+    font-size:0.93rem; color:var(--text-dim);
+  }
+
+  footer{
+    border-top:1px solid var(--border); margin-top:20px;
+    padding:32px 24px; text-align:center;
+  }
+  footer p{color:var(--text-faint); font-size:0.85rem; margin:4px 0;}
+  footer .foot-links a{color:var(--text-faint); margin:0 8px;}
+
+  @media (max-width:640px){
+    nav.top-nav{display:none;}
+    main{padding:44px 18px 80px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="doc-head">
+    <span class="kicker"><span class="dot"></span>Legal · Last updated September 19, 2026</span>
+    <h1>Terms &amp; Conditions</h1>
+    <p>The rules for using SkillBridge AI, our AI-powered skill-gap analysis and learning-path tool built for the TECHNEXA Hackathon.</p>
+  </div>
+
+  <div class="callout">
+    SkillBridge AI is a hackathon project built for TECHNEXA 2026. It's a working demo, not a commercial product — treat these terms as governing a prototype, not a fully supported service. There is no guarantee of uptime, data durability, or long-term availability.
+  </div>
+
+  <section class="clause" id="acceptance">
+    <h2><span class="idx">01</span>Accepting these terms</h2>
+    <p>By creating an account or otherwise using SkillBridge AI, you agree to these terms. If you don't agree, please don't use the app. If you're using SkillBridge AI on behalf of a school, team, or organization, you're confirming you have the authority to accept these terms for that group.</p>
+  </section>
+
+  <section class="clause" id="service">
+    <h2><span class="idx">02</span>What SkillBridge AI is</h2>
+    <p>SkillBridge AI analyzes the skills you tell it you're working on, generates personalized learning roadmaps, and runs short AI-written assessments across engineering streams such as Computer, Robotics, Automobile, Chemical, Civil, and Electric Engineering. It also surfaces reference material — textbook suggestions and web links — to support your study.</p>
+    <p>It's built as a demonstration of what an AI-assisted learning tool can do. It is <strong>not</strong> a substitute for an accredited course, a certification body, or professional engineering guidance.</p>
+  </section>
+
+  <section class="clause" id="accounts">
+    <h2><span class="idx">03</span>Accounts</h2>
+    <ul>
+      <li>You need an account (email, name, and password) to track your progress and generate AI plans.</li>
+      <li>You're responsible for keeping your password secure and for anything that happens under your account.</li>
+      <li>Use a real email address you control — that's how password resets and account notices reach you.</li>
+      <li>You can update your name, password, and engineering stream at any time from Account Settings.</li>
+    </ul>
+  </section>
+
+  <section class="clause" id="ai-content">
+    <h2><span class="idx">04</span>AI-generated content</h2>
+    <p>Your study plans, concept explanations, quiz questions, and skill roadmaps are generated by an AI model based on the skills and stream you select. This content is produced automatically and:</p>
+    <ul>
+      <li>may contain mistakes, outdated references, or oversimplifications;</li>
+      <li>should be checked against your actual course syllabus or a qualified instructor before you rely on it for grades, certifications, or job-readiness decisions;</li>
+      <li>reflects an AI system's best attempt, not verified expert review.</li>
+    </ul>
+    <p>Quiz scores and "verified" milestones shown in the dashboard reflect performance on AI-generated questions, not an accredited assessment.</p>
+  </section>
+
+  <section class="clause" id="acceptable-use">
+    <h2><span class="idx">05</span>Acceptable use</h2>
+    <p>Please don't use SkillBridge AI to:</p>
+    <ul>
+      <li>attempt to break, overload, or reverse-engineer the app or its AI features;</li>
+      <li>submit content that's abusive, unlawful, or infringes someone else's rights;</li>
+      <li>scrape or resell the roadmaps, questions, or explanations it generates;</li>
+      <li>impersonate another person when creating an account.</li>
+    </ul>
+  </section>
+
+  <section class="clause" id="third-party">
+    <h2><span class="idx">06</span>Third-party links and sources</h2>
+    <p>Some features point you to outside resources — book listings on Amazon, documentation on W3Schools, and other web search results pulled in to support a topic. We don't control these sites, don't vouch for their accuracy, and aren't responsible for what you find there. Any purchases you make on a linked site (like Amazon) are between you and that site.</p>
+  </section>
+
+  <section class="clause" id="ip">
+    <h2><span class="idx">07</span>Ownership</h2>
+    <p>SkillBridge AI's interface, branding, and underlying code belong to its creators as a hackathon submission. You keep ownership of anything you personally type in — like custom notes — but the generated roadmaps, explanations, and questions are provided for your personal study use, not for redistribution.</p>
+  </section>
+
+  <section class="clause" id="availability">
+    <h2><span class="idx">08</span>Availability &amp; changes to the service</h2>
+    <p>As a hackathon build, SkillBridge AI may change, break, go offline, or be discontinued without notice. Progress data, enrolled skills, and generated plans are not guaranteed to be preserved indefinitely — please don't treat this as a permanent record of your learning.</p>
+  </section>
+
+  <section class="clause" id="termination">
+    <h2><span class="idx">09</span>Suspension &amp; termination</h2>
+    <p>We may suspend or remove an account that misuses the app or violates these terms. You can stop using SkillBridge AI and ask us to delete your account at any time — see the Privacy Policy for how.</p>
+  </section>
+
+  <section class="clause" id="warranty">
+    <h2><span class="idx">10</span>Disclaimer &amp; limitation of liability</h2>
+    <p>SkillBridge AI is provided "as is," as a demo project, with no warranties of accuracy, availability, or fitness for a particular purpose. To the fullest extent permitted by law, the team behind SkillBridge AI isn't liable for any loss or damage arising from your use of the app, including reliance on AI-generated study content.</p>
+  </section>
+
+  <section class="clause" id="changes">
+    <h2><span class="idx">11</span>Changes to these terms</h2>
+    <p>We may update these terms as the project evolves. The "last updated" date at the top of this page reflects the latest version. Continuing to use SkillBridge AI after an update means you accept the revised terms.</p>
+  </section>
+
+  <section class="clause" id="contact">
+    <h2><span class="idx">12</span>Contact</h2>
+    <p>Questions about these terms? Reach the SkillBridge AI team through the project's TECHNEXA Hackathon submission page.</p>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 SkillBridge AI · Built for the TECHNEXA Hackathon</p>
+  <p class="foot-links"><a href="tos.html">Terms</a>·<a href="privacypolicy.html">Privacy Policy</a></p>
+</footer>
+
+</body>
+</html>
