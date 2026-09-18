@@ -14,21 +14,9 @@ if (window.supabase && window.supabase.createClient) {
   console.warn('Supabase JS library not loaded.');
 }
 
-// Redirect target specifically handling GitHub Pages subpath
+// Redirect using standard relative file path for GitHub Pages compatibility
 function redirectToDashboard() {
-  const origin = window.location.origin;
-  const pathname = window.location.pathname;
-
-  // Extract base project path (e.g., /Smart-Education-Skill-Development/)
-  let basePath = pathname;
-  if (basePath.endsWith('index.html')) {
-    basePath = basePath.substring(0, basePath.lastIndexOf('index.html'));
-  }
-  if (!basePath.endsWith('/')) {
-    basePath += '/';
-  }
-
-  window.location.href = `${origin}${basePath}dashboard/`;
+  window.location.assign('dashboard.html');
 }
 
 let toastTimeout = null;
