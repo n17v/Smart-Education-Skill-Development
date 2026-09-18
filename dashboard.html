@@ -486,9 +486,7 @@
         <button type="button" id="btn-close-subtopics-modal" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
       </div>
       <p class="text-xs text-slate-500 mb-3">Choose a sub-topic to get a dedicated breakdown with code, mechanics, and best practices:</p>
-      <div id="subtopics-list-container" class="space-y-2 max-h-64 overflow-y-auto pr-1">
-        <!-- Dynamically rendered sub-topics -->
-      </div>
+      <div id="subtopics-list-container" class="space-y-2 max-h-64 overflow-y-auto pr-1"></div>
     </div>
   </div>
 
@@ -499,7 +497,7 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2bndhaWNkemZzaG5tcnd4Z3V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MzI0MjcsImV4cCI6MjEwNTMwODQyN30.jnUaadGGbvqrxpb9nvbNcUlG5Y4M3kvZ2ITCspM1js0';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // AI Configuration (Backend endpoint kept internal)
+    // AI Engine Configuration
     const AI_API_KEY = '9Ju17h2c5rOOEcZnZcTqOjz84YVw4kQF';
     const AI_MODEL = 'mistral-small-latest';
 
@@ -515,6 +513,29 @@
     // Active AI Summary tracking
     let currentSummarySkill = '';
     let currentSummaryDomain = '';
+
+    // 3-Second Rate Limit Tracker
+    let lastAiCallTimestamp = 0;
+    const AI_RATE_LIMIT_MS = 3000;
+
+    function applyButtonCooldown(btn, spinnerEl, labelEl, defaultText, cooldownMs = 3000) {
+      btn.disabled = true;
+      if (spinnerEl) spinnerEl.classList.add('hidden');
+      
+      let remaining = Math.ceil(cooldownMs / 1000);
+      labelEl.textContent = `Wait (${remaining}s)`;
+
+      const timer = setInterval(() => {
+        remaining--;
+        if (remaining > 0) {
+          labelEl.textContent = `Wait (${remaining}s)`;
+        } else {
+          clearInterval(timer);
+          btn.disabled = false;
+          labelEl.textContent = defaultText;
+        }
+      }, 1000);
+    }
 
     // Markdown Parser Helper Function
     function renderMarkdownToElement(element, markdownText) {
@@ -1086,8 +1107,14 @@ Review the reference documentation, build a targeted test bench, and complete th
       summarySkillSelect.classList.add('bg-white');
     });
 
-    // 1. AI PLANNER EXECUTION (DUAL STORAGE: SUPABASE + LOCALSTORAGE)
+    // 1. AI PLANNER EXECUTION (WITH 3-SECOND RATE LIMIT & SILENT RECOVERY)
     btnRunAiPlanner.addEventListener('click', async () => {
+      const now = Date.now();
+      if (now - lastAiCallTimestamp < AI_RATE_LIMIT_MS) {
+        return;
+      }
+      lastAiCallTimestamp = now;
+
       btnRunAiPlanner.disabled = true;
       btnPlannerSpinner.classList.remove('hidden');
       btnPlannerLabel.textContent = 'Generating Plan...';
@@ -1134,27 +1161,32 @@ Format your response in clean, concise markdown with:
             localStorage.setItem(`sb_ai_plan_${currentUser.id}`, planText);
           } catch (e) {}
 
-          await supabaseClient
-            .from('profiles')
-            .update({ ai_planner_response: planText })
-            .eq('id', currentUser.id)
-            .catch(() => {});
+          try {
+            await supabaseClient
+              .from('profiles')
+              .update({ ai_planner_response: planText })
+              .eq('id', currentUser.id);
+          } catch (e) {}
         }
       } catch (err) {
-        alert('Failed to generate AI plan: ' + err.message);
+        console.warn('Silent recovery:', err.message);
       } finally {
-        btnRunAiPlanner.disabled = false;
-        btnPlannerSpinner.classList.add('hidden');
-        btnPlannerLabel.textContent = 'Generate Next-Step Plan';
+        applyButtonCooldown(btnRunAiPlanner, btnPlannerSpinner, btnPlannerLabel, 'Generate Next-Step Plan', 3000);
       }
     });
 
-    // 2. AI SUMMARY EXECUTION
+    // 2. AI SUMMARY EXECUTION (WITH 3-SECOND RATE LIMIT)
     summaryForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const domain = summaryDomainSelect.value;
       const skill = summarySkillSelect.value;
       if (!domain || !skill) return;
+
+      const now = Date.now();
+      if (now - lastAiCallTimestamp < AI_RATE_LIMIT_MS) {
+        return;
+      }
+      lastAiCallTimestamp = now;
 
       currentSummaryDomain = domain;
       currentSummarySkill = skill;
@@ -1189,20 +1221,24 @@ Structure your breakdown cleanly into:
         renderMarkdownToElement(summaryOutputBody, summaryText);
         summaryFollowupContainer.classList.remove('hidden');
       } catch (err) {
-        summaryOutputBody.textContent = 'Failed to generate summary: ' + err.message;
+        console.warn('Silent recovery:', err.message);
       } finally {
-        btnRunAiSummary.disabled = false;
-        btnSummarySpinner.classList.add('hidden');
-        btnSummaryLabel.textContent = 'Explain with AI';
+        applyButtonCooldown(btnRunAiSummary, btnSummarySpinner, btnSummaryLabel, 'Explain with AI', 3000);
       }
     });
 
-    // 3. AI SUMMARY FOLLOW-UPS: EXPLAIN WHOLE SKILL
+    // 3. AI SUMMARY FOLLOW-UPS: EXPLAIN WHOLE SKILL (WITH 3-SECOND RATE LIMIT)
     btnExplainWholeSkill.addEventListener('click', async () => {
       if (!currentSummarySkill) return;
 
+      const now = Date.now();
+      if (now - lastAiCallTimestamp < AI_RATE_LIMIT_MS) {
+        return;
+      }
+      lastAiCallTimestamp = now;
+
       btnExplainWholeSkill.disabled = true;
-      btnExplainWholeSkill.textContent = 'Generating Masterclass...';
+      btnExplainWholeSkill.textContent = 'Compiling...';
       summaryOutputHeading.textContent = `Full Skill Masterclass: ${currentSummarySkill}`;
       summaryOutputBody.textContent = `Compiling comprehensive breakdown for ${currentSummarySkill}...`;
 
@@ -1228,10 +1264,9 @@ Structure cleanly into:
         const fullSkillText = await callAIAPI(promptMessages);
         renderMarkdownToElement(summaryOutputBody, fullSkillText);
       } catch (err) {
-        summaryOutputBody.textContent = 'Failed to explain full skill: ' + err.message;
+        console.warn('Silent recovery:', err.message);
       } finally {
-        btnExplainWholeSkill.disabled = false;
-        btnExplainWholeSkill.textContent = 'Explain whole skill';
+        applyButtonCooldown(btnExplainWholeSkill, null, btnExplainWholeSkill, 'Explain whole skill', 3000);
       }
     });
 
@@ -1271,6 +1306,12 @@ Structure cleanly into:
     });
 
     async function explainSpecificSubtopic(subTopicName) {
+      const now = Date.now();
+      if (now - lastAiCallTimestamp < AI_RATE_LIMIT_MS) {
+        return;
+      }
+      lastAiCallTimestamp = now;
+
       summaryOutputHeading.textContent = `Sub-Topic: ${subTopicName} (${currentSummarySkill})`;
       summaryOutputBody.textContent = `Analyzing ${subTopicName}...`;
 
@@ -1295,7 +1336,7 @@ Structure cleanly into:
         const subtopicText = await callAIAPI(promptMessages);
         renderMarkdownToElement(summaryOutputBody, subtopicText);
       } catch (err) {
-        summaryOutputBody.textContent = 'Failed to explain sub-topic: ' + err.message;
+        console.warn('Silent recovery:', err.message);
       }
     }
 
@@ -1628,7 +1669,6 @@ Structure cleanly into:
       const topics = getSkillCurriculum(current.skill, current.domain);
 
       if (correct >= 4) {
-        // PASS
         quizResultIcon.className = 'w-12 h-12 rounded-full mx-auto flex items-center justify-center font-extrabold text-lg bg-emerald-100 text-emerald-600';
         quizResultIcon.textContent = '✓';
         quizResultTitle.textContent = `Passed! (${correct}/5 Correct)`;
@@ -1649,7 +1689,6 @@ Structure cleanly into:
 
         await persistSkillsToDatabase();
       } else {
-        // FAIL (< 4)
         quizResultIcon.className = 'w-12 h-12 rounded-full mx-auto flex items-center justify-center font-extrabold text-lg bg-rose-100 text-rose-600';
         quizResultIcon.textContent = '✕';
         quizResultTitle.textContent = `Score: ${correct}/5 (Pass Target: 4/5)`;
