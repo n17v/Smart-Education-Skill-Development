@@ -29,20 +29,31 @@
     .ai-markdown h1, .ai-markdown h2, .ai-markdown h3, .ai-markdown h4 {
       font-weight: 700;
       color: #0f172a;
-      margin-top: 0.75rem;
-      margin-bottom: 0.25rem;
+      margin-top: 1rem;
+      margin-bottom: 0.35rem;
+    }
+    .ai-markdown h3 {
+      font-size: 1.05rem;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 0.25rem;
+      margin-top: 1.25rem;
+    }
+    .ai-markdown h4 {
+      font-size: 0.92rem;
+      color: #047857;
     }
     .ai-markdown p {
-      margin-bottom: 0.5rem;
-      line-height: 1.5;
+      margin-bottom: 0.65rem;
+      line-height: 1.6;
     }
     .ai-markdown ul {
       list-style-type: disc;
       padding-left: 1.25rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
     }
     .ai-markdown li {
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.3rem;
+      line-height: 1.5;
     }
     .ai-markdown strong {
       font-weight: 700;
@@ -50,13 +61,13 @@
     }
     .ai-markdown blockquote {
       border-left: 3px solid #10b981;
-      padding-left: 0.75rem;
+      padding-left: 0.85rem;
       color: #047857;
       background: #ecfdf5;
-      border-radius: 0.375rem;
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
-      margin-bottom: 0.75rem;
+      border-radius: 0.5rem;
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.85rem;
     }
   </style>
 </head>
@@ -170,15 +181,15 @@
             <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">✦</div>
             <div>
               <h3 class="text-sm font-bold text-slate-900">Recommended AI Study Plan</h3>
-              <p class="text-[11px] text-slate-500">Formulated by SkillBridge AI based on your actual skill progress</p>
+              <p class="text-[11px] text-slate-500">Formulated across your active skills by SkillBridge AI</p>
             </div>
           </div>
           <button type="button" onclick="setActiveTab('assistant')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 px-3 py-1.5 rounded-lg transition-colors">
             Generate / Update Plan →
           </button>
         </div>
-        <div id="home-ai-plan-content" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-          No AI plan generated yet. Head over to the AI Assistant tab to let SkillBridge AI formulate your next roadmap milestones!
+        <div id="home-ai-plan-content" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50 p-5 rounded-xl border border-slate-200/60">
+          No AI plan generated yet. Head over to the AI Assistant tab to generate a multi-skill strategic roadmap!
         </div>
       </div>
     </section>
@@ -242,8 +253,8 @@
         <div class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">SkillBridge AI</span>
-            <h3 class="text-base font-bold text-slate-900 mt-1">Strategic Curriculum Study Planner</h3>
-            <p class="text-xs text-slate-500 mt-0.5">SkillBridge AI analyzes your active stream and verified topics to plan your optimal roadmap milestones.</p>
+            <h3 class="text-base font-bold text-slate-900 mt-1">Holistic Multi-Skill Curriculum Planner</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Synthesizes all your enrolled tracks into a connected, phased strategic execution roadmap.</p>
           </div>
           <button type="button" id="btn-run-ai-planner" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-sm transition-all inline-flex items-center gap-2 shrink-0">
             <span id="btn-planner-spinner" class="hidden">
@@ -255,11 +266,11 @@
 
         <div id="planner-output-container" class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-3">
           <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-            <span class="text-xs font-bold text-slate-900">Generated Study Plan</span>
+            <span class="text-xs font-bold text-slate-900">Generated Multi-Skill Roadmap</span>
             <span id="planner-sync-badge" class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Synced with Database & Home</span>
           </div>
-          <div id="planner-output-body" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-xl border border-slate-200/60">
-            Click "Generate Next-Step Plan" to let SkillBridge AI analyze your active progress.
+          <div id="planner-output-body" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-6 rounded-xl border border-slate-200/60">
+            Click "Generate Next-Step Plan" to let SkillBridge AI evaluate your active progress across all tracks.
           </div>
         </div>
       </div>
@@ -654,6 +665,58 @@
           ]
         }
       ],
+      'CSS': [
+        {
+          id: 'css-1',
+          title: 'CSS Box Model & Selectors',
+          link: 'https://www.w3schools.com/css/css_boxmodel.asp',
+          questions: [
+            { q: 'Which component represents the innermost area of the CSS box model?', options: ['Margin', 'Border', 'Padding', 'Content'], answer: 3 },
+            { q: 'What is the space between the content and the border called?', options: ['Margin', 'Padding', 'Outline', 'Gap'], answer: 1 },
+            { q: 'Which CSS selector selects elements with an id named "navbar"?', options: ['.navbar', '#navbar', '*navbar', 'navbar'], answer: 1 },
+            { q: 'How does margin differ from padding?', options: ['Margin is outside the border', 'Padding is outside the border', 'They are identical', 'Margin is inside content'], answer: 0 },
+            { q: 'Which property sets background color?', options: ['color', 'bgcolor', 'background-color', 'fill'], answer: 2 }
+          ]
+        },
+        {
+          id: 'css-2',
+          title: 'Flexbox & Modern Layouts',
+          link: 'https://www.w3schools.com/css/css3_flexbox.asp',
+          questions: [
+            { q: 'Which display value enables Flexbox layout?', options: ['display: flex', 'display: box', 'display: grid', 'display: inline'], answer: 0 },
+            { q: 'Which property aligns items along the primary axis in Flexbox?', options: ['align-items', 'justify-content', 'align-content', 'flex-align'], answer: 1 },
+            { q: 'Which property controls alignment along the cross axis in Flexbox?', options: ['justify-content', 'align-items', 'flex-direction', 'gap'], answer: 1 },
+            { q: 'What does flex-direction: column do?', options: ['Stacks items horizontally', 'Stacks items vertically', 'Reverses order', 'Removes wrap'], answer: 1 },
+            { q: 'Which property specifies space between flex items directly?', options: ['spacing', 'padding', 'gap', 'margin-between'], answer: 2 }
+          ]
+        }
+      ],
+      'JavaScript': [
+        {
+          id: 'js-1',
+          title: 'JavaScript Variables & Data Types',
+          link: 'https://www.w3schools.com/js/js_variables.asp',
+          questions: [
+            { q: 'Which keyword declares a block-scoped reassignable variable?', options: ['var', 'let', 'const', 'static'], answer: 1 },
+            { q: 'Which keyword declares a block-scoped read-only constant?', options: ['let', 'const', 'var', 'immutable'], answer: 1 },
+            { q: 'What is the result of typeof NaN in JavaScript?', options: ['number', 'nan', 'undefined', 'object'], answer: 0 },
+            { q: 'Which comparison operator checks both value and type equality?', options: ['==', '===', '=', '!='], answer: 1 },
+            { q: 'Which primitive type represents truth values?', options: ['string', 'boolean', 'symbol', 'integer'], answer: 1 }
+          ]
+        },
+        {
+          id: 'js-2',
+          title: 'Functions, Arrays & Promises',
+          link: 'https://www.w3schools.com/js/js_promise.asp',
+          questions: [
+            { q: 'Which syntax defines a modern ES6 arrow function?', options: ['function() => {}', '() => {}', '=> function()', 'def() => {}'], answer: 1 },
+            { q: 'Which array method transforms elements into a new array?', options: ['filter()', 'map()', 'forEach()', 'reduce()'], answer: 1 },
+            { q: 'Which state is NOT a valid Promise state?', options: ['pending', 'fulfilled', 'rejected', 'paused'], answer: 3 },
+            { q: 'Which keyword handles async Promises inside an async function?', options: ['await', 'defer', 'hold', 'promise'], answer: 0 },
+            { q: 'Which method appends an element to the end of an array?', options: ['push()', 'pop()', 'shift()', 'unshift()'], answer: 0 }
+          ]
+        }
+      ],
       'Python': [
         {
           id: 'py-1',
@@ -967,83 +1030,113 @@
     navSources.addEventListener('click', () => setActiveTab('sources'));
 
     // =======================================================
-    // DYNAMIC PROGRESS-AWARE AI ENGINE & PLAN GENERATOR
+    // DYNAMIC MULTI-SKILL AI ENGINE & PLAN GENERATOR
     // =======================================================
     function generateDynamicAIPlan() {
-      const active = enrolledSkills[activeSkillIndex] || enrolledSkills[0];
-      const skillName = active ? active.skill : 'Engineering Core';
-      const domainName = active ? active.domain : 'Foundations';
-      const topics = active ? getSkillCurriculum(active.skill, active.domain) : [];
-      const completedIds = active ? (active.completed_topics || []) : [];
-      
-      const completedTopics = topics.filter(t => completedIds.includes(t.id));
-      const remainingTopics = topics.filter(t => !completedIds.includes(t.id));
-      const progressPercent = topics.length > 0 ? Math.round((completedTopics.length / topics.length) * 100) : 0;
-      
+      if (!enrolledSkills || enrolledSkills.length === 0) {
+        return `### 1. Holistic Portfolio Assessment
+No skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Track"** to build your custom engineering stack for **${userStream}**.`;
+      }
+
       const now = new Date();
       const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-      let planMarkdown = `> **Status: Active Next-Step Roadmap** · *Generated at ${timeStr}*\n\n`;
+      let totalTopicsAcrossStack = 0;
+      let totalCompletedAcrossStack = 0;
 
-      if (topics.length === 0 || completedTopics.length === 0) {
-        // State A: Just starting
-        const nextTopicName = topics[0] ? topics[0].title : 'Core Fundamentals';
-        planMarkdown += `### 1. Progress Assessment
-You are actively enrolled in **${userStream}** focusing on **${skillName}** (Domain: *${domainName}*).
-- **Current Completion:** 0% (0 of ${topics.length} verified).
-- **Status:** Foundational prerequisites are ready for verification.
+      // Evaluate each individual enrolled skill
+      const detailedAnalysis = enrolledSkills.map(s => {
+        const topics = getSkillCurriculum(s.skill, s.domain);
+        const validCompleted = (s.completed_topics || []).filter(id => topics.some(t => t.id === id));
+        totalTopicsAcrossStack += topics.length;
+        totalCompletedAcrossStack += validCompleted.length;
+        const pct = topics.length > 0 ? Math.round((validCompleted.length / topics.length) * 100) : 0;
+        const uncompletedTopics = topics.filter(t => !validCompleted.includes(t.id));
+        const nextTopic = uncompletedTopics.length > 0 ? uncompletedTopics[0].title : null;
 
-### 2. Immediate Next Milestones
-- **Primary Objective:** Begin with **${nextTopicName}**. Read the documentation thoroughly.
-- **Verification Gate:** Take the 5-question AI knowledge test on the Progress tab (aim for ≥ 80%).
-- **Syntax Focus:** Isolate key variables, memory bounds, and operational directives.
+        return {
+          skill: s.skill,
+          domain: s.domain,
+          total: topics.length,
+          completedCount: validCompleted.length,
+          remainingCount: uncompletedTopics.length,
+          percent: pct,
+          nextTopic: nextTopic,
+          isFinished: pct === 100
+        };
+      });
 
-### 3. Practical Exercise
-Construct a baseline test bench in your local environment. Verify error-handling behavior before moving into complex modules.
+      const overallStackPercent = totalTopicsAcrossStack > 0 
+        ? Math.round((totalCompletedAcrossStack / totalTopicsAcrossStack) * 100) 
+        : 0;
 
-### 4. Study Schedule & Recommendations
-- **Target Time:** 45 minutes of documentation review + 15 minutes of quiz verification.
-- **Key Pitfall:** Do not skip foundational syntax; early gaps compound in advanced topics.`;
-      } else if (remainingTopics.length > 0) {
-        // State B: Mid-way through topics
-        const currentMilestone = remainingTopics[0].title;
-        const lastPassed = completedTopics[completedTopics.length - 1].title;
-        planMarkdown += `### 1. Progress Assessment
-Outstanding work! You have verified **${completedTopics.length} of ${topics.length} topics (${progressPercent}%)** in **${skillName}**.
-- **Last Verified Topic:** *${lastPassed}* (Knowledge check passed).
-- **Remaining Milestones:** ${remainingTopics.length} module(s) queued.
+      // Categorize skills
+      const completedSkills = detailedAnalysis.filter(a => a.isFinished);
+      const inProgressSkills = detailedAnalysis.filter(a => !a.isFinished && a.completedCount > 0);
+      const notStartedSkills = detailedAnalysis.filter(a => a.completedCount === 0);
 
-### 2. Immediate Next Milestones
-- **Next High Priority:** Unlock and complete **${currentMilestone}**.
-- **Practical Application:** Build on the abstractions verified in *${lastPassed}*.
-- **Readiness Target:** Review official documentation and clear the 5-question test on your first try.
+      let markdown = `> **Status: Holistic Multi-Skill Roadmap** · *Generated at ${timeStr}* · *Stack Coverage: ${overallStackPercent}% (${totalCompletedAcrossStack}/${totalTopicsAcrossStack} Topics Across ${enrolledSkills.length} Skills)*\n\n`;
 
-### 3. Practical Exercise
-Integrate *${lastPassed}* and *${currentMilestone}* into a cohesive mini-utility for **${userStream}**. Verify data throughput and boundary assertions.
+      // 1. Comprehensive Portfolio Assessment
+      markdown += `### 1. Comprehensive Portfolio Assessment (${userStream})\n`;
+      markdown += `You currently have **${enrolledSkills.length} active skills** enrolled in your curriculum. Here is the exact status of each track:\n\n`;
+      detailedAnalysis.forEach(item => {
+        const statusBadge = item.isFinished ? '✅ **Mastered (100%)**' : item.percent > 0 ? `⚡ **In Progress (${item.percent}%)**` : '⏳ **Not Started (0%)**';
+        markdown += `- **${item.skill}** (*${item.domain}*): ${statusBadge} — ${item.completedCount}/${item.total} topics verified.\n`;
+      });
 
-### 4. Study Schedule & Recommendations
-- **Target Time:** 35 minutes hands-on application + 15 minutes testing.
-- **Key Pitfall:** Rushing through documentation without writing accompanying unit tests.`;
-      } else {
-        // State C: 100% Completed
-        planMarkdown += `### 1. Progress Assessment
-Congratulations! **100% Mastery Achieved** in **${skillName}** (${completedTopics.length} of ${topics.length} topics verified with ≥80% test scores).
-- **Current Focus:** Ready for advanced stream integration in **${userStream}**.
-
-### 2. Immediate Next Milestones
-- **Expand Skill Track:** Click **"Add Another Skill"** to enroll in complementary technologies for ${userStream}.
-- **Recommended Next Skills:** Explore related frameworks under the *${domainName}* track or systems architecture.
-- **Consult Sources:** Leverage textbooks and open-source GitHub repositories under the **Sources** tab.
-
-### 3. Capstone Mini-Project
-Design an end-to-end production module combining all topics mastered in **${skillName}**. Include automated tests and structured documentation.
-
-### 4. Study Schedule & Recommendations
-- **Target Time:** 60 minutes devoted to capstone implementation or onboarding your next track.
-- **Key Pitfall:** Pausing continuous learning after finishing a single skill module.`;
+      // 2. Cross-Skill Synergy & Dependency Analysis
+      markdown += `\n### 2. Cross-Skill Synergy & Dependency Analysis\n`;
+      markdown += `In **${userStream}**, your ${enrolledSkills.length} skills do not operate in isolation. They form a cohesive stack:\n`;
+      const skillNames = detailedAnalysis.map(a => a.skill).join(' + ');
+      markdown += `- **Architectural Interlock:** Combining **${skillNames}** provides complete coverage from foundational syntax up to system-level execution and testing.\n`;
+      if (completedSkills.length > 0) {
+        markdown += `- **Solid Foundation:** Your completed milestone(s) in **${completedSkills.map(c => c.skill).join(', ')}** serve as the anchor for real-world interface designs.\n`;
+      }
+      if (inProgressSkills.length > 0) {
+        markdown += `- **Active Priority Gate:** Your primary bottleneck sits in **${inProgressSkills.map(c => c.skill).join(', ')}**. Clearing these modules will unlock full integration capacity.\n`;
       }
 
-      return planMarkdown;
+      // 3. Phased Strategic Execution Roadmap
+      markdown += `\n### 3. Phased Strategic Execution Roadmap\n`;
+      
+      // Phase 1
+      markdown += `#### Phase 1: High-Priority Topic Sprints (Immediate)\n`;
+      const immediateActions = detailedAnalysis.filter(a => !a.isFinished);
+      if (immediateActions.length > 0) {
+        immediateActions.forEach(act => {
+          markdown += `- **${act.skill}:** Unlock and complete the knowledge check for **"${act.nextTopic}"** (Target: ≥ 80% passing score).\n`;
+        });
+      } else {
+        markdown += `- All currently tracked topics are 100% verified. Proceed directly to system integration testing.\n`;
+      }
+
+      // Phase 2
+      markdown += `\n#### Phase 2: Cross-Track Integration & Bridge (Mid-Term)\n`;
+      markdown += `- Connect data inputs and interface logic across your active tools (${skillNames}).\n`;
+      markdown += `- Establish structured error handling and boundary assertions between layers.\n`;
+
+      // Phase 3
+      markdown += `\n#### Phase 3: Production Readiness & Quality Assurance (Final)\n`;
+      markdown += `- Implement end-to-end automated unit tests and benchmark throughput against 2026-27 performance targets.\n`;
+
+      // 4. Unified Full-Stack Capstone Project
+      markdown += `\n### 4. Unified Multi-Skill Capstone Project\n`;
+      markdown += `Instead of building disjointed scripts for each technology, develop a **single integrated production utility**:\n`;
+      markdown += `- **Project Name:** Modular ${userStream} Control & Telemetry Suite\n`;
+      markdown += `- **Architecture:** Combines **${skillNames}** into an end-to-end pipeline with validated inputs, deterministic business logic, and structured telemetry feedback.\n`;
+
+      // 5. Weekly Milestone Matrix & Time Budget
+      markdown += `\n### 5. Weekly Time Allocation & Study Matrix\n`;
+      markdown += `- **Active Skill Deep-Dives:** 50% of time divided equally among non-completed tracks (${detailedAnalysis.filter(a => !a.isFinished).map(a => a.skill).join(', ') || 'Capstone refinement'}).\n`;
+      markdown += `- **Interactive Knowledge Checks:** 20% of time verifying documentation and clearing W3Schools milestone tests.\n`;
+      markdown += `- **Capstone Architecture:** 30% of time writing clean, test-driven implementations integrating all active skills.\n`;
+
+      // 6. Key Pitfall to Avoid
+      markdown += `\n### 6. Critical Engineering Pitfall to Avoid\n`;
+      markdown += `- **Isolation Trap:** Do not study one skill in a vacuum. Always write companion code that tests how your completed tracks (${completedSkills.map(c => c.skill).join(', ') || 'baseline modules'}) consume and interact with your in-progress modules.`;
+
+      return markdown;
     }
 
     function generateOfflineConceptResponse(messages) {
@@ -1105,7 +1198,7 @@ Review the reference documentation, build a targeted test bench, and complete th
             model: AI_MODEL,
             messages: messages,
             temperature: 0.6,
-            max_tokens: 900
+            max_tokens: isPlanner ? 1800 : 900
           })
         });
 
@@ -1114,7 +1207,7 @@ Review the reference documentation, build a targeted test bench, and complete th
         }
 
         const data = await response.json();
-        if (data.choices && data.choices[0] && data.choices[0].message) {
+        if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
           return data.choices[0].message.content;
         }
         return isPlanner ? generateDynamicAIPlan() : generateOfflineConceptResponse(messages);
@@ -1173,40 +1266,41 @@ Review the reference documentation, build a targeted test bench, and complete th
       summarySkillSelect.classList.add('bg-white');
     });
 
-    // 1. AI PLANNER EXECUTION (RELIABLE DUAL-TIER SYNC & RE-GENERATION)
+    // 1. AI PLANNER EXECUTION (FULL MULTI-SKILL AGGREGATION & RELIABLE DUAL-TIER SYNC)
     btnRunAiPlanner.addEventListener('click', async () => {
       if (isAiCooldownActive) return;
 
       btnRunAiPlanner.disabled = true;
       btnPlannerSpinner.classList.remove('hidden');
-      btnPlannerLabel.textContent = 'Generating Plan...';
+      btnPlannerLabel.textContent = 'Analyzing All Skills...';
 
-      const progressSummary = enrolledSkills.map(s => ({
-        skill: s.skill,
-        domain: s.domain,
-        progress: `${s.progress || 0}%`,
-        completedTopicsCount: (s.completed_topics || []).length
-      }));
+      // Aggregate all enrolled skills with exact progress
+      const detailedSkillsContext = enrolledSkills.map(s => {
+        const topics = getSkillCurriculum(s.skill, s.domain);
+        const completedCount = (s.completed_topics || []).length;
+        return `${s.skill} (Domain: ${s.domain}, Verified: ${completedCount}/${topics.length}, Progress: ${s.progress || 0}%)`;
+      }).join('; ');
 
       const promptMessages = [
         {
           role: 'system',
-          content: 'You are SkillBridge AI, an elite university engineering mentor. You create crisp, actionable, structured next-step study plans for engineering students based on their real progress.'
+          content: 'You are SkillBridge AI, a university engineering mentor and curriculum strategist. Provide exhaustive, multi-skill architectural learning roadmaps across all enrolled tracks simultaneously.'
         },
         {
           role: 'user',
-          content: `Here is my current learning state:
+          content: `Analyze my complete learning portfolio across ALL my enrolled skills:
 - Engineering Stream: ${userStream}
-- Current Tracked Skills: ${JSON.stringify(progressSummary)}
+- Total Active Skills Enrolled: ${enrolledSkills.length}
+- Complete Skill Portfolio: ${detailedSkillsContext}
 
-Analyze this progress and plan what I should do next. 
-Format your response in clean, concise markdown with:
-### 1. Progress Assessment
-(Briefly evaluate where I stand)
-### 2. Immediate Next Milestones
-(3-4 high-priority topics to tackle)
-### 3. Practical Exercise / Mini-Project Recommendation
-### 4. Study Schedule & Key Pitfalls to Avoid in ${userStream}.`
+Do NOT limit your plan to only one skill. Analyze all enrolled skills together as an interconnected full-stack engineering portfolio.
+Structure your extensive masterplan into:
+### 1. Comprehensive Portfolio Assessment (Evaluate each enrolled skill individually and the collective stack)
+### 2. Cross-Skill Synergy & Dependency Analysis (How these exact skills interlock within ${userStream})
+### 3. Phased Strategic Execution Roadmap (Phase 1 Immediate Sprints, Phase 2 Cross-Track Integration, Phase 3 Advanced Milestones)
+### 4. Unified Multi-Skill Capstone Project (Combines all active skills into a real production system)
+### 5. Weekly Time Allocation & Study Matrix (Concrete study hours split across the enrolled skills)
+### 6. Critical Engineering Pitfall to Avoid`
         }
       ];
 
@@ -1942,7 +2036,7 @@ Structure cleanly into:
         userStream = profile.stream;
         applyStreamSources(userStream);
 
-        // Restore saved AI Planner response (LocalStorage prioritized as newest client state)
+        // Restore saved AI Planner response (LocalStorage prioritized as freshest client-side state)
         let restoredPlan = null;
         try {
           restoredPlan = localStorage.getItem(`sb_ai_plan_${currentUser.id}`);
