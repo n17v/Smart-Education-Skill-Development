@@ -14,73 +14,95 @@ if (window.supabase && window.supabase.createClient) {
   console.warn('Supabase JS library not loaded.');
 }
 
-// 2. DOM Elements Cache
-const elements = {
-  tabSwitcher: document.getElementById('tab-switcher'),
-  tabIndicator: document.getElementById('tab-indicator'),
-  tabLogin: document.getElementById('tab-login'),
-  tabRegister: document.getElementById('tab-register'),
-  toast: document.getElementById('toast'),
-  toastMessage: document.getElementById('toast-message'),
-  views: {
+// Redirect target
+const DASHBOARD_URL = '/dashboard';
+
+function redirectToDashboard() {
+  window.location.href = DASHBOARD_URL;
+}
+
+let toastTimeout = null;
+
+// 2. Toast Notifications Engine
+function showToast(message, type = 'info') {
+  const toast = document.getElementById('toast');
+  const toastMessage = document.getElementById('toast-message');
+  if (!toast || !toastMessage) return;
+
+  clearTimeout(toastTimeout);
+  toastMessage.textContent = message;
+
+  toast.className =
+    'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full text-white text-sm font-medium shadow-lg pointer-events-none transition-all duration-300';
+
+  if (type === 'success') {
+    toast.style.backgroundColor = '#059669';
+  } else if (type === 'error') {
+    toast.style.backgroundColor = '#dc2626';
+  } else {
+    toast.style.backgroundColor = '#0f172a';
+  }
+
+  requestAnimationFrame(() => {
+    toast.classList.remove('opacity-0', 'translate-y-8');
+    toast.classList.add('opacity-100', 'translate-y-0');
+  });
+
+  toastTimeout = setTimeout(() => {
+    toast.classList.remove('opacity-100', 'translate-y-0');
+    toast.classList.add('opacity-0', 'translate-y-8');
+  }, 3200);
+}
+
+// 3. Sliding Tab Pill Controller (Guarded against null elements)
+function updateTabPill(activeTab) {
+  const tabIndicator = document.getElementById('tab-indicator');
+  const tabLogin = document.getElementById('tab-login');
+  const tabRegister = document.getElementById('tab-register');
+
+  if (!tabIndicator) return;
+
+  if (activeTab === 'login') {
+    tabIndicator.style.transform = 'translateX(0%)';
+    if (tabLogin) {
+      tabLogin.classList.add('text-brand-700');
+      tabLogin.classList.remove('text-slate-500');
+    }
+    if (tabRegister) {
+      tabRegister.classList.remove('text-brand-700');
+      tabRegister.classList.add('text-slate-500');
+    }
+  } else if (activeTab === 'register') {
+    tabIndicator.style.transform = 'translateX(100%)';
+    if (tabRegister) {
+      tabRegister.classList.add('text-brand-700');
+      tabRegister.classList.remove('text-slate-500');
+    }
+    if (tabLogin) {
+      tabLogin.classList.remove('text-brand-700');
+      tabLogin.classList.add('text-slate-500');
+    }
+  }
+}
+
+// 4. View Switcher with Reflow & Safe DOM queries
+function switchView(viewName) {
+  const views = {
     login: document.getElementById('view-login'),
     register: document.getElementById('view-register'),
     forgot: document.getElementById('view-forgot'),
     reset: document.getElementById('view-reset')
-  },
-  forms: {
-    login: document.getElementById('form-login'),
-    register: document.getElementById('form-register'),
-    forgot: document.getElementById('form-forgot'),
-    reset: document.getElementById('form-reset')
-  }
-};
+  };
 
-let toastTimeout = null;
+  const tabSwitcher = document.getElementById('tab-switcher');
 
-// 3. Toast Notifications Engine
-function showToast(message, type = 'info') {
-  if (!elements.toast || !elements.toastMessage) return;
-
-  clearTimeout(toastTimeout);
-  elements.toastMessage.textContent = message;
-
-  // Background colors: info (#0f172a), success (#059669), error (#dc2626)
-  elements.toast.className =
-    'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full text-white text-sm font-medium shadow-lg pointer-events-none transition-all duration-300';
-
-  if (type === 'success') {
-    elements.toast.style.backgroundColor = '#059669';
-  } else if (type === 'error') {
-    elements.toast.style.backgroundColor = '#dc2626';
-  } else {
-    elements.toast.style.backgroundColor = '#0f172a';
-  }
-
-  // Animate in
-  requestAnimationFrame(() => {
-    elements.toast.classList.remove('opacity-0', 'translate-y-8');
-    elements.toast.classList.add('opacity-100', 'translate-y-0');
-  });
-
-  // Auto hide after 3.2s
-  toastTimeout = setTimeout(() => {
-    elements.toast.classList.remove('opacity-100', 'translate-y-0');
-    elements.toast.classList.add('opacity-0', 'translate-y-8');
-  }, 3200);
-}
-
-// 4. View Switcher with Forced Reflow & Auto-focus
-function switchView(viewName) {
-  Object.entries(elements.views).forEach(([name, el]) => {
+  Object.entries(views).forEach(([name, el]) => {
     if (!el) return;
     if (name === viewName) {
       el.classList.remove('hidden');
-      // Trigger reflow to restart fadeUp CSS animation
-      void el.offsetWidth;
+      void el.offsetWidth; // Force reflow to re-trigger CSS animation
       el.classList.add('is-active');
 
-      // Auto-focus first input after 60ms
       setTimeout(() => {
         const firstInput = el.querySelector('input:not([type="hidden"])');
         if (firstInput) firstInput.focus();
@@ -91,37 +113,17 @@ function switchView(viewName) {
     }
   });
 
-  // Update tab switcher visibility and position
-  if (elements.tabSwitcher) {
+  if (tabSwitcher) {
     if (viewName === 'login' || viewName === 'register') {
-      elements.tabSwitcher.classList.remove('hidden');
+      tabSwitcher.classList.remove('hidden');
       updateTabPill(viewName);
     } else {
-      elements.tabSwitcher.classList.add('hidden');
+      tabSwitcher.classList.add('hidden');
     }
   }
 }
 
-// 5. Sliding Tab Pill Controller
-function updateTabPill(activeTab) {
-  if (!elements.tabIndicator || !elements.tabLogin || !elements.tabRegister) return;
-
-  if (activeTab === 'login') {
-    elements.tabIndicator.style.transform = 'translateX(0%)';
-    elements.tabLogin.classList.add('text-brand-700');
-    elements.tabLogin.classList.remove('text-slate-500');
-    elements.tabRegister.classList.remove('text-brand-700');
-    elements.tabRegister.classList.add('text-slate-500');
-  } else if (activeTab === 'register') {
-    elements.tabIndicator.style.transform = 'translateX(100%)';
-    elements.tabRegister.classList.add('text-brand-700');
-    elements.tabRegister.classList.remove('text-slate-500');
-    elements.tabLogin.classList.remove('text-brand-700');
-    elements.tabLogin.classList.add('text-slate-500');
-  }
-}
-
-// 6. Floating Label State Controller
+// 5. Floating Label State Controller
 function initFloatingLabels() {
   const inputs = document.querySelectorAll('.field input');
   inputs.forEach((input) => {
@@ -140,8 +142,8 @@ function initFloatingLabels() {
   });
 }
 
-// 7. Button Loading State Helper
-function setButtonLoading(button, isLoading, defaultText = '') {
+// 6. Button Loading State Helper
+function setButtonLoading(button, isLoading) {
   if (!button) return;
   if (isLoading) {
     button.disabled = true;
@@ -156,28 +158,19 @@ function setButtonLoading(button, isLoading, defaultText = '') {
   } else {
     button.disabled = false;
     const original = button.getAttribute('data-original-html');
-    if (original) {
-      button.innerHTML = original;
-    } else if (defaultText) {
-      button.textContent = defaultText;
-    }
+    if (original) button.innerHTML = original;
   }
 }
 
-// 8. Anime.js Logo Vector Animation
+// 7. Logo Vector Animation (Anime.js)
 function runLogoAnimation() {
   if (typeof anime === 'undefined') return;
 
   const stem = document.querySelectorAll('.logo-stem');
   const leaves = document.querySelectorAll('.logo-leaf');
-
   if (!stem.length && !leaves.length) return;
 
-  const timeline = anime.timeline({
-    easing: 'easeOutExpo'
-  });
-
-  timeline
+  anime.timeline({ easing: 'easeOutExpo' })
     .add({
       targets: '.logo-stem',
       strokeDashoffset: [anime.setDashoffset, 0],
@@ -197,7 +190,7 @@ function runLogoAnimation() {
     );
 }
 
-// 9. Auth Actions via Supabase
+// 8. Auth Actions
 async function handleLogin(e) {
   e.preventDefault();
   const form = e.target;
@@ -216,6 +209,7 @@ async function handleLogin(e) {
     if (error) throw error;
 
     showToast('Signed in successfully! Redirecting…', 'success');
+    setTimeout(redirectToDashboard, 800);
   } catch (err) {
     showToast(err.message || 'Failed to log in. Please check your credentials.', 'error');
   } finally {
@@ -234,22 +228,34 @@ async function handleRegister(e) {
   setButtonLoading(submitBtn, true);
 
   try {
-    const { data, error } = await supabaseClient.auth.signUp({
+    const { data: authData, error: authError } = await supabaseClient.auth.signUp({
       email,
       password,
       options: {
-        data: {
-          full_name: fullName
-        }
+        data: { full_name: fullName }
       }
     });
 
-    if (error) throw error;
+    if (authError) throw authError;
 
-    showToast('Account created! Check your email to confirm registration.', 'success');
-    form.reset();
-    initFloatingLabels();
-    setTimeout(() => switchView('login'), 1500);
+    // Optional profile insertion if user returned immediately
+    if (authData?.user) {
+      await supabaseClient
+        .from('profiles')
+        .insert([{ id: authData.user.id, full_name: fullName, email: email }])
+        .catch(() => {});
+    }
+
+    // If auto-confirmed session is returned, go straight to dashboard
+    if (authData?.session) {
+      showToast('Registration complete! Redirecting…', 'success');
+      setTimeout(redirectToDashboard, 800);
+    } else {
+      showToast('Account created! Please check your email to confirm.', 'success');
+      form.reset();
+      initFloatingLabels();
+      setTimeout(() => switchView('login'), 1500);
+    }
   } catch (err) {
     showToast(err.message || 'Failed to create account.', 'error');
   } finally {
@@ -271,7 +277,6 @@ async function handleForgotPassword(e) {
     });
 
     if (error) throw error;
-
     showToast('Password reset link sent! Check your inbox.', 'success');
   } catch (err) {
     showToast(err.message || 'Unable to send reset email.', 'error');
@@ -300,11 +305,8 @@ async function handleResetPassword(e) {
     });
 
     if (error) throw error;
-
-    showToast('Password updated successfully! Please log in.', 'success');
-    form.reset();
-    initFloatingLabels();
-    setTimeout(() => switchView('login'), 1200);
+    showToast('Password updated! Redirecting…', 'success');
+    setTimeout(redirectToDashboard, 1000);
   } catch (err) {
     showToast(err.message || 'Failed to update password.', 'error');
   } finally {
@@ -312,20 +314,27 @@ async function handleResetPassword(e) {
   }
 }
 
-// 10. Initialization & Event Listeners
+// 9. Session Verification (Auto-redirect if logged in)
+async function checkExistingSession() {
+  if (!supabaseClient) return;
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (session) {
+    redirectToDashboard();
+  }
+}
+
+// 10. Initialization
 document.addEventListener('DOMContentLoaded', () => {
+  checkExistingSession();
   initFloatingLabels();
   runLogoAnimation();
 
-  // Tab switcher click handlers
-  if (elements.tabLogin) {
-    elements.tabLogin.addEventListener('click', () => switchView('login'));
-  }
-  if (elements.tabRegister) {
-    elements.tabRegister.addEventListener('click', () => switchView('register'));
-  }
+  const tabLogin = document.getElementById('tab-login');
+  const tabRegister = document.getElementById('tab-register');
+  if (tabLogin) tabLogin.addEventListener('click', () => switchView('login'));
+  if (tabRegister) tabRegister.addEventListener('click', () => switchView('register'));
 
-  // Navigation triggers
   const toForgotBtn = document.getElementById('to-forgot');
   if (toForgotBtn) {
     toForgotBtn.addEventListener('click', (e) => {
@@ -334,26 +343,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const backToLoginButtons = document.querySelectorAll('.back-to-login');
-  backToLoginButtons.forEach((btn) => {
+  document.querySelectorAll('.back-to-login').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       switchView('login');
     });
   });
 
-  // Form submission bindings
-  if (elements.forms.login) elements.forms.login.addEventListener('submit', handleLogin);
-  if (elements.forms.register) elements.forms.register.addEventListener('submit', handleRegister);
-  if (elements.forms.forgot) elements.forms.forgot.addEventListener('submit', handleForgotPassword);
-  if (elements.forms.reset) elements.forms.reset.addEventListener('submit', handleResetPassword);
+  const formLogin = document.getElementById('form-login');
+  const formRegister = document.getElementById('form-register');
+  const formForgot = document.getElementById('form-forgot');
+  const formReset = document.getElementById('form-reset');
 
-  // Supabase Auth State Change Listener (Catches PASSWORD_RECOVERY email links)
+  if (formLogin) formLogin.addEventListener('submit', handleLogin);
+  if (formRegister) formRegister.addEventListener('submit', handleRegister);
+  if (formForgot) formForgot.addEventListener('submit', handleForgotPassword);
+  if (formReset) formReset.addEventListener('submit', handleResetPassword);
+
   if (supabaseClient) {
-    supabaseClient.auth.onAuthStateChange((event) => {
+    supabaseClient.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
         switchView('reset');
         showToast('Please enter your new password.', 'info');
+      } else if (event === 'SIGNED_IN' && session) {
+        redirectToDashboard();
       }
     });
   }
