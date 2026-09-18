@@ -6,34 +6,43 @@
 <title>SkillBridge AI — Sign In</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-
 <script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        brand: {
-          50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',
-          500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b'
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',
+            500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b'
+          }
+        },
+        fontFamily: { sans: ['Inter','system-ui','sans-serif'] },
+        keyframes: {
+          fadeUp: { '0%':{opacity:'0',transform:'translateY(14px)'}, '100%':{opacity:'1',transform:'translateY(0)'} },
+          floaty: { '0%,100%':{transform:'translateY(0) scale(1)'}, '50%':{transform:'translateY(-24px) scale(1.05)'} }
+        },
+        animation: {
+          'fade-up': 'fadeUp .55s cubic-bezier(.2,.7,.3,1) forwards',
+          'floaty': 'floaty 9s ease-in-out infinite',
+          'floaty-rev': 'floaty 11s ease-in-out infinite reverse'
         }
-      },
-      fontFamily: { sans: ['Inter','system-ui','sans-serif'] }
+      }
     }
   }
-}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 </head>
+
 <body class="font-sans text-slate-800 antialiased bg-white">
 
-<!-- shared gradient -->
-<svg width="0" height="0" style="position:absolute">
+<!-- SVG gradient defs -->
+<svg width="0" height="0" class="absolute">
   <defs>
     <linearGradient id="leafGrad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#34d399"/>
@@ -46,9 +55,9 @@ tailwind.config = {
 
   <!-- LEFT brand panel -->
   <aside class="relative hidden lg:flex flex-col justify-between p-12 overflow-hidden bg-gradient-to-br from-brand-50 via-white to-brand-100">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+    <div class="pointer-events-none absolute -top-32 -right-32 w-[380px] h-[380px] rounded-full bg-brand-300 blur-3xl opacity-50 animate-floaty"></div>
+    <div class="pointer-events-none absolute -bottom-32 -left-24 w-[320px] h-[320px] rounded-full bg-brand-200 blur-3xl opacity-50 animate-floaty-rev"></div>
+    <div class="pointer-events-none absolute top-1/3 left-1/3 w-[240px] h-[240px] rounded-full bg-brand-400 blur-3xl opacity-25 animate-floaty"></div>
 
     <div class="relative z-10 flex items-center gap-3">
       <svg id="logo" viewBox="0 0 100 100" class="w-12 h-12">
@@ -61,25 +70,34 @@ tailwind.config = {
     </div>
 
     <div class="relative z-10 max-w-md">
-      <h1 class="text-4xl font-extrabold leading-tight tracking-tight text-slate-900 reveal">
+      <h1 class="text-4xl font-extrabold leading-tight tracking-tight text-slate-900">
         Grow your skills.<br/>
         <span class="text-brand-600">Bridge the gap.</span>
       </h1>
-      <p class="mt-5 text-slate-600 leading-relaxed reveal" data-delay="100">
+      <p class="mt-5 text-slate-600 leading-relaxed">
         AI-powered skill gap analysis and personalized learning paths — built for the next generation of learners.
       </p>
 
       <ul class="mt-10 space-y-4">
-        <li class="flex items-center gap-3 reveal" data-delay="200"><span class="check">✓</span><span class="text-sm text-slate-700">Personalized learning paths</span></li>
-        <li class="flex items-center gap-3 reveal" data-delay="300"><span class="check">✓</span><span class="text-sm text-slate-700">AI-driven skill gap analysis</span></li>
-        <li class="flex items-center gap-3 reveal" data-delay="400"><span class="check">✓</span><span class="text-sm text-slate-700">Career & course recommendations</span></li>
+        <li class="flex items-center gap-3">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold">✓</span>
+          <span class="text-sm text-slate-700">Personalized learning paths</span>
+        </li>
+        <li class="flex items-center gap-3">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold">✓</span>
+          <span class="text-sm text-slate-700">AI-driven skill gap analysis</span>
+        </li>
+        <li class="flex items-center gap-3">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold">✓</span>
+          <span class="text-sm text-slate-700">Career &amp; course recommendations</span>
+        </li>
       </ul>
     </div>
 
     <div class="relative z-10 text-xs text-slate-400">© 2026 SkillBridge AI · TECHNEXA Hackathon</div>
   </aside>
 
-  <!-- RIGHT auth card -->
+  <!-- RIGHT auth -->
   <main class="flex items-center justify-center p-6 lg:p-12 bg-white">
     <div class="w-full max-w-md">
 
@@ -98,9 +116,9 @@ tailwind.config = {
 
         <!-- Tabs -->
         <div id="tabs" class="relative inline-flex p-1 rounded-full bg-brand-50 mb-8">
-          <span id="tabPill" class="absolute top-1 left-1 h-[calc(100%-8px)] w-1/2 rounded-full bg-white shadow transition-transform duration-300"></span>
-          <button data-tab="login" class="tab-btn relative z-10 px-6 py-2 text-sm font-semibold rounded-full active">Log In</button>
-          <button data-tab="register" class="tab-btn relative z-10 px-6 py-2 text-sm font-semibold rounded-full">Register</button>
+          <span id="tabPill" class="absolute top-1 left-1 h-[calc(100%-8px)] w-[calc(50%-4px)] rounded-full bg-white shadow-sm transition-transform duration-300 ease-out"></span>
+          <button data-tab="login"    class="tab-btn relative z-10 px-6 py-2 text-sm font-semibold rounded-full text-brand-700">Log In</button>
+          <button data-tab="register" class="tab-btn relative z-10 px-6 py-2 text-sm font-semibold rounded-full text-slate-500">Register</button>
         </div>
 
         <!-- LOGIN -->
@@ -122,7 +140,7 @@ tailwind.config = {
               <label class="flex items-center gap-2 text-slate-500 select-none cursor-pointer">
                 <input type="checkbox" class="accent-brand-600" /> Remember me
               </label>
-              <button type="button" class="text-brand-600 font-semibold hover:text-brand-700" onclick="showView('forgot')">Forgot password?</button>
+              <button type="button" class="text-brand-600 font-semibold hover:text-brand-700 transition-colors" onclick="showView('forgot')">Forgot password?</button>
             </div>
 
             <button type="button" class="btn-primary" onclick="handleLogin(this)">
@@ -160,7 +178,7 @@ tailwind.config = {
 
         <!-- FORGOT -->
         <section id="view-forgot" class="auth-view hidden">
-          <button class="back-link" onclick="showView('login')">
+          <button type="button" class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-600 transition-colors" onclick="showView('login')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>
             Back to login
           </button>
@@ -201,11 +219,14 @@ tailwind.config = {
           </form>
         </section>
 
-        <div id="toast" class="toast"></div>
       </div>
     </div>
   </main>
 </div>
+
+<!-- Toast -->
+<div id="toast" class="fixed left-1/2 bottom-6 z-50 px-5 py-3 rounded-full text-sm font-medium text-white shadow-2xl opacity-0 pointer-events-none transition-all duration-300"
+     style="transform: translate(-50%, 200%);">Toast</div>
 
 <script src="js/theme.js"></script>
 <script src="js/func.js"></script>
