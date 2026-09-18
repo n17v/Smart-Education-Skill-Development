@@ -26,35 +26,41 @@
   <script src="js/theme.js"></script>
 
   <style>
-    /* Markdown Styles */
+    /* Markdown Typography & Structure */
     .ai-markdown h1, .ai-markdown h2, .ai-markdown h3, .ai-markdown h4 {
       font-weight: 700;
       color: #0f172a;
-      margin-top: 1rem;
-      margin-bottom: 0.35rem;
+      margin-top: 1.15rem;
+      margin-bottom: 0.4rem;
     }
     .ai-markdown h3 {
       font-size: 1.05rem;
       border-bottom: 1px solid #e2e8f0;
-      padding-bottom: 0.25rem;
-      margin-top: 1.25rem;
+      padding-bottom: 0.35rem;
+      margin-top: 1.35rem;
     }
     .ai-markdown h4 {
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       color: #047857;
+      margin-top: 0.85rem;
     }
     .ai-markdown p {
-      margin-bottom: 0.65rem;
-      line-height: 1.6;
+      margin-bottom: 0.75rem;
+      line-height: 1.65;
     }
     .ai-markdown ul {
       list-style-type: disc;
-      padding-left: 1.25rem;
-      margin-bottom: 0.75rem;
+      padding-left: 1.35rem;
+      margin-bottom: 0.85rem;
+    }
+    .ai-markdown ol {
+      list-style-type: decimal;
+      padding-left: 1.35rem;
+      margin-bottom: 0.85rem;
     }
     .ai-markdown li {
-      margin-bottom: 0.3rem;
-      line-height: 1.5;
+      margin-bottom: 0.35rem;
+      line-height: 1.55;
     }
     .ai-markdown strong {
       font-weight: 700;
@@ -62,13 +68,38 @@
     }
     .ai-markdown blockquote {
       border-left: 3px solid #10b981;
-      padding-left: 0.85rem;
+      padding-left: 0.95rem;
       color: #047857;
       background: #ecfdf5;
       border-radius: 0.5rem;
-      padding-top: 0.4rem;
-      padding-bottom: 0.4rem;
-      margin-bottom: 0.85rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .ai-markdown code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82em;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 0.15rem 0.35rem;
+      border-radius: 0.35rem;
+      border: 1px solid #e2e8f0;
+    }
+    .ai-markdown pre {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      overflow-x: auto;
+      margin-top: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .ai-markdown pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+      border: none;
+      font-size: 0.82rem;
     }
 
     /* AI Generated Markdown Table UI */
@@ -470,10 +501,10 @@
           <!-- Post-Answer AI Exploration Options -->
           <div id="summary-followup-container" class="hidden pt-4 mt-2 border-t border-slate-100 flex flex-wrap items-center gap-2.5">
             <span class="text-xs font-semibold text-slate-500">Ask SkillBridge AI further:</span>
-            <button type="button" id="btn-explain-whole-skill" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-brand-50 hover:border-brand-500 hover:text-brand-700 transition-all shadow-xs">
+            <button type="button" id="btn-explain-whole-skill" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-brand-50 hover:border-brand-500 hover:text-brand-700 transition-all shadow-xs cursor-pointer">
               Explain whole skill
             </button>
-            <button type="button" id="btn-explain-subtopics" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-brand-50 hover:border-brand-500 hover:text-brand-700 transition-all shadow-xs flex items-center gap-1.5">
+            <button type="button" id="btn-explain-subtopics" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-brand-50 hover:border-brand-500 hover:text-brand-700 transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
               <span>Explain sub topics</span>
               <span class="text-[10px] text-slate-400">▾</span>
             </button>
@@ -1426,6 +1457,7 @@
       markdown += `\n### 2. Cross-Skill Synergy & Dependency Analysis\n`;
       const skillNames = detailedAnalysis.map(a => a.skill).join(' + ');
       markdown += `- **Architectural Interlock:** Combining **${skillNames}** covers the complete lifecycle of ${userStream}.\n`;
+      markdown += `- **Pipeline Data Coupling:** Data structures and algorithmic representations established in the foundational modules dictate processing throughput across higher-level telemetry consumers.\n`;
 
       markdown += `\n### 3. Phased Strategic Execution Roadmap\n`;
       markdown += `#### Phase 1: High-Priority Topic Sprints (Immediate)\n`;
@@ -1438,18 +1470,155 @@
         markdown += `- All currently tracked topics are 100% verified. Proceed directly to capstone construction.\n`;
       }
 
+      markdown += `\n#### Phase 2: Integration Verification & Regression Benchmarking\n`;
+      markdown += `- Conduct stress and integration tests connecting intermediate data pipelines between all tracked skills.\n`;
+
       markdown += `\n### 4. Unified Full-Stack Capstone Project\n`;
       markdown += `- **Project:** Modular ${userStream} Control & Telemetry Suite combining **${skillNames}** into a unified test-driven solution.\n`;
 
       return markdown;
     }
 
+    // ROBUST MULTI-SECTION UN-SCRIPTED TECHNICAL FALLBACK ENGINE
     function generateOfflineConceptResponse(messages) {
       const userPrompt = messages[messages.length - 1].content;
       const skillName = currentSummarySkill || 'Engineering Skill';
-      return `### Technical Deep-Dive: ${skillName}\n\n#### 1. Core Principles\n**${skillName}** forms the foundation of modern ${userStream} systems.\n\n#### 2. Practical Verification\nReview standard syntax, run automated unit tests, and confirm knowledge checks in the **Progress** tab.`;
+      const domainName = currentSummaryDomain || 'Core Domain';
+      const isMasterclass = userPrompt.includes('comprehensive, holistic masterclass');
+      const subtopicMatch = userPrompt.match(/sub-topic "([^"]+)"/i);
+      const subtopicName = subtopicMatch ? subtopicMatch[1] : null;
+
+      if (isMasterclass) {
+        return `### Full-Stack Engineering Masterclass: ${skillName}
+*Target Field: ${userStream} · Domain Track: ${domainName}*
+
+#### 1. High-Level Architecture & Core Philosophy
+**${skillName}** serves as an indispensable operational pillar within modern **${userStream}** environments. Rather than viewing ${skillName} as an isolated tool, industry architectures treat it as a foundational layer that dictates data interchange, execution boundaries, and hardware/software telemetry contracts.
+
+- **System Interlock:** Integrates with your broader engineering workflow, exchanging state parameters with dependent modules.
+- **Resource Constraints:** Designed to function deterministically under strict latency, memory overhead, and CPU budgeting constraints.
+- **Modularity:** Enforces strict boundary isolation to eliminate cascade failures across your tech stack.
+
+#### 2. End-to-End System Lifecycle & Mechanics
+\`\`\`
+  [Input Telemetry / Raw Events]
+               │
+               ▼
+  [Validation & Boundary Gate] ──► (Malformed Input Rejection)
+               │
+               ▼
+  [${skillName} Core Runtime Processing Engine]
+         │                     │
+         ▼                     ▼
+  (State Persistence)    (Downstream Dispatch / Actuation)
+\`\`\`
+
+1. **Initialization Phase:** Allocates runtime buffers, verifies schema definitions, and establishes safe connection endpoints.
+2. **Execution & State Flow:** Transforms input signals using deterministic algorithms while maintaining linear scalability.
+3. **Defensive Error Handling:** Implements circuit-breakers, typed exceptions, and structured telemetry sinks to guarantee recovery without manual restarts.
+
+#### 3. Deep-Dive Sub-Disciplines & Production Code Pattern
+To deploy **${skillName}** in production, master these distinct technical layers:
+- **Foundations & Syntax:** Strict type contracts, zero memory leaks, and deterministic lifecycle control.
+- **High-Throughput Concurrency:** Asynchronous loop scheduling, non-blocking I/O routines, and thread safety.
+- **Automated Verification:** Unit testing coverage $> 85\\%$, mutation testing, and continuous profiling.
+
+\`\`\`python
+# Production Structural Pattern for ${skillName}
+class ${skillName.replace(/[^a-zA-Z0-9]/g, '')}Pipeline:
+    def __init__(self, stream: str = "${userStream}"):
+        self.stream = stream
+        self.is_initialized = True
+        self.telemetry_log = []
+
+    def execute_lifecycle(self, payload: dict) -> dict:
+        """Executes verified data flow with defensive boundary validation."""
+        if not payload or "data" not in payload:
+            raise ValueError("[${skillName} Error] Incomplete payload received")
+
+        # Deterministic transformation aligned with ${userStream}
+        processed_result = {
+            "source_skill": "${skillName}",
+            "status": "VERIFIED_200",
+            "telemetry_metrics": len(payload["data"]) * 1.024
+        }
+        self.telemetry_log.append(processed_result)
+        return processed_result
+\`\`\`
+
+#### 4. Enterprise Failure Modes & Antipatterns
+- **Tight Coupling:** Never embed domain-specific business rules directly inside ${skillName} drivers. Always decouple through abstract interfaces.
+- **Ignoring Edge Telemetry:** Failing to measure memory pressure and processing latency creates silent degradation in scaled environments.
+- **Unverified Assumptions:** Always assert preconditions before executing compute-intensive tasks.`;
+      }
+
+      if (subtopicName) {
+        return `### Deep-Dive Analysis: ${subtopicName}
+*Component of: ${skillName} (${domainName}) · Stream Focus: ${userStream}*
+
+#### 1. Technical Mechanics & Underlying Theory
+The **${subtopicName}** module represents a critical execution boundary inside **${skillName}**. It directly addresses structural throughput, error propagation, and state reproducibility within **${userStream}**.
+
+- **Primary Responsibility:** Eliminates non-deterministic behavior through strict state synchronization.
+- **Data Flow:** Normalizes raw parameters before feeding them into computational pipelines.
+- **Algorithmic Efficiency:** Operates with targeted $\\mathcal{O}(1)$ or $\\mathcal{O}(n \\log n)$ efficiency to eliminate blocking bottlenecks.
+
+#### 2. Implementation Walkthrough
+\`\`\`javascript
+/**
+ * Architectural implementation of ${subtopicName}
+ * Designed for modern ${userStream} data standards.
+ */
+function handle${subtopicName.replace(/[^a-zA-Z0-9]/g, '')}(configPayload) {
+  // 1. Boundary Assertion
+  if (!configPayload || typeof configPayload !== 'object') {
+    throw new TypeError('[${subtopicName}] Invalid configuration object passed');
+  }
+
+  // 2. Safe execution parameters
+  const executionContext = {
+    subtopic: '${subtopicName}',
+    parentSkill: '${skillName}',
+    timestamp: Date.now(),
+    metrics: Object.freeze({ ...configPayload })
+  };
+
+  // 3. Deterministic Output Transformation
+  return {
+    success: true,
+    context: executionContext,
+    checksum: btoa(JSON.stringify(executionContext.metrics))
+  };
+}
+\`\`\`
+
+#### 3. Critical Production Pitfalls
+- **Overlooking Memory Footprints:** Retaining uncollected references during continuous event cycles will degrade response times.
+- **Skipping Regression Testing:** Verify edge conditions (null payloads, buffer overflows, network disconnects) via the Progress test suite.
+
+#### 4. Next Step Implementation
+Open the reference documentation in your **Progress** tab, build a working test suite with the pattern above, and complete the milestone evaluation!`;
+      }
+
+      return `### Architectural Breakdown: ${skillName} (${domainName})
+*Curriculum: ${userStream} (2026-27 Framework)*
+
+#### 1. Core Concept & Architectural Importance
+In **${userStream}**, **${skillName}** acts as a foundational system component. It provides the abstractions needed to write modular, maintainable, and high-performance engineering logic while avoiding fragile, monolithic designs.
+
+#### 2. Fundamental Mechanics & Structural Principles
+- **Scoping & Lifecycle:** Strict control over lifecycle states, reducing execution race conditions.
+- **Interface Standardization:** Connects seamlessly with peer tracks across the ${domainName} domain.
+- **Scalability:** Optimized for consistent throughput under multi-threaded or distributed deployment targets.
+
+#### 3. Real-World Industry Application
+Engineers in ${userStream} leverage ${skillName} to automate operational telemetry, handle complex state graphs, and validate pipeline reliability before field deployment.
+
+#### 4. Verification & Milestone Goals
+Review the W3Schools official documentation, implement a working prototype, and verify your mastery with the interactive knowledge check under the **Progress** tab!`;
     }
 
+    // EXPANDED TO 2500 TOKENS FOR EXHAUSTIVE, RICH OUTPUTS
     async function callAIAPI(messages, isPlanner = false) {
       try {
         const response = await fetch('/.netlify/functions/ai', {
@@ -1457,7 +1626,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             messages: messages,
-            max_tokens: isPlanner ? 1800 : 900
+            max_tokens: isPlanner ? 2200 : 2500
           })
         });
 
@@ -1540,7 +1709,7 @@
       const promptMessages = [
         {
           role: 'system',
-          content: 'You are SkillBridge AI, a university engineering mentor. Provide exhaustive, multi-skill architectural learning roadmaps and structured Markdown comparison tables across all tracks.'
+          content: 'You are SkillBridge AI, an elite university engineering mentor. Never give shallow summaries. Provide exhaustive, multi-skill architectural learning roadmaps and structured Markdown comparison tables across all tracks.'
         },
         {
           role: 'user',
@@ -1550,10 +1719,10 @@
 - Complete Skill Portfolio: ${detailedSkillsContext}
 
 Format response in clean Markdown with:
-### 1. Comprehensive Portfolio Assessment (Include a Markdown table of all skills, progress, and verification status)
-### 2. Cross-Skill Synergy Analysis
-### 3. Phased Strategic Execution Roadmap
-### 4. Unified Full-Stack Capstone Project`
+### 1. Comprehensive Portfolio Assessment (Include a complete Markdown comparison table of all skills, progress, and verification status)
+### 2. Cross-Skill Synergy Analysis (Deep dive into how data and interfaces flow between these skills in ${userStream})
+### 3. Phased Strategic Execution Roadmap (Concrete, sprint-by-sprint guidance)
+### 4. Unified Full-Stack Capstone Project Architecture (Detailed project brief with component hierarchy)`
         }
       ];
 
@@ -1585,6 +1754,7 @@ Format response in clean Markdown with:
       }
     });
 
+    // 1. Specific Skill Summary Form Prompt
     summaryForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const domain = summaryDomainSelect.value;
@@ -1605,16 +1775,18 @@ Format response in clean Markdown with:
       const promptMessages = [
         {
           role: 'system',
-          content: 'You are SkillBridge AI, a technical engineering educator. Provide detailed, clear, industry-grade explanations with practical code or schematic principles.'
+          content: 'You are SkillBridge AI, an elite university engineering mentor and systems architect. Never provide shallow, generic bullet points or introductory filler. Provide long, rigorous, exhaustive, academic and practical explanations with full architectural breakdowns and real production code/schematic examples.'
         },
         {
           role: 'user',
-          content: `Explain "${skill}" under the domain "${domain}" for a student focusing on ${userStream} in modern engineering.
+          content: `Deliver an exhaustive, long-form technical explanation of the skill "${skill}" belonging to the domain "${domain}" for an advanced student in ${userStream}.
 
-Structure into:
-### 1. Core Concept & Architectural Importance
-### 2. Fundamental Mechanics & Principles
-### 3. Real-World Applications & Best Practices`
+Format your response in comprehensive Markdown with deep technical detail:
+### 1. High-Level Architecture & Theoretical Foundation (Explain how ${skill} functions internally, its operational mechanics, and memory/data lifecycle)
+### 2. Under-the-Hood Mechanisms & Concurrency/Data Flow (Explain step-by-step how data or control signals flow through ${skill})
+### 3. Production-Grade Implementation & Code Walkthrough (Provide a complete, realistic, production-grade code or configuration block with detailed line-by-line explanation)
+### 4. Enterprise Antipatterns & Failure Modes (Analyze 3 critical pitfalls, memory leaks, or race conditions engineers encounter and how to prevent them)
+### 5. Hands-on Milestone Challenge for ${userStream}`
         }
       ];
 
@@ -1629,22 +1801,31 @@ Structure into:
       }
     });
 
+    // 2. Full Masterclass Explanation Prompt
     btnExplainWholeSkill.addEventListener('click', async () => {
       if (!currentSummarySkill || isAiCooldownActive) return;
 
       btnExplainWholeSkill.disabled = true;
       btnExplainWholeSkill.textContent = 'Compiling...';
       summaryOutputHeading.textContent = `Full Skill Masterclass: ${currentSummarySkill}`;
-      summaryOutputBody.textContent = `Compiling breakdown for ${currentSummarySkill}...`;
+      summaryOutputBody.textContent = `Compiling comprehensive masterclass for ${currentSummarySkill}...`;
 
       const promptMessages = [
         {
           role: 'system',
-          content: 'You are SkillBridge AI, an expert engineering educator. Provide comprehensive holistic deep-dives.'
+          content: 'You are SkillBridge AI, a Principal Systems Architect and Distinguished Engineering Educator. Write exhaustive, university-level masterclasses with real code patterns, system designs, and production trade-offs. Avoid generic boilerplate.'
         },
         {
           role: 'user',
-          content: `Provide a comprehensive masterclass on "${currentSummarySkill}" within "${currentSummaryDomain}" for ${userStream}.`
+          content: `Provide an exhaustive, long-form masterclass on the entire skill "${currentSummarySkill}" within the domain "${currentSummaryDomain}" tailored for ${userStream}.
+
+Structure your comprehensive guide into:
+### 1. Architectural Foundations & Systems Landscape (How ${currentSummarySkill} anchors modern ${userStream} stacks)
+### 2. End-to-End System Lifecycle & Execution Pipeline (Diagram and thorough explanation of state transitions and data flows)
+### 3. Core Sub-Disciplines & Concrete Code Walkthrough (Full-length working implementation with defensive error handling)
+### 4. High-Throughput Performance Optimization & Benchmarks (Memory management, latency reduction, caching, and CPU efficiency)
+### 5. Real-World Production Failure Modes & Mitigation (Real enterprise outages caused by misconfiguration and how to resolve them)
+### 6. Progressive Capstone Project Specification (A step-by-step engineering project combining all concepts of ${currentSummarySkill})`
         }
       ];
 
@@ -1658,40 +1839,7 @@ Structure into:
       }
     });
 
-    btnExplainSubtopics.addEventListener('click', () => {
-      if (!currentSummarySkill) return;
-
-      subtopicsModalTitle.textContent = `${currentSummarySkill} Sub-Topics`;
-      const subtopics = getSubtopicsForSkill(currentSummarySkill, currentSummaryDomain);
-
-      subtopicsListContainer.innerHTML = '';
-      subtopics.forEach((topicName, idx) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'w-full text-left p-3 rounded-xl border border-slate-200 bg-white hover:border-brand-500 hover:bg-brand-50/40 text-xs font-semibold text-slate-800 transition-all flex items-center justify-between group';
-        btn.innerHTML = `
-          <div class="flex items-center gap-2.5 min-w-0">
-            <span class="w-5 h-5 rounded-md bg-slate-100 text-slate-600 flex items-center justify-center text-[10px] font-bold group-hover:bg-brand-500 group-hover:text-white transition-colors shrink-0">${idx + 1}</span>
-            <span class="truncate">${topicName}</span>
-          </div>
-          <span class="text-xs text-slate-400 group-hover:text-brand-600 font-bold shrink-0">→</span>
-        `;
-
-        btn.addEventListener('click', () => {
-          subtopicsModal.classList.add('hidden');
-          explainSpecificSubtopic(topicName);
-        });
-
-        subtopicsListContainer.appendChild(btn);
-      });
-
-      subtopicsModal.classList.remove('hidden');
-    });
-
-    btnCloseSubtopicsModal.addEventListener('click', () => {
-      subtopicsModal.classList.add('hidden');
-    });
-
+    // 3. Sub-Topic Deep Dive Prompt
     async function explainSpecificSubtopic(subTopicName) {
       if (isAiCooldownActive) return;
 
@@ -1701,11 +1849,18 @@ Structure into:
       const promptMessages = [
         {
           role: 'system',
-          content: 'You are SkillBridge AI, a technical engineering educator. Provide detailed, laser-focused explanations with mechanics.'
+          content: 'You are SkillBridge AI, an expert technical mentor. Provide deep, microscopic explanations of specific engineering concepts with mechanics, edge cases, and code implementation.'
         },
         {
           role: 'user',
-          content: `Provide a detailed breakdown of "${subTopicName}" belonging to "${currentSummarySkill}" for ${userStream}.`
+          content: `Deliver an in-depth, long-form technical explanation of the specific sub-topic "${subTopicName}", which is a core part of "${currentSummarySkill}" in the domain "${currentSummaryDomain}" for a student in ${userStream}.
+
+Structure your deep-dive into:
+### 1. Microscopic Mechanics & Conceptual Purpose (Exactly what ${subTopicName} does under the hood and why it exists)
+### 2. Low-Level Execution Principles & Data Flow (Step-by-step lifecycle from input to output)
+### 3. Concrete Implementation Example (Complete code/config block demonstrating ${subTopicName} in a real-world scenario)
+### 4. Edge Cases, Bugs & Performance Trade-offs (Analyze edge conditions, null handling, buffer limits, and race conditions)
+### 5. Practical Hands-On Exercise to Verify Mastery`
         }
       ];
 
@@ -2199,7 +2354,6 @@ Structure into:
         const results = data.results || [];
         if (!results || results.length === 0) throw new Error('Empty result set');
 
-        // Dynamic slice so consecutive calls with the same query also shift results
         const startIdx = (rotationIdx * 3) % Math.max(1, results.length);
         let selected = results.slice(startIdx, startIdx + 3);
         if (selected.length < 3) {
@@ -2208,7 +2362,6 @@ Structure into:
 
         renderWebLinksCards(selected);
       } catch (err) {
-        // Smoothly fall back to pre-configured multi-tier sets
         const fallbackSet = getWebLinksForStream(stream, rotationIdx);
         renderWebLinksCards(fallbackSet);
       }
@@ -2269,7 +2422,6 @@ Structure into:
       return Date.now();
     }
 
-    // Click Handlers for Store and Web Refresh
     btnRefreshStore.addEventListener('click', () => {
       lastStoreRefresh = executeRateLimited(btnRefreshStore, btnRefreshStoreText, iconRefreshStore, () => {
         storeOffset += 3;
@@ -2284,7 +2436,6 @@ Structure into:
       }, lastWebRefresh);
     });
 
-    // Dynamic Session & Profile Initialization
     async function initDashboardSession() {
       try {
         const cfgRes = await fetch('/.netlify/functions/config');
