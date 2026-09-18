@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SkillBridge AI</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --purity-bg: #f8f9fa;
+    --purity-card: #ffffff;
+    --purity-text: #2d3748;
+    --purity-text-secondary: #a0aec0;
+    --purity-brand: #0075ff;
+    --purity-brand-hover: #005ecb;
+    --purity-border: #e2e8f0;
+    --purity-radius: 15px;
+    --purity-shadow: 0px 3.5px 5.5px rgba(0, 0, 0, 0.02);
+  }
+
+  body.dark {
+    --purity-bg: #1a202c;
+    --purity-card: #2d3748;
+    --purity-text: #f7fafc;
+    --purity-text-secondary: #a0aec0;
+    --purity-border: #4a5568;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--purity-bg);
+    color: var(--purity-text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .container { width: 100%; max-width: 860px; }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  .header h1 { font-size: 24px; font-weight: 700; }
+  .header p { font-size: 13px; color: var(--purity-text-secondary); margin-top: 4px; }
+
+  /* Auth buttons */
+  .auth-buttons { display: flex; gap: 8px; }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--purity-border);
+    color: var(--purity-text);
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { background: var(--purity-brand); color: #fff; border-color: var(--purity-brand); }
+
+  .btn-solid {
+    background: var(--purity-brand);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-solid:hover { background: var(--purity-brand-hover); }
+
+  /* Cards */
+  .card {
+    background: var(--purity-card);
+    border-radius: var(--purity-radius);
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--purity-shadow);
+    border: 1px solid var(--purity-border);
+  }
+  .card h2 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+  .card h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--purity-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Form */
+  label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  input, textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--purity-border);
+    border-radius: 12px;
+    background: transparent;
+    color: var(--purity-text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    margin-bottom: 16px;
+    outline: none;
+    transition: border 0.2s;
+  }
+  input:focus, textarea:focus { border-color: var(--purity-brand); }
+  textarea { resize: vertical; }
+
+  /* Output */
+  #output {
+    white-space: pre-wrap;
+    line-height: 1.7;
+    font-size: 14px;
+    color: var(--purity-text);
+  }
+
+  /* Auth Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--purity-card);
+    border-radius: var(--purity-radius);
+    padding: 32px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .modal h2 { margin-bottom: 20px; }
+  .modal .switch { text-align: center; margin-top: 16px; font-size: 13px; color: var(--purity-text-secondary); }
+  .modal .switch a { color: var(--purity-brand); cursor: pointer; font-weight: 600; }
+
+  .hidden { display: none !important; }
+  .user-info { font-size: 13px; color: var(--purity-text-secondary); }
+  .user-info span { color: var(--purity-brand); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <h1>SkillBridge AI</h1>
+      <p>Smart Education & Skill Development · TECHNEXA 2026</p>
+    </div>
+    <div class="auth-buttons" id="authArea">
+      <button class="btn-outline" onclick="openModal('login')">Log In</button>
+      <button class="btn-solid" onclick="openModal('register')">Register</button>
+    </div>
+  </div>
+
+  <!-- Logged-in user bar -->
+  <div class="card hidden" id="userBar">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="user-info">Logged in as <span id="userEmail"></span></div>
+      <button class="btn-outline" onclick="logout()">Log Out</button>
+    </div>
+  </div>
+
+  <!-- Main Form -->
+  <div class="card" id="mainCard">
+    <h2>🎯 Skill Gap Analysis</h2>
+    <label>Name</label>
+    <input id="name" placeholder="Your name" />
+    <label>Current Skills (comma separated)</label>
+    <textarea id="skills" rows="3" placeholder="Python, HTML, CSS">Python, HTML, CSS</textarea>
+    <label>Target Role</label>
+    <input id="target" placeholder="Data Scientist" value="Data Scientist" />
+    <button class="btn-solid" onclick="analyze()" id="btn" style="width:100%; padding:12px;">Analyze Skill Gap</button>
+  </div>
+
+  <!-- Output -->
+  <div class="card">
+    <h3>📊 AI Analysis</h3>
+    <div id="output">Login first, then fill the form and click Analyze.</div>
+  </div>
+
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2 id="modalTitle">Log In</h2>
+    <label>Email</label>
+    <input id="authEmail" type="email" placeholder="you@example.com" />
+    <label>Password</label>
+    <input id="authPassword" type="password" placeholder="••••••••" />
+    <button class="btn-solid" id="authBtn" onclick="submitAuth()" style="width:100%; padding:12px;">Log In</button>
+    <div class="switch" id="modalSwitch">No account? <a onclick="toggleModal()">Register</a></div>
+  </div>
+</div>
+
+<script src="js/theme.js"></script>
+<script src="js/func.js"></script>
+</body>
+</html>
