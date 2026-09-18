@@ -6,21 +6,21 @@
   <title>SkillBridge AI — Dashboard</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2334d399'/%3E%3Cstop offset='100%25' stop-color='%23047857'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' stroke='%2310b981' stroke-width='3' fill='%23ecfdf5'/%3E%3Cpath d='M32 50V22' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M32 30C32 20 44 20 44 20C44 20 44 32 32 32' fill='url(%23g)'/%3E%3Cpath d='M32 38C32 28 20 28 20 28C20 28 20 40 32 40' fill='url(%23g)'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2334d399'/%3E%3Cstop offset='100%25' stop-color='%23047857'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' stroke='%2310b981' stroke-width='3' fill='%23ecfdf5'/%3E%3Cpath d='M32 50V22' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M32 30C32 20 44 20 44 20C44 20 44 32 32 32' fill='url(%23g)'/%3E%3Cpath d='M32 38C32 28 20 28 20 28C20 28 20 40 32 40' fill='url(%23g)'/%3E%3C/svg%3E" />
 
   <!-- Google Fonts: Inter -->
-  <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)" />
-  <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin />
-  <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap)" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Supabase JS v2 -->
-  <script src="[https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2](https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2)"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Marked.js for Markdown Rendering -->
-  <script src="[https://cdn.jsdelivr.net/npm/marked/marked.min.js](https://cdn.jsdelivr.net/npm/marked/marked.min.js)"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <!-- Tailwind CSS CDN -->
-  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Theme Script -->
   <script src="js/theme.js"></script>
@@ -78,7 +78,7 @@
     <div>
       <!-- Brand Header -->
       <div class="h-16 flex items-center gap-3 px-6 border-b border-slate-100">
-        <svg class="w-8 h-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)">
+        <svg class="w-8 h-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="brand-grad" x1="0%" y1="100%" x2="100%" y2="0%">
               <stop offset="0%" stop-color="#34d399" />
@@ -634,7 +634,7 @@
       }, 1000);
     }
 
-    // Email Censor Helper: e.g. "dhairya@example.com" -> "dh****a@example.com"
+    // Email Censor Helper
     function censorEmail(email) {
       if (!email || typeof email !== 'string' || !email.includes('@')) return 'N/A';
       const [local, domain] = email.split('@');
@@ -719,7 +719,7 @@
         {
           id: 'html-1',
           title: 'HTML Semantic Skeleton & DOCTYPE',
-          link: '[https://www.w3schools.com/html/html_intro.asp](https://www.w3schools.com/html/html_intro.asp)',
+          link: 'https://www.w3schools.com/html/html_intro.asp',
           questions: [
             { q: 'What is the purpose of the <!DOCTYPE html> declaration?', options: ['Links CSS styling', 'Declares the document to be HTML5', 'Defines the webpage title', 'Enables server communication'], answer: 1 },
             { q: 'Which element acts as the root of an HTML document?', options: ['<head>', '<body>', '<html>', '<main>'], answer: 2 },
@@ -731,7 +731,7 @@
         {
           id: 'html-2',
           title: 'Modern Elements & Attributes',
-          link: '[https://www.w3schools.com/html/html_elements.asp](https://www.w3schools.com/html/html_elements.asp)',
+          link: 'https://www.w3schools.com/html/html_elements.asp',
           questions: [
             { q: 'Which attribute sets a unique identifier for an element in the DOM?', options: ['class', 'id', 'name', 'tag'], answer: 1 },
             { q: 'What tag defines the highest level header in semantic hierarchy?', options: ['<h6>', '<head>', '<h1>', '<header>'], answer: 2 },
@@ -743,7 +743,7 @@
         {
           id: 'html-3',
           title: 'Forms, Validation & Inputs',
-          link: '[https://www.w3schools.com/html/html_forms.asp](https://www.w3schools.com/html/html_forms.asp)',
+          link: 'https://www.w3schools.com/html/html_forms.asp',
           questions: [
             { q: 'Which input type natively validates email formats?', options: ['text', 'mail', 'email', 'valid'], answer: 2 },
             { q: 'Which attribute ensures a form field cannot be left blank?', options: ['required', 'validate', 'mandatory', 'lock'], answer: 0 },
@@ -757,7 +757,7 @@
         {
           id: 'css-1',
           title: 'CSS Box Model & Selectors',
-          link: '[https://www.w3schools.com/css/css_boxmodel.asp](https://www.w3schools.com/css/css_boxmodel.asp)',
+          link: 'https://www.w3schools.com/css/css_boxmodel.asp',
           questions: [
             { q: 'Which component represents the innermost area of the CSS box model?', options: ['Margin', 'Border', 'Padding', 'Content'], answer: 3 },
             { q: 'What is the space between the content and the border called?', options: ['Margin', 'Padding', 'Outline', 'Gap'], answer: 1 },
@@ -769,7 +769,7 @@
         {
           id: 'css-2',
           title: 'Flexbox & Modern Layouts',
-          link: '[https://www.w3schools.com/css/css3_flexbox.asp](https://www.w3schools.com/css/css3_flexbox.asp)',
+          link: 'https://www.w3schools.com/css/css3_flexbox.asp',
           questions: [
             { q: 'Which display value enables Flexbox layout?', options: ['display: flex', 'display: box', 'display: grid', 'display: inline'], answer: 0 },
             { q: 'Which property aligns items along the primary axis in Flexbox?', options: ['align-items', 'justify-content', 'align-content', 'flex-align'], answer: 1 },
@@ -783,7 +783,7 @@
         {
           id: 'js-1',
           title: 'JavaScript Variables & Data Types',
-          link: '[https://www.w3schools.com/js/js_variables.asp](https://www.w3schools.com/js/js_variables.asp)',
+          link: 'https://www.w3schools.com/js/js_variables.asp',
           questions: [
             { q: 'Which keyword declares a block-scoped reassignable variable?', options: ['var', 'let', 'const', 'static'], answer: 1 },
             { q: 'Which keyword declares a block-scoped read-only constant?', options: ['let', 'const', 'var', 'immutable'], answer: 1 },
@@ -795,7 +795,7 @@
         {
           id: 'js-2',
           title: 'Functions, Arrays & Promises',
-          link: '[https://www.w3schools.com/js/js_promise.asp](https://www.w3schools.com/js/js_promise.asp)',
+          link: 'https://www.w3schools.com/js/js_promise.asp',
           questions: [
             { q: 'Which syntax defines a modern ES6 arrow function?', options: ['function() => {}', '() => {}', '=> function()', 'def() => {}'], answer: 1 },
             { q: 'Which array method transforms elements into a new array?', options: ['filter()', 'map()', 'forEach()', 'reduce()'], answer: 1 },
@@ -809,7 +809,7 @@
         {
           id: 'py-1',
           title: 'Python Syntax & Variables',
-          link: '[https://www.w3schools.com/python/python_intro.asp](https://www.w3schools.com/python/python_intro.asp)',
+          link: 'https://www.w3schools.com/python/python_intro.asp',
           questions: [
             { q: 'How is console output written in Python?', options: ['echo()', 'System.out.println()', 'print()', 'console.log()'], answer: 2 },
             { q: 'How does Python denote code blocks for functions and loops?', options: ['Curly brackets {}', 'Indentation', 'Parentheses ()', 'Semicolons ;'], answer: 1 },
@@ -828,7 +828,7 @@
         {
           id: `${safeId}-1`,
           title: `${skill} Core Foundations`,
-          link: '[https://www.w3schools.com/](https://www.w3schools.com/)',
+          link: 'https://www.w3schools.com/',
           questions: [
             { q: `What is the primary role of studying ${skill}?`, options: ['Memorizing commands only', `Mastering engineering principles in ${domain}`, 'Avoiding testing', 'Replacing design specs'], answer: 1 },
             { q: `Which documentation source provides verified references for ${skill}?`, options: ['Official Documentation & Standards', 'Unverified threads', 'Social media', 'None'], answer: 0 },
@@ -840,7 +840,7 @@
         {
           id: `${safeId}-2`,
           title: `${skill} Practical Implementation`,
-          link: '[https://www.w3schools.com/](https://www.w3schools.com/)',
+          link: 'https://www.w3schools.com/',
           questions: [
             { q: `What is the second milestone in ${skill}?`, options: ['Hands-on laboratory implementation', 'Skipping practice', 'Only theoretical reading', 'Ignoring errors'], answer: 0 },
             { q: `What is critical for production reliability in ${domain}?`, options: ['Efficiency, safety, and repeatability', 'Maximum code length', 'Zero comments', 'Random variables'], answer: 0 },
@@ -917,9 +917,9 @@
     const STREAM_WEB_LINKS_ROTATION = {
       'Computer Engineering': [
         [
-          { title: 'Developer Roadmaps & Career Paths', url: '[https://roadmap.sh](https://roadmap.sh)', snippet: 'Step-by-step pathways and prerequisite trees for software engineers.' },
-          { title: 'MIT OpenCourseWare: EECS Repository', url: '[https://ocw.mit.edu](https://ocw.mit.edu)', snippet: 'Lecture transcripts, problem sets, and syllabi from MIT faculty.' },
-          { title: 'W3Schools Official Documentation Hub', url: '[https://www.w3schools.com](https://www.w3schools.com)', snippet: 'Web and software language tutorials with interactive code sandboxes.' }
+          { title: 'Developer Roadmaps & Career Paths', url: 'https://roadmap.sh', snippet: 'Step-by-step pathways and prerequisite trees for software engineers.' },
+          { title: 'MIT OpenCourseWare: EECS Repository', url: 'https://ocw.mit.edu', snippet: 'Lecture transcripts, problem sets, and syllabi from MIT faculty.' },
+          { title: 'W3Schools Official Documentation Hub', url: 'https://www.w3schools.com', snippet: 'Web and software language tutorials with interactive code sandboxes.' }
         ]
       ]
     };
@@ -928,9 +928,9 @@
       const sets = STREAM_WEB_LINKS_ROTATION[stream];
       if (sets && sets.length) return sets[page % sets.length];
       return [
-        { title: `${stream} Comprehensive Roadmap & Syllabi`, url: '[https://roadmap.sh](https://roadmap.sh)', snippet: `Curated learning pathways, semester tracks, and prerequisites for ${stream}.` },
-        { title: `MIT OpenCourseWare: ${stream} Series`, url: `[https://ocw.mit.edu/search/?q=$](https://ocw.mit.edu/search/?q=$){encodeURIComponent(stream)}`, snippet: 'Free syllabus, assignments, and exam problems from MIT professors.' },
-        { title: `National Virtual Labs: ${stream}`, url: '[https://vlab.co.in](https://vlab.co.in)', snippet: 'Interactive simulation experiments, lab practicals, and telemetry analysis.' }
+        { title: `${stream} Comprehensive Roadmap & Syllabi`, url: 'https://roadmap.sh', snippet: `Curated learning pathways, semester tracks, and prerequisites for ${stream}.` },
+        { title: `MIT OpenCourseWare: ${stream} Series`, url: `https://ocw.mit.edu/search/?q=${encodeURIComponent(stream)}`, snippet: 'Free syllabus, assignments, and exam problems from MIT professors.' },
+        { title: `National Virtual Labs: ${stream}`, url: 'https://vlab.co.in', snippet: 'Interactive simulation experiments, lab practicals, and telemetry analysis.' }
       ];
     }
 
@@ -1267,7 +1267,6 @@
       markdown += `- Implement end-to-end automated unit tests and benchmark throughput against 2026-27 performance targets.\n`;
 
       markdown += `\n### 4. Unified Multi-Skill Capstone Project\n`;
-      markdown += `Instead of building disjointed scripts for each technology, develop a **single integrated production utility**:\n`;
       markdown += `- **Project Name:** Modular ${userStream} Control & Telemetry Suite\n`;
       markdown += `- **Architecture:** Combines **${skillNames}** into an end-to-end pipeline with validated inputs, deterministic business logic, and structured telemetry feedback.\n`;
 
@@ -1297,7 +1296,6 @@
       }
     }
 
-    // Secure Netlify Serverless Function Proxy for AI
     async function callAIAPI(messages, isPlanner = false) {
       try {
         const response = await fetch('/.netlify/functions/ai', {
@@ -1964,7 +1962,7 @@ Structure cleanly into:
       homeStreamDisplay.textContent = stream;
 
       const q = encodeURIComponent(`${stream} textbooks fundamentals`);
-      amazonAllLink.href = `[https://www.amazon.com/s?k=$](https://www.amazon.com/s?k=$){q}`;
+      amazonAllLink.href = `https://www.amazon.com/s?k=${q}`;
 
       renderStoreBooks(stream, 0);
       fetchLiveOrCuratedWebLinks(stream, 0);
@@ -1977,7 +1975,7 @@ Structure cleanly into:
       const count = 3;
       for (let i = 0; i < count; i++) {
         const book = books[(offset + i) % books.length];
-        const amazonUrl = `[https://www.amazon.com/s?k=$](https://www.amazon.com/s?k=$){encodeURIComponent(book.title + ' ' + book.author)}`;
+        const amazonUrl = `https://www.amazon.com/s?k=${encodeURIComponent(book.title + ' ' + book.author)}`;
 
         const card = document.createElement('div');
         card.className = 'p-4 bg-white rounded-2xl border border-slate-200/80 hover:border-brand-500/40 hover:shadow-sm transition-all flex flex-col justify-between';
@@ -1998,7 +1996,6 @@ Structure cleanly into:
       }
     }
 
-    // Secure Netlify Serverless Function Proxy for Search
     async function fetchLiveOrCuratedWebLinks(stream, rotationIdx = 0) {
       const queryAngles = [
         `${stream} syllabus curriculum documentation 2026-27`,
@@ -2010,7 +2007,7 @@ Structure cleanly into:
 
       webLinksContainer.innerHTML = `
         <div class="p-5 text-center text-slate-400 bg-white rounded-xl border border-slate-200/80">
-          <svg class="animate-spin w-4 h-4 mx-auto text-brand-500 mb-1.5" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" fill="none" viewBox="0 0 24 24">
+          <svg class="animate-spin w-4 h-4 mx-auto text-brand-500 mb-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
@@ -2098,9 +2095,11 @@ Structure cleanly into:
     async function initDashboardSession() {
       try {
         const cfgRes = await fetch('/.netlify/functions/config');
-        const config = await cfgRes.json();
-        if (config.supabaseUrl && config.supabaseAnonKey) {
-          supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+        if (cfgRes.ok) {
+          const config = await cfgRes.json();
+          if (config.supabaseUrl && config.supabaseAnonKey && window.supabase) {
+            supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+          }
         }
       } catch (err) {
         console.warn('Config fetch notice:', err.message);
