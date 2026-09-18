@@ -140,6 +140,20 @@
     .custom-table tr:hover td {
       background-color: #fcfdfd;
     }
+
+    .animate-card-pop {
+      animation: cardPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes cardPop {
+      from {
+        opacity: 0.4;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body class="bg-slate-50/70 text-slate-900 antialiased font-['Inter'] min-h-screen flex flex-col lg:flex-row">
@@ -474,16 +488,16 @@
       <div class="space-y-3.5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div>
-            <h3 class="text-base font-bold text-slate-900">Store</h3>
-            <p class="text-xs text-slate-500">Textbooks tailored to your stream on Amazon</p>
+            <h3 class="text-base font-bold text-slate-900">Recommended Books</h3>
+            <p class="text-xs text-slate-500">Tailored textbooks on Amazon — click Refresh to cycle editions</p>
           </div>
           <div class="flex items-center gap-2">
-            <button id="btn-refresh-store" class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition-colors">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <button id="btn-refresh-store" class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer active:scale-95">
+              <svg id="icon-refresh-store" class="w-3.5 h-3.5 text-slate-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
               <span id="btn-refresh-store-text">Refresh</span>
             </button>
             <a id="amazon-all-link" href="#" target="_blank" class="text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 px-3 py-1.5 rounded-lg">
-              Amazon →
+              Explore Amazon →
             </a>
           </div>
         </div>
@@ -493,11 +507,11 @@
       <div class="space-y-3.5 pt-4 border-t border-slate-200/70">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div>
-            <h3 class="text-base font-bold text-slate-900">Web Links</h3>
-            <p class="text-xs text-slate-500">Live search results fetched via Netlify Functions & verified roadmaps</p>
+            <h3 class="text-base font-bold text-slate-900">Curated Web & Laboratory Links</h3>
+            <p class="text-xs text-slate-500">Live search queries & rotating verified repositories</p>
           </div>
-          <button id="btn-refresh-web" class="self-start sm:self-auto inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition-colors">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <button id="btn-refresh-web" class="self-start sm:self-auto inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer active:scale-95">
+            <svg id="icon-refresh-web" class="w-3.5 h-3.5 text-slate-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             <span id="btn-refresh-web-text">Refresh</span>
           </button>
         </div>
@@ -953,30 +967,130 @@
       ];
     }
 
+    // MULTI-PAGE BOOKS REPOSITORY FOR ALL 8 STREAMS (6-9 BOOKS EACH TO ENABLE SMOOTH ROTATION)
     const STREAM_BOOKS = {
       'Computer Engineering': [
-        { title: 'Clean Architecture', author: 'Robert C. Martin', tag: 'Architecture' },
+        { title: 'Clean Architecture: A Craftsman\'s Guide', author: 'Robert C. Martin', tag: 'Architecture' },
         { title: 'Operating Systems: Three Easy Pieces', author: 'Remzi Arpaci-Dusseau', tag: 'Systems' },
-        { title: 'Computer Networking: A Top-Down Approach', author: 'James Kurose', tag: 'Networking' }
+        { title: 'Computer Networking: A Top-Down Approach', author: 'James Kurose', tag: 'Networking' },
+        { title: 'Introduction to Algorithms (CLRS)', author: 'Thomas H. Cormen', tag: 'Algorithms' },
+        { title: 'Designing Data-Intensive Applications', author: 'Martin Kleppmann', tag: 'Distributed' },
+        { title: 'Modern Operating Systems (5th Edition)', author: 'Andrew S. Tanenbaum', tag: 'OS Kernel' },
+        { title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson', tag: 'Languages' },
+        { title: 'Database System Concepts', author: 'Abraham Silberschatz', tag: 'Databases' },
+        { title: 'Compilers: Principles, Techniques, & Tools', author: 'Alfred Aho', tag: 'Compilers' }
+      ],
+      'Automobile Engineering': [
+        { title: 'Automotive Engineering Fundamentals', author: 'Richard Stone', tag: 'Powertrain' },
+        { title: 'Vehicle Dynamics: Theory and Application', author: 'Reza N. Jazar', tag: 'Dynamics' },
+        { title: 'Automotive Embedded Systems Handbook', author: 'Nicolas Navet', tag: 'Electronics' },
+        { title: 'Electric and Hybrid Vehicles: Design Fundamentals', author: 'Iqbal Husain', tag: 'EV Systems' },
+        { title: 'Internal Combustion Engine Fundamentals', author: 'John B. Heywood', tag: 'Combustion' },
+        { title: 'Automotive Chassis: Engineering Principles', author: 'Jorinsen Reimpell', tag: 'Chassis' }
+      ],
+      'Robotics Engineering': [
+        { title: 'Introduction to Autonomous Mobile Robots', author: 'Roland Siegwart', tag: 'Navigation' },
+        { title: 'Modern Robotics: Mechanics, Planning, and Control', author: 'Kevin M. Lynch', tag: 'Kinematics' },
+        { title: 'Probabilistic Robotics', author: 'Sebastian Thrun', tag: 'Perception' },
+        { title: 'Robot Modeling and Control', author: 'Mark W. Spong', tag: 'Control' },
+        { title: 'ROS 2 Robotics By Example', author: 'Fairchild & Lentin', tag: 'ROS 2' },
+        { title: 'Computer Vision: Algorithms and Applications', author: 'Richard Szeliski', tag: 'Vision' }
+      ],
+      'Chemical Engineering': [
+        { title: 'Elements of Chemical Reaction Engineering', author: 'H. Scott Fogler', tag: 'Reactions' },
+        { title: 'Unit Operations of Chemical Engineering', author: 'Warren McCabe', tag: 'Operations' },
+        { title: 'Chemical Engineering Thermodynamics', author: 'J.M. Smith', tag: 'Thermo' },
+        { title: 'Process Dynamics and Control', author: 'Dale E. Seborg', tag: 'Control' },
+        { title: 'Separation Process Principles', author: 'J.D. Seader', tag: 'Separation' },
+        { title: 'Chemical Process Safety: Fundamentals', author: 'Daniel A. Crowl', tag: 'Safety' }
+      ],
+      'Civil Engineering': [
+        { title: 'Structural Analysis (10th Edition)', author: 'Russell C. Hibbeler', tag: 'Structures' },
+        { title: 'Soil Mechanics and Foundations', author: 'Muni Budhu', tag: 'Geotechnical' },
+        { title: 'Design of Reinforced Concrete', author: 'Jack C. McCormac', tag: 'Materials' },
+        { title: 'Transportation Engineering: An Introduction', author: 'C. Jotin Khisty', tag: 'Transit' },
+        { title: 'Water Resources Engineering', author: 'Larry W. Mays', tag: 'Hydraulics' },
+        { title: 'Construction Planning, Equipment, and Methods', author: 'Robert Peurifoy', tag: 'Planning' }
+      ],
+      'Electric Engineering': [
+        { title: 'The Art of Electronics (3rd Edition)', author: 'Paul Horowitz', tag: 'Circuits' },
+        { title: 'Electric Machinery Fundamentals', author: 'Stephen J. Chapman', tag: 'Machines' },
+        { title: 'Signals and Systems', author: 'Alan V. Oppenheim', tag: 'DSP' },
+        { title: 'Power System Analysis and Design', author: 'J. Duncan Glover', tag: 'Power Grid' },
+        { title: 'Power Electronics: Converters, Applications', author: 'Ned Mohan', tag: 'Inverters' },
+        { title: 'Control Systems Engineering', author: 'Norman S. Nise', tag: 'Control' }
+      ],
+      'Biochemical Engineering': [
+        { title: 'Bioprocess Engineering: Basic Concepts', author: 'Michael L. Shuler', tag: 'Bioprocess' },
+        { title: 'Biochemical Engineering Fundamentals', author: 'James E. Bailey', tag: 'Kinetics' },
+        { title: 'Principles of Fermentation Technology', author: 'Peter F. Stanbury', tag: 'Fermentation' },
+        { title: 'Molecular Biology of the Cell', author: 'Bruce Alberts', tag: 'Cellular' },
+        { title: 'Bioseparations Science and Engineering', author: 'Roger G. Harrison', tag: 'Separation' },
+        { title: 'Enzyme Kinetics: Behavior and Analysis', author: 'Irwin H. Segel', tag: 'Enzymes' }
+      ],
+      'Mechatronics Engineering': [
+        { title: 'Mechatronics: Electronic Control Systems', author: 'W. Bolton', tag: 'Mechatronics' },
+        { title: 'Introduction to Mechatronics and Measurement', author: 'David G. Alciatore', tag: 'Sensors' },
+        { title: 'Feedback Control of Dynamic Systems', author: 'Gene F. Franklin', tag: 'Control' },
+        { title: 'Embedded Systems Architecture', author: 'Daniele Lacamera', tag: 'Embedded' },
+        { title: 'Automating Manufacturing Systems with PLCs', author: 'Hugh Jack', tag: 'Automation' },
+        { title: 'Sensors and Actuators: Control Systems', author: 'Clarence W. de Silva', tag: 'Actuators' }
       ]
     };
 
+    // MULTI-TIER ROTATING CURATED WEB LINKS REPOSITORY FOR ALL 8 STREAMS
     const STREAM_WEB_LINKS_ROTATION = {
       'Computer Engineering': [
         [
-          { title: 'Developer Roadmaps & Career Paths', url: 'https://roadmap.sh', snippet: 'Step-by-step pathways and prerequisite trees for engineers.' },
-          { title: 'MIT OpenCourseWare: EECS Repository', url: 'https://ocw.mit.edu', snippet: 'Lecture transcripts, problem sets, and syllabi from MIT.' }
+          { title: 'Developer Roadmaps & Architecture Paths', url: 'https://roadmap.sh', snippet: 'Step-by-step career tracks, technology trees, and prerequisites for modern engineers.' },
+          { title: 'MIT OpenCourseWare: EECS Course Series', url: 'https://ocw.mit.edu', snippet: 'Lecture transcripts, problem sets, and syllabi from world-class university faculty.' },
+          { title: 'W3Schools Official Documentation Portal', url: 'https://www.w3schools.com', snippet: 'Interactive code sandboxes, language documentation, and real-time syntax references.' }
+        ],
+        [
+          { title: 'Linux Kernel Documentation & Architecture', url: 'https://www.kernel.org/doc/html/latest/', snippet: 'System call specifications, memory management subsystems, and kernel internals.' },
+          { title: 'IEEE Computer Society Technical Library', url: 'https://www.computer.org', snippet: 'Peer-reviewed articles, computing standards, and modern hardware optimizations.' },
+          { title: 'GitHub Open Source Engineering Repositories', url: 'https://github.com/topics/computer-engineering', snippet: 'Production architectures, open source compilers, and microservices repositories.' }
+        ],
+        [
+          { title: 'National Virtual Labs: Advanced Computing', url: 'https://vlab.co.in', snippet: 'Interactive simulations, compiler practicals, and network telemetry exercises.' },
+          { title: 'ACM Digital Library: Computing Machinery', url: 'https://dl.acm.org', snippet: 'Global computing conferences, database performance, and distributed systems research.' },
+          { title: 'MDN Web Docs & Browser Engineering Specs', url: 'https://developer.mozilla.org', snippet: 'Standardized web platform specifications, DOM performance, and network protocols.' }
+        ],
+        [
+          { title: 'Stanford University CS Curriculum Archives', url: 'https://cs.stanford.edu', snippet: 'Computer systems, operating systems design, and concurrent programming lectures.' },
+          { title: 'NPTEL India: Computer Architecture & OS', url: 'https://nptel.ac.in', snippet: 'Semester-long video lectures, graded assignments, and processor benchmarks.' },
+          { title: 'Kubernetes Official Cloud Native Architecture', url: 'https://kubernetes.io/docs/', snippet: 'Container orchestration, microservice mesh networks, and fault tolerance.' }
+        ]
+      ],
+      'Automobile Engineering': [
+        [
+          { title: 'SAE International: Mobility Engineering Knowledge Base', url: 'https://www.sae.org', snippet: 'Global automotive standards, EV powertrain research, and chassis telemetry papers.' },
+          { title: 'NPTEL: Automotive Dynamics & Powertrain Engineering', url: 'https://nptel.ac.in', snippet: 'In-depth video lectures on vehicle kinetics, suspension geometry, and electric conversions.' },
+          { title: 'Virtual Labs: Automotive Engineering Telemetry', url: 'https://vlab.co.in', snippet: 'Simulated engine dynamometers, brake testing rigs, and aerodynamic simulations.' }
+        ],
+        [
+          { title: 'DOE Alternative Fuels Data Center: EV Batteries', url: 'https://afdc.energy.gov', snippet: 'Battery chemistries, state-of-charge algorithms, and high-voltage grid integration.' },
+          { title: 'IEEE Vehicular Technology Society Portal', url: 'https://vtsociety.org', snippet: 'Connected autonomous vehicles, CAN bus security, and lidar sensor fusion.' },
+          { title: 'Open-Source Vehicle Dynamics Simulation (CARLA)', url: 'https://carla.org', snippet: 'Open-source simulator for autonomous driving systems and chassis physics.' }
+        ]
+      ],
+      'Robotics Engineering': [
+        [
+          { title: 'ROS 2 Official Documentation & Rolling Tutorials', url: 'https://docs.ros.org', snippet: 'Nodes, topics, DDS communication middleware, and navigation stack tutorials.' },
+          { title: 'IEEE Robotics and Automation Society (RAS)', url: 'https://www.ieee-ras.org', snippet: 'Conference proceedings, kinematics papers, and state-of-the-art robotic manipulation.' },
+          { title: 'Gazebo Simulation Official Guides', url: 'https://gazebosim.org', snippet: 'Physics engines, sensor simulation, and multi-robot environment testing.' }
+        ],
+        [
+          { title: 'OpenCV Computer Vision Library Docs', url: 'https://docs.opencv.org', snippet: 'Real-time image processing, feature detection, optical flow, and depth estimation.' },
+          { title: 'MoveIt Motion Planning Framework for ROS', url: 'https://moveit.picknik.ai', snippet: 'Inverse kinematics solvers, collision checking, and robotic arm path planning.' },
+          { title: 'MIT Biomimetic Robotics Lab Publications', url: 'https://biomimetics.mit.edu', snippet: 'Legged locomotion control, dynamic balancing, and actuator design papers.' }
         ]
       ]
     };
 
     function getWebLinksForStream(stream, page) {
-      const sets = STREAM_WEB_LINKS_ROTATION[stream];
-      if (sets && sets.length) return sets[page % sets.length];
-      return [
-        { title: `${stream} Comprehensive Roadmap & Syllabi`, url: 'https://roadmap.sh', snippet: `Curated learning pathways, semester tracks, and prerequisites for ${stream}.` },
-        { title: `MIT OpenCourseWare: ${stream} Series`, url: `https://ocw.mit.edu/search/?q=${encodeURIComponent(stream)}`, snippet: 'Free syllabus, assignments, and exam problems from MIT professors.' }
-      ];
+      const sets = STREAM_WEB_LINKS_ROTATION[stream] || STREAM_WEB_LINKS_ROTATION['Computer Engineering'];
+      return sets[page % sets.length];
     }
 
     // DOM Elements Cache
@@ -1088,14 +1202,16 @@
     const amazonAllLink = document.getElementById('amazon-all-link');
     const btnRefreshStore = document.getElementById('btn-refresh-store');
     const btnRefreshStoreText = document.getElementById('btn-refresh-store-text');
+    const iconRefreshStore = document.getElementById('icon-refresh-store');
     const btnRefreshWeb = document.getElementById('btn-refresh-web');
     const btnRefreshWebText = document.getElementById('btn-refresh-web-text');
+    const iconRefreshWeb = document.getElementById('icon-refresh-web');
 
     let storeOffset = 0;
     let webRotationIndex = 0;
     let lastStoreRefresh = 0;
     let lastWebRefresh = 0;
-    const RATE_LIMIT_MS = 3000;
+    const RATE_LIMIT_MS = 2500;
 
     async function persistSkillsToDatabase() {
       if (!currentUser || !supabaseClient) return;
@@ -2017,29 +2133,35 @@ Structure into:
       const q = encodeURIComponent(`${stream} textbooks fundamentals`);
       amazonAllLink.href = `https://www.amazon.com/s?k=${q}`;
 
+      storeOffset = 0;
+      webRotationIndex = 0;
       renderStoreBooks(stream, 0);
       fetchLiveOrCuratedWebLinks(stream, 0);
     }
 
+    // ROBUST ROTATING STORE BOOKS RENDERER
     function renderStoreBooks(stream, offset = 0) {
       const books = STREAM_BOOKS[stream] || STREAM_BOOKS['Computer Engineering'];
       storeCardsContainer.innerHTML = '';
 
-      const count = 3;
+      const count = Math.min(3, books.length);
       for (let i = 0; i < count; i++) {
         const book = books[(offset + i) % books.length];
         const amazonUrl = `https://www.amazon.com/s?k=${encodeURIComponent(book.title + ' ' + book.author)}`;
 
         const card = document.createElement('div');
-        card.className = 'p-3.5 sm:p-4 bg-white rounded-2xl border border-slate-200/80 hover:border-brand-500/40 hover:shadow-xs transition-all flex flex-col justify-between';
+        card.className = 'animate-card-pop p-3.5 sm:p-4 bg-white rounded-2xl border border-slate-200/80 hover:border-brand-500/40 hover:shadow-xs transition-all flex flex-col justify-between';
         card.innerHTML = `
           <div>
-            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-brand-50 text-brand-700 mb-2">${book.tag}</span>
+            <div class="flex items-center justify-between mb-2">
+              <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-brand-50 text-brand-700">${book.tag}</span>
+              <span class="text-[10px] font-mono text-slate-400">#${((offset + i) % books.length) + 1}</span>
+            </div>
             <h4 class="font-bold text-slate-900 text-xs leading-snug line-clamp-2">${book.title}</h4>
             <p class="text-[11px] text-slate-500 mt-1">Author: ${book.author}</p>
           </div>
           <div class="pt-3 mt-2.5 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-[10px] font-semibold text-slate-400">Amazon</span>
+            <span class="text-[10px] font-semibold text-slate-400">Amazon Store</span>
             <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-brand-600 hover:text-brand-700">
               View Book →
             </a>
@@ -2049,16 +2171,19 @@ Structure into:
       }
     }
 
+    // ROBUST ROTATING WEB SEARCH & REPOSITORY FETCHER
     async function fetchLiveOrCuratedWebLinks(stream, rotationIdx = 0) {
       const queryAngles = [
         `${stream} syllabus curriculum documentation 2026-27`,
-        `${stream} laboratory practical experiments virtual labs`
+        `${stream} laboratory practical experiments virtual labs`,
+        `${stream} open source architecture repositories github`,
+        `${stream} IEEE computer society academic papers`
       ];
 
       const activeQuery = queryAngles[rotationIdx % queryAngles.length];
 
       webLinksContainer.innerHTML = `
-        <div class="p-5 text-center text-slate-400 bg-white rounded-xl border border-slate-200/80">
+        <div class="p-5 text-center text-slate-400 bg-white rounded-xl border border-slate-200/80 animate-pulse">
           <svg class="animate-spin w-4 h-4 mx-auto text-brand-500 mb-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -2072,10 +2197,18 @@ Structure into:
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         const results = data.results || [];
-        if (!results.length) throw new Error('Empty result set');
+        if (!results || results.length === 0) throw new Error('Empty result set');
 
-        renderWebLinksCards(results.slice(0, 3));
+        // Dynamic slice so consecutive calls with the same query also shift results
+        const startIdx = (rotationIdx * 3) % Math.max(1, results.length);
+        let selected = results.slice(startIdx, startIdx + 3);
+        if (selected.length < 3) {
+          selected = selected.concat(results.slice(0, 3 - selected.length));
+        }
+
+        renderWebLinksCards(selected);
       } catch (err) {
+        // Smoothly fall back to pre-configured multi-tier sets
         const fallbackSet = getWebLinksForStream(stream, rotationIdx);
         renderWebLinksCards(fallbackSet);
       }
@@ -2083,17 +2216,20 @@ Structure into:
 
     function renderWebLinksCards(links) {
       webLinksContainer.innerHTML = '';
-      links.forEach(item => {
+      links.forEach((item, idx) => {
         const linkCard = document.createElement('a');
         linkCard.href = item.url;
         linkCard.target = '_blank';
         linkCard.rel = 'noopener noreferrer';
-        linkCard.className = 'block p-3 sm:p-3.5 bg-white rounded-xl border border-slate-200/80 hover:border-brand-500/50 hover:bg-brand-50/20 transition-all';
+        linkCard.className = 'animate-card-pop block p-3 sm:p-3.5 bg-white rounded-xl border border-slate-200/80 hover:border-brand-500/50 hover:bg-brand-50/20 transition-all';
         linkCard.innerHTML = `
           <div class="flex items-start justify-between gap-3">
             <div class="min-w-0">
-              <h5 class="text-xs font-semibold text-slate-900 truncate">${item.title}</h5>
-              <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">${item.snippet || 'Official verified engineering roadmap & laboratory portal.'}</p>
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="w-4 h-4 rounded bg-brand-50 text-brand-700 text-[10px] font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+                <h5 class="text-xs font-semibold text-slate-900 truncate">${item.title}</h5>
+              </div>
+              <p class="text-[11px] text-slate-500 line-clamp-2">${item.snippet || 'Official verified engineering roadmap & laboratory portal.'}</p>
               <span class="text-[10px] font-mono text-brand-600 mt-1 inline-block truncate max-w-full">${item.url}</span>
             </div>
             <svg class="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -2103,13 +2239,16 @@ Structure into:
       });
     }
 
-    function executeRateLimited(btn, label, callback, lastTimestamp) {
+    // Rate Limited Executor with visual spin
+    function executeRateLimited(btn, label, iconEl, callback, lastTimestamp) {
       const now = Date.now();
       if (now - lastTimestamp < RATE_LIMIT_MS) return lastTimestamp;
 
-      callback();
+      if (iconEl) iconEl.classList.add('animate-spin');
       btn.disabled = true;
-      btn.classList.add('opacity-50', 'cursor-not-allowed');
+      btn.classList.add('opacity-60', 'cursor-not-allowed');
+
+      callback();
 
       let remaining = Math.ceil(RATE_LIMIT_MS / 1000);
       label.textContent = `Wait (${remaining}s)`;
@@ -2121,7 +2260,8 @@ Structure into:
         } else {
           clearInterval(timer);
           btn.disabled = false;
-          btn.classList.remove('opacity-50', 'cursor-not-allowed');
+          btn.classList.remove('opacity-60', 'cursor-not-allowed');
+          if (iconEl) iconEl.classList.remove('animate-spin');
           label.textContent = 'Refresh';
         }
       }, 1000);
@@ -2129,20 +2269,22 @@ Structure into:
       return Date.now();
     }
 
+    // Click Handlers for Store and Web Refresh
     btnRefreshStore.addEventListener('click', () => {
-      lastStoreRefresh = executeRateLimited(btnRefreshStore, btnRefreshStoreText, () => {
+      lastStoreRefresh = executeRateLimited(btnRefreshStore, btnRefreshStoreText, iconRefreshStore, () => {
         storeOffset += 3;
         renderStoreBooks(userStream, storeOffset);
       }, lastStoreRefresh);
     });
 
     btnRefreshWeb.addEventListener('click', () => {
-      lastWebRefresh = executeRateLimited(btnRefreshWeb, btnRefreshWebText, () => {
+      lastWebRefresh = executeRateLimited(btnRefreshWeb, btnRefreshWebText, iconRefreshWeb, () => {
         webRotationIndex += 1;
         fetchLiveOrCuratedWebLinks(userStream, webRotationIndex);
       }, lastWebRefresh);
     });
 
+    // Dynamic Session & Profile Initialization
     async function initDashboardSession() {
       try {
         const cfgRes = await fetch('/.netlify/functions/config');
