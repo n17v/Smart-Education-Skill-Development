@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SkillBridge AI — Dashboard</title>
 
-  <!-- Favicon (Same Sprout Icon as SVG Data URI) -->
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2334d399'/%3E%3Cstop offset='100%25' stop-color='%23047857'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' stroke='%2310b981' stroke-width='3' fill='%23ecfdf5'/%3E%3Cpath d='M32 50V22' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M32 30C32 20 44 20 44 20C44 20 44 32 32 32' fill='url(%23g)'/%3E%3Cpath d='M32 38C32 28 20 28 20 28C20 28 20 40 32 40' fill='url(%23g)'/%3E%3C/svg%3E" />
 
   <!-- Google Fonts: Inter -->
@@ -13,18 +13,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
+  <!-- Supabase JS v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Theme Config -->
+  <!-- Theme Script -->
   <script src="js/theme.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased font-['Inter'] min-h-screen flex">
 
   <!-- Left Sidebar -->
   <aside class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 min-h-screen">
-    
-    <!-- Top Section: Brand & Nav Links -->
     <div>
       <!-- Brand Header -->
       <div class="h-20 flex items-center gap-3 px-6 border-b border-slate-100">
@@ -36,16 +37,15 @@
             </linearGradient>
           </defs>
           <circle cx="32" cy="32" r="30" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.25" />
-          <path class="logo-stem" d="M32 50V22" stroke="url(#brand-grad)" stroke-width="3.5" stroke-linecap="round" />
-          <path class="logo-leaf" d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="url(#brand-grad)" />
-          <path class="logo-leaf" d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40" fill="url(#brand-grad)" />
+          <path d="M32 50V22" stroke="url(#brand-grad)" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="url(#brand-grad)" />
+          <path d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40" fill="url(#brand-grad)" />
         </svg>
         <span class="text-lg font-bold tracking-tight text-slate-900">SkillBridge <span class="text-brand-600 font-extrabold">AI</span></span>
       </div>
 
       <!-- Navigation Items -->
       <nav class="p-4 space-y-1.5">
-        <!-- Home (Active by default) -->
         <a href="#home" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-brand-50 text-brand-700 transition-colors">
           <svg class="w-5 h-5 text-brand-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -53,7 +53,6 @@
           <span>Home</span>
         </a>
 
-        <!-- AI Assistant -->
         <a href="#assistant" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
           <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -61,7 +60,6 @@
           <span>AI Assistant</span>
         </a>
 
-        <!-- Progress -->
         <a href="#progress" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
           <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -69,7 +67,6 @@
           <span>Progress</span>
         </a>
 
-        <!-- Sources -->
         <a href="#sources" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
           <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -89,13 +86,174 @@
         <span>Settings</span>
       </a>
     </div>
-
   </aside>
 
-  <!-- Main Content Canvas (Ready for the next component) -->
+  <!-- Main Content Area -->
   <main class="flex-1 min-h-screen overflow-y-auto p-8 lg:p-12">
-    <!-- Next components will be added here -->
+    <div class="max-w-4xl">
+      <h1 class="text-2xl font-bold text-slate-900">Dashboard</h1>
+      <p id="user-status-text" class="text-sm text-slate-500 mt-1">Loading your workspace...</p>
+    </div>
   </main>
 
+  <!-- Undeniable Onboarding Modal -->
+  <div id="onboarding-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 lg:p-8 shadow-2xl border border-slate-100">
+      
+      <!-- Icon & Header -->
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center text-brand-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">Welcome to SkillBridge AI</h2>
+          <p class="text-xs text-slate-500">Configure your learning profile to continue</p>
+        </div>
+      </div>
+
+      <form id="onboarding-form" class="space-y-5">
+        
+        <!-- Stream Dropdown Selection -->
+        <div>
+          <label for="stream-select" class="block text-sm font-semibold text-slate-800 mb-1.5">
+            What stream you are focusing on?
+          </label>
+          <div class="relative">
+            <select id="stream-select" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 appearance-none focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 cursor-pointer">
+              <option value="" disabled selected>Select your engineering stream</option>
+              <option value="Computer Engineering">Computer Engineering</option>
+              <option value="Automobile Engineering">Automobile Engineering</option>
+              <option value="Robotics Engineering">Robotics Engineering</option>
+              <option value="Chemical Engineering">Chemical Engineering</option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Electric Engineering">Electric Engineering</option>
+              <option value="Biochemical Engineering">Biochemical Engineering</option>
+              <option value="Mechatronics Engineering">Mechatronics Engineering</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terms Checkbox -->
+        <div class="pt-1">
+          <label class="flex items-start gap-3 cursor-pointer select-none">
+            <input type="checkbox" id="terms-checkbox" class="w-4 h-4 mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500 cursor-pointer" />
+            <span class="text-xs text-slate-600 leading-relaxed">
+              I Agree to SkillBridge AI 
+              <a href="/tos.html" target="_blank" class="text-brand-600 font-semibold underline hover:text-brand-700">terms and conditions</a> 
+              and acknowledge their 
+              <a href="/privacypolicy.html" target="_blank" class="text-brand-600 font-semibold underline hover:text-brand-700">privacy policy</a>.
+            </span>
+          </label>
+        </div>
+
+        <!-- Submit Button (Disabled by default) -->
+        <button 
+          type="submit" 
+          id="btn-proceed" 
+          disabled 
+          class="w-full py-3.5 px-4 rounded-xl text-sm font-semibold text-white bg-slate-300 cursor-not-allowed transition-all duration-200 inline-flex items-center justify-center gap-2"
+        >
+          <span>Proceed with Dashboard</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Script: Session & Profile Onboarding Logic -->
+  <script>
+    const SUPABASE_URL = 'https://bvnwaicdzfshnmrwxguw.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2bndhaWNkemZzaG5tcnd4Z3V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MzI0MjcsImV4cCI6MjEwNTMwODQyN30.jnUaadGGbvqrxpb9nvbNcUlG5Y4M3kvZ2ITCspM1js0';
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentUser = null;
+
+    const modal = document.getElementById('onboarding-modal');
+    const form = document.getElementById('onboarding-form');
+    const streamSelect = document.getElementById('stream-select');
+    const termsCheckbox = document.getElementById('terms-checkbox');
+    const btnProceed = document.getElementById('btn-proceed');
+    const userStatusText = document.getElementById('user-status-text');
+
+    function syncButtonState() {
+      const isChecked = termsCheckbox.checked;
+      const isStreamSelected = Boolean(streamSelect.value);
+
+      if (isChecked && isStreamSelected) {
+        btnProceed.disabled = false;
+        btnProceed.className = 'w-full py-3.5 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-500 to-brand-600 hover:-translate-y-0.5 shadow-md shadow-brand-500/20 cursor-pointer transition-all duration-200 inline-flex items-center justify-center gap-2';
+      } else {
+        btnProceed.disabled = true;
+        btnProceed.className = 'w-full py-3.5 px-4 rounded-xl text-sm font-semibold text-white bg-slate-300 cursor-not-allowed transition-all duration-200 inline-flex items-center justify-center gap-2';
+      }
+    }
+
+    termsCheckbox.addEventListener('change', syncButtonState);
+    streamSelect.addEventListener('change', syncButtonState);
+
+    async function checkUserProfile() {
+      // 1. Verify active session
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) {
+        window.location.assign('index.html');
+        return;
+      }
+
+      currentUser = session.user;
+
+      // 2. Fetch profile data
+      const { data: profile, error } = await supabaseClient
+        .from('profiles')
+        .select('stream, terms_accepted')
+        .eq('id', currentUser.id)
+        .maybeSingle();
+
+      // 3. If stream or terms missing, enforce modal
+      if (!profile || !profile.stream || !profile.terms_accepted) {
+        modal.classList.remove('hidden');
+      } else {
+        userStatusText.textContent = `Active Stream: ${profile.stream}`;
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!termsCheckbox.checked || !streamSelect.value || !currentUser) return;
+
+      btnProceed.disabled = true;
+      btnProceed.textContent = 'Saving preferences...';
+
+      const selectedStream = streamSelect.value;
+
+      // Upsert profile data
+      const { error } = await supabaseClient
+        .from('profiles')
+        .upsert({
+          id: currentUser.id,
+          stream: selectedStream,
+          terms_accepted: true,
+          updated_at: new Date().toISOString()
+        });
+
+      if (error) {
+        alert('Failed to save profile: ' + error.message);
+        btnProceed.disabled = false;
+        btnProceed.textContent = 'Proceed with Dashboard';
+        return;
+      }
+
+      modal.classList.add('hidden');
+      userStatusText.textContent = `Active Stream: ${selectedStream}`;
+    });
+
+    document.addEventListener('DOMContentLoaded', checkUserProfile);
+  </script>
 </body>
 </html>
