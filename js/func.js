@@ -14,13 +14,11 @@ if (window.supabase && window.supabase.createClient) {
   console.warn('Supabase JS library not loaded.');
 }
 
-// Redirect target compatible with root, subpaths, and GitHub Pages
-const DASHBOARD_URL = 'dashboard';
+// Redirect target
+const DASHBOARD_URL = '/dashboard';
 
 function redirectToDashboard() {
-  const currentPath = window.location.pathname;
-  const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
-  window.location.assign(basePath + DASHBOARD_URL);
+  window.location.href = DASHBOARD_URL;
 }
 
 let toastTimeout = null;
@@ -241,7 +239,7 @@ async function handleRegister(e) {
 
     if (authError) throw authError;
 
-    // 2. Insert record to profiles table if user is present
+    // 2. Insert record into profiles table
     if (authData?.user) {
       await supabaseClient
         .from('profiles')
