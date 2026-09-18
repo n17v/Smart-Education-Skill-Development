@@ -1,358 +1,242 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-white antialiased">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SkillBridge AI — Intelligent Skill Gap & Learning Platform</title>
-  
-  <!-- Inter Font from Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillBridge AI — Authentication</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Supabase JS v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Anime.js -->
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Anime.js for Sprout SVG Path/Scale Animations -->
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  
-  <!-- Supabase JS v2 CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
-  <!-- Injected Tailwind Config & Custom Stylesheet -->
+
+  <!-- Theme Script (Tailwind Config & Dynamic Styles) -->
   <script src="js/theme.js"></script>
 </head>
-<body class="min-h-screen font-sans bg-white text-slate-900 selection:bg-brand-100 selection:text-brand-900 overflow-x-hidden">
+<body class="bg-white text-slate-900 antialiased font-['Inter'] selection:bg-brand-100 selection:text-brand-900 min-h-screen">
 
-  <!-- Main Split-Screen Container -->
-  <main class="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+  <main class="min-h-screen grid lg:grid-cols-2">
+    <!-- LEFT PANEL: Brand / Showcase (Hidden on Mobile) -->
+    <section class="hidden lg:flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-brand-50 via-white to-brand-100 p-12 lg:p-16 border-r border-slate-100">
+      <!-- Floating Ambient Background Blobs -->
+      <div class="blob-float-1 absolute -top-20 -right-20 w-[380px] h-[380px] rounded-full bg-brand-300 opacity-50 blur-3xl pointer-events-none"></div>
+      <div class="blob-float-2 absolute -bottom-24 -left-24 w-[320px] h-[320px] rounded-full bg-brand-200 opacity-50 blur-3xl pointer-events-none"></div>
+      <div class="blob-float-3 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] rounded-full bg-brand-400 opacity-25 blur-3xl pointer-events-none"></div>
 
-    <!-- ========================================== -->
-    <!-- LEFT PANEL (Brand & Marketing) — Desktop -->
-    <!-- ========================================== -->
-    <section class="hidden lg:flex relative flex-col justify-between p-12 xl:p-16 bg-gradient-to-br from-brand-50 via-white to-brand-100 border-r border-slate-200/70 overflow-hidden select-none">
-      
-      <!-- 3 Floating Blurred Gradient Blobs -->
-      <div class="blob-1 absolute -top-24 -right-24 w-[380px] h-[380px] rounded-full bg-brand-300/50 blur-3xl pointer-events-none" aria-hidden="true"></div>
-      <div class="blob-2 absolute -bottom-24 -left-24 w-[320px] h-[320px] rounded-full bg-brand-200/50 blur-3xl pointer-events-none" aria-hidden="true"></div>
-      <div class="blob-3 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] rounded-full bg-brand-400/25 blur-3xl pointer-events-none" aria-hidden="true"></div>
-
-      <!-- Top Header & Brand Logo -->
-      <header class="relative z-10 flex items-center gap-3">
-        <!-- Animated Desktop Sprout SVG -->
-        <svg id="desktop-logo" class="w-11 h-11" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SkillBridge AI Logo">
+      <!-- Top: Animated Sprout Logo & Brand Name -->
+      <div class="relative z-10 flex items-center gap-3">
+        <svg class="w-10 h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="sproutGradient" x1="6" y1="42" x2="42" y2="6" gradientUnits="userSpaceOnUse">
+            <linearGradient id="brand-grad" x1="0%" y1="100%" x2="100%" y2="0%">
               <stop offset="0%" stop-color="#34d399" />
               <stop offset="100%" stop-color="#047857" />
             </linearGradient>
           </defs>
-          <!-- Subtle enclosing circular orbit -->
-          <circle cx="24" cy="24" r="21.5" stroke="#10b981" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="2 3" />
-          
-          <!-- Stem path: animated via stroke-dashoffset -->
-          <path id="stem" d="M 24 38 C 24 30, 23 23, 24 13" stroke="url(#sproutGradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-          
-          <!-- Left Leaf: animated via scale from base -->
-          <path id="leaf-left" class="origin-[24px_25px]" d="M 24 25 C 16 23, 11 17, 13 10 C 20 10, 23 18, 24 25 Z" fill="url(#sproutGradient)" />
-          
-          <!-- Right Leaf: animated via scale from base -->
-          <path id="leaf-right" class="origin-[24px_19px]" d="M 24 19 C 32 17, 37 11, 35 4 C 28 4, 25 12, 24 19 Z" fill="url(#sproutGradient)" />
+          <circle cx="32" cy="32" r="30" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.25" />
+          <path class="logo-stem" d="M32 50V22" stroke="url(#brand-grad)" stroke-width="3.5" stroke-linecap="round" />
+          <path class="logo-leaf" d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="url(#brand-grad)" />
+          <path class="logo-leaf" d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40" fill="url(#brand-grad)" />
         </svg>
+        <span class="text-xl font-bold tracking-tight text-slate-900">SkillBridge <span class="text-brand-600 font-extrabold">AI</span></span>
+      </div>
 
-        <div class="flex flex-col">
-          <span class="text-xl font-extrabold tracking-tight text-slate-900 leading-none">SkillBridge<span class="text-brand-600">.ai</span></span>
-          <span class="text-[11px] font-medium tracking-wide uppercase text-slate-400 mt-1">TECHNEXA 2026</span>
-        </div>
-      </header>
-
-      <!-- Center Feature Content & Headline -->
-      <div class="relative z-10 max-w-lg my-auto py-12">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-100/80 border border-brand-200 text-brand-700 text-xs font-semibold mb-6">
-          <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-          Next-Gen AI Career Acceleration
-        </div>
-
-        <h1 class="text-4xl xl:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-          Grow your skills. <br>
+      <!-- Center: Value Propositions & Copy -->
+      <div class="relative z-10 my-auto py-12 max-w-lg">
+        <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
+          Grow your skills.<br />
           <span class="text-brand-600">Bridge the gap.</span>
         </h1>
-
-        <p class="mt-5 text-base text-slate-600 leading-relaxed max-w-md">
+        <p class="mt-4 text-slate-600 leading-relaxed text-base">
           AI-powered skill gap analysis and personalized learning paths — built for the next generation of learners.
         </p>
 
-        <!-- Feature List with Circular Green Badges -->
-        <ul class="mt-8 space-y-3.5 text-sm font-medium text-slate-700">
+        <ul class="mt-8 space-y-3.5">
           <li class="flex items-center gap-3">
-            <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold inline-flex items-center justify-center flex-shrink-0">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-                <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
-              </svg>
-            </span>
-            Personalized learning paths
+            <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+            <span class="text-sm font-medium text-slate-700">Personalized learning paths</span>
           </li>
           <li class="flex items-center gap-3">
-            <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold inline-flex items-center justify-center flex-shrink-0">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-                <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
-              </svg>
-            </span>
-            AI-driven skill gap analysis
+            <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+            <span class="text-sm font-medium text-slate-700">AI-driven skill gap analysis</span>
           </li>
           <li class="flex items-center gap-3">
-            <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold inline-flex items-center justify-center flex-shrink-0">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-                <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
-              </svg>
-            </span>
-            Career & course recommendations
+            <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+            <span class="text-sm font-medium text-slate-700">Career & course recommendations</span>
           </li>
         </ul>
       </div>
 
-      <!-- Left Panel Footer -->
-      <footer class="relative z-10 pt-6 border-t border-slate-200/60">
-        <p class="text-xs text-slate-400">© 2026 SkillBridge AI · TECHNEXA Hackathon</p>
-      </footer>
+      <!-- Bottom: Hackathon Footer Attribution -->
+      <div class="relative z-10">
+        <p class="text-xs text-slate-400 tracking-wide">© 2026 SkillBridge AI · TECHNEXA Hackathon</p>
+      </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- RIGHT PANEL (Interactive Authentication)   -->
-    <!-- ========================================== -->
-    <section class="flex flex-col items-center justify-center p-6 sm:p-10 lg:p-12 xl:p-16 bg-white relative">
-      <div id="auth-container" class="w-full max-w-md mx-auto animate-fade-up">
-
-        <!-- Mobile Logo (visible only on screens < lg) -->
-        <div class="lg:hidden flex flex-col items-center mb-8">
-          <svg id="mobile-logo" class="w-10 h-10 mb-2.5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="sproutGradientMob" x1="6" y1="42" x2="42" y2="6" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#34d399" />
-                <stop offset="100%" stop-color="#047857" />
-              </linearGradient>
-            </defs>
-            <circle cx="24" cy="24" r="21.5" stroke="#10b981" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="2 3" />
-            <path class="stem" d="M 24 38 C 24 30, 23 23, 24 13" stroke="url(#sproutGradientMob)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-            <path class="leaf-left origin-[24px_25px]" d="M 24 25 C 16 23, 11 17, 13 10 C 20 10, 23 18, 24 25 Z" fill="url(#sproutGradientMob)" />
-            <path class="leaf-right origin-[24px_19px]" d="M 24 19 C 32 17, 37 11, 35 4 C 28 4, 25 12, 24 19 Z" fill="url(#sproutGradientMob)" />
-          </svg>
-          <span class="text-xl font-extrabold tracking-tight text-slate-900">SkillBridge<span class="text-brand-600">.ai</span></span>
-          <span class="text-xs text-slate-400 mt-0.5">TECHNEXA 2026</span>
+    <!-- RIGHT PANEL: Authentication Container -->
+    <section class="flex flex-col justify-center items-center p-6 sm:p-10 lg:p-16 bg-white">
+      <div class="w-full max-w-md auth-card">
+        
+        <!-- Mobile Header (Visible below lg) -->
+        <div class="flex flex-col items-center mb-8 lg:hidden">
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="w-9 h-9" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="30" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.25" />
+              <path class="logo-stem" d="M32 50V22" stroke="url(#brand-grad)" stroke-width="3.5" stroke-linecap="round" />
+              <path class="logo-leaf" d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="url(#brand-grad)" />
+              <path class="logo-leaf" d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40" fill="url(#brand-grad)" />
+            </svg>
+            <span class="text-lg font-bold tracking-tight text-slate-900">SkillBridge <span class="text-brand-600">AI</span></span>
+          </div>
+          <p class="text-xs text-slate-500">AI-powered skill gap analysis</p>
         </div>
 
         <!-- Pill Tab Switcher (Log In / Register) -->
-        <div id="tab-switcher" class="relative flex items-center p-1 rounded-full bg-brand-50 mb-8 border border-brand-100/60 select-none">
-          <!-- Sliding White Indicator Pill -->
-          <div id="pill-indicator" class="absolute top-1 left-1 bottom-1 w-[calc(50%-4px)] rounded-full bg-white shadow-sm transition-transform duration-300 ease-out"></div>
-          
-          <!-- Log In Tab Button -->
-          <button type="button" id="tab-login" class="relative z-10 w-1/2 py-2 text-center text-sm font-semibold text-brand-700 transition-colors duration-200">
+        <div id="tab-switcher" class="relative flex p-1 rounded-full bg-brand-50 mb-8 border border-brand-100">
+          <div id="tab-indicator" class="absolute top-1 left-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-full shadow-sm transition-transform duration-300 ease-out"></div>
+          <button id="tab-login" type="button" class="relative z-10 w-1/2 py-2 text-sm font-semibold text-brand-700 text-center transition-colors">
             Log In
           </button>
-          
-          <!-- Register Tab Button -->
-          <button type="button" id="tab-register" class="relative z-10 w-1/2 py-2 text-center text-sm font-semibold text-slate-500 hover:text-slate-700 transition-colors duration-200">
+          <button id="tab-register" type="button" class="relative z-10 w-1/2 py-2 text-sm font-semibold text-slate-500 text-center transition-colors">
             Register
           </button>
         </div>
 
-        <!-- ============================================== -->
-        <!-- VIEW 1: LOGIN                                  -->
-        <!-- ============================================== -->
+        <!-- VIEW 1: Log In -->
         <div id="view-login" class="auth-view is-active">
           <div class="mb-6">
-            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Welcome back</h2>
-            <p class="text-sm text-slate-500 mt-1">Sign in to resume your skill verification and roadmap.</p>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Welcome back</h2>
+            <p class="text-sm text-slate-500 mt-1">Please enter your details to sign in.</p>
           </div>
 
-          <form id="form-login" novalidate class="space-y-4">
-            <!-- Email Field -->
+          <form id="form-login" class="space-y-4" novalidate>
             <div class="field">
-              <input type="email" id="login-email" name="email" required autocomplete="email">
+              <input type="email" id="login-email" name="email" required autocomplete="email" />
               <label for="login-email">Email address</label>
             </div>
 
-            <!-- Password Field -->
             <div class="field">
-              <input type="password" id="login-password" name="password" required autocomplete="current-password">
+              <input type="password" id="login-password" name="password" required autocomplete="current-password" />
               <label for="login-password">Password</label>
             </div>
 
-            <!-- Secondary Controls: Remember Me + Forgot Password -->
             <div class="flex items-center justify-between text-sm pt-1">
-              <label class="flex items-center gap-2 cursor-pointer select-none text-slate-600 hover:text-slate-900">
-                <input type="checkbox" id="login-remember" class="w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500/20 accent-brand-600">
+              <label class="inline-flex items-center gap-2 cursor-pointer text-slate-600 select-none">
+                <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
                 <span>Remember me</span>
               </label>
-              <button type="button" id="btn-to-forgot" class="text-sm font-semibold text-brand-600 hover:text-brand-700 transition-colors">
+              <button type="button" id="to-forgot" class="text-brand-600 font-semibold hover:text-brand-700 transition-colors">
                 Forgot password?
               </button>
             </div>
 
-            <!-- Primary CTA Button -->
-            <div class="pt-2">
-              <button type="submit" class="btn-primary">
-                <span class="btn-content inline-flex items-center gap-2">
-                  <span>Sign In</span>
-                  <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                  </svg>
-                </span>
-                <span class="btn-spinner hidden items-center gap-2">
-                  <span class="w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin"></span>
-                  <span>Please wait…</span>
-                </span>
-              </button>
-            </div>
+            <button type="submit" class="btn-primary w-full mt-6">
+              <span>Log In</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
           </form>
         </div>
 
-        <!-- ============================================== -->
-        <!-- VIEW 2: REGISTER                               -->
-        <!-- ============================================== -->
+        <!-- VIEW 2: Register -->
         <div id="view-register" class="auth-view hidden">
           <div class="mb-6">
-            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Create your account</h2>
-            <p class="text-sm text-slate-500 mt-1">Start mapping your skill gaps with AI diagnostics.</p>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Create account</h2>
+            <p class="text-sm text-slate-500 mt-1">Start your AI personalized growth journey.</p>
           </div>
 
-          <form id="form-register" novalidate class="space-y-4">
-            <!-- Full Name Field -->
+          <form id="form-register" class="space-y-4" novalidate>
             <div class="field">
-              <input type="text" id="reg-name" name="name" required autocomplete="name">
+              <input type="text" id="reg-name" name="fullname" required autocomplete="name" />
               <label for="reg-name">Full name</label>
             </div>
 
-            <!-- Email Field -->
             <div class="field">
-              <input type="email" id="reg-email" name="email" required autocomplete="email">
+              <input type="email" id="reg-email" name="email" required autocomplete="email" />
               <label for="reg-email">Email address</label>
             </div>
 
-            <!-- Password Field -->
             <div class="field">
-              <input type="password" id="reg-password" name="password" minlength="8" required autocomplete="new-password">
-              <label for="reg-password">Password (min 8 characters)</label>
+              <input type="password" id="reg-password" name="password" required autocomplete="new-password" minlength="6" />
+              <label for="reg-password">Password (min. 6 characters)</label>
             </div>
 
-            <div class="pt-2">
-              <button type="submit" class="btn-primary">
-                <span class="btn-content inline-flex items-center gap-2">
-                  <span>Create Account</span>
-                  <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                  </svg>
-                </span>
-                <span class="btn-spinner hidden items-center gap-2">
-                  <span class="w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin"></span>
-                  <span>Please wait…</span>
-                </span>
-              </button>
-            </div>
-
-            <p class="text-xs text-center text-slate-400 pt-2 leading-relaxed">
-              By registering, you agree to our Terms of Service & Privacy Policy.
-            </p>
+            <button type="submit" class="btn-primary w-full mt-6">
+              <span>Create Account</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
           </form>
         </div>
 
-        <!-- ============================================== -->
-        <!-- VIEW 3: FORGOT PASSWORD                        -->
-        <!-- ============================================== -->
+        <!-- VIEW 3: Forgot Password -->
         <div id="view-forgot" class="auth-view hidden">
           <div class="mb-6">
-            <button type="button" class="btn-back inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-600 transition-colors mb-4">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-              </svg>
-              <span>Back to login</span>
-            </button>
-            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Reset your password</h2>
-            <p class="text-sm text-slate-500 mt-1">Enter your registered email and we'll send a secure recovery link.</p>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Reset password</h2>
+            <p class="text-sm text-slate-500 mt-1">Enter your account email to receive a recovery link.</p>
           </div>
 
-          <form id="form-forgot" novalidate class="space-y-4">
+          <form id="form-forgot" class="space-y-4" novalidate>
             <div class="field">
-              <input type="email" id="forgot-email" name="email" required autocomplete="email">
+              <input type="email" id="forgot-email" name="email" required autocomplete="email" />
               <label for="forgot-email">Email address</label>
             </div>
 
-            <div class="pt-2">
-              <button type="submit" class="btn-primary">
-                <span class="btn-content inline-flex items-center gap-2">
-                  <span>Send Reset Link</span>
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                  </svg>
-                </span>
-                <span class="btn-spinner hidden items-center gap-2">
-                  <span class="w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin"></span>
-                  <span>Please wait…</span>
-                </span>
+            <button type="submit" class="btn-primary w-full mt-6">
+              <span>Send Reset Link</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+
+            <div class="pt-4 text-center">
+              <button type="button" class="back-to-login inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                <span>Back to login</span>
               </button>
             </div>
           </form>
         </div>
 
-        <!-- ============================================== -->
-        <!-- VIEW 4: RESET PASSWORD (SUPABASE RECOVERY)     -->
-        <!-- ============================================== -->
+        <!-- VIEW 4: New Password (Recovery) -->
         <div id="view-reset" class="auth-view hidden">
           <div class="mb-6">
-            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Set new password</h2>
-            <p class="text-sm text-slate-500 mt-1">Create a strong, new password for your account.</p>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Choose new password</h2>
+            <p class="text-sm text-slate-500 mt-1">Please enter and confirm your new secure password.</p>
           </div>
 
-          <form id="form-reset" novalidate class="space-y-4">
+          <form id="form-reset" class="space-y-4" novalidate>
             <div class="field">
-              <input type="password" id="reset-password" name="password" minlength="8" required autocomplete="new-password">
+              <input type="password" id="reset-password" name="new-password" required minlength="6" autocomplete="new-password" />
               <label for="reset-password">New password</label>
             </div>
 
             <div class="field">
-              <input type="password" id="reset-confirm" name="confirmPassword" minlength="8" required autocomplete="new-password">
+              <input type="password" id="reset-confirm" name="confirm-password" required minlength="6" autocomplete="new-password" />
               <label for="reset-confirm">Confirm new password</label>
             </div>
 
-            <div class="pt-2">
-              <button type="submit" class="btn-primary">
-                <span class="btn-content inline-flex items-center gap-2">
-                  <span>Update Password</span>
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                  </svg>
-                </span>
-                <span class="btn-spinner hidden items-center gap-2">
-                  <span class="w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin"></span>
-                  <span>Please wait…</span>
-                </span>
-              </button>
-            </div>
+            <button type="submit" class="btn-primary w-full mt-6">
+              <span>Update Password</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
           </form>
-        </div>
-
-        <!-- Demo helper hint -->
-        <div class="mt-8 text-center">
-          <span class="inline-block px-3 py-1 text-[11px] font-medium text-slate-400 bg-slate-100 rounded-full">
-            Ready for Hackathon Supabase keys or instant interactive trial
-          </span>
         </div>
 
       </div>
     </section>
-
   </main>
 
-  <!-- Toast Notification (Fixed at Bottom Center) -->
-  <aside id="toast-container" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-350" aria-live="polite">
-    <div id="toast" class="hidden items-center gap-2.5 px-5 py-3 rounded-full text-white text-sm font-medium shadow-lg transform translate-y-12 opacity-0 transition-all duration-350 ease-[cubic-bezier(.2,.8,.2,1)]">
-      <span id="toast-icon"></span>
-      <span id="toast-message">Notification</span>
-    </div>
-  </aside>
+  <!-- Notification Toast Container -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full text-white text-sm font-medium shadow-lg pointer-events-none opacity-0 translate-y-8 transition-all duration-300">
+    <span id="toast-message"></span>
+  </div>
 
-  <!-- Interactive logic and Supabase authentication hookup -->
+  <!-- Functional Logic Script -->
   <script src="js/func.js"></script>
 </body>
 </html>
