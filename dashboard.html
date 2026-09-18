@@ -128,9 +128,17 @@
       </nav>
     </div>
 
-    <!-- Bottom User Stream Status -->
-    <div class="p-3 border-t border-slate-100">
-      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/60">
+    <!-- Bottom Section: Settings & User Stream Status -->
+    <div class="p-3 border-t border-slate-100 space-y-2">
+      <button type="button" id="nav-settings" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 transition-colors text-left group">
+        <svg class="w-4 h-4 text-slate-400 group-hover:text-slate-600 shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Settings</span>
+      </button>
+
+      <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200/60">
         <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Your Focus</span>
         <span id="sidebar-stream-name" class="text-xs font-semibold text-slate-800 truncate block mt-0.5">Loading...</span>
       </div>
@@ -511,6 +519,84 @@
     </div>
   </div>
 
+  <!-- MODAL 5: Custom Settings Pop-up Modal -->
+  <div id="settings-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 lg:p-7 shadow-2xl border border-slate-100">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Account Settings</h3>
+            <p class="text-[11px] text-slate-500">Your profile and credentials overview</p>
+          </div>
+        </div>
+        <button type="button" id="btn-close-settings-modal" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
+      </div>
+
+      <!-- User Profile Information Grid -->
+      <div class="space-y-3 mb-5">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Full Name</span>
+            <span id="settings-name-display" class="text-xs font-semibold text-slate-800 mt-0.5 block">Loading...</span>
+          </div>
+          <span class="text-[10px] font-semibold text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded-md">Verified</span>
+        </div>
+
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Email Address</span>
+            <span id="settings-email-display" class="text-xs font-mono font-semibold text-slate-800 mt-0.5 block">Loading...</span>
+          </div>
+          <span class="text-[10px] font-semibold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-md">Censored</span>
+        </div>
+
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Engineering Stream</span>
+            <span id="settings-stream-display" class="text-xs font-semibold text-slate-800 mt-0.5 block">Loading...</span>
+          </div>
+          <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
+        </div>
+      </div>
+
+      <!-- Inline Change Password Drawer (Toggled by Button) -->
+      <div id="settings-password-drawer" class="hidden mb-5 p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-900">Set New Password</span>
+          <span class="text-[10px] text-slate-400">Min. 6 characters</span>
+        </div>
+        <input type="password" id="settings-new-password-input" placeholder="Type new password" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-brand-500" />
+        <div class="flex items-center gap-2 pt-1">
+          <button type="button" id="btn-submit-new-password" class="flex-1 py-2 px-3 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold shadow-sm transition-all">Save New Password</button>
+          <button type="button" id="btn-cancel-new-password" class="py-2 px-3 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-all">Cancel</button>
+        </div>
+        <p id="settings-password-feedback" class="text-[11px] font-medium hidden"></p>
+      </div>
+
+      <!-- Actions Footer -->
+      <div class="pt-3 border-t border-slate-100 flex items-center gap-3">
+        <button type="button" id="btn-open-password-drawer" class="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-all shadow-sm flex items-center justify-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+          <span>Change Password</span>
+        </button>
+
+        <button type="button" id="btn-logout" class="flex-1 py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200/80 text-xs font-semibold transition-all shadow-sm flex items-center justify-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          <span>Log Out</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Main Controller Script -->
   <script>
     // Supabase Configuration
@@ -557,6 +643,19 @@
           labelEl.textContent = defaultText;
         }
       }, 1000);
+    }
+
+    // Email Censor Helper: e.g. "dhairya@example.com" -> "dh****a@example.com"
+    function censorEmail(email) {
+      if (!email || typeof email !== 'string' || !email.includes('@')) return 'N/A';
+      const [local, domain] = email.split('@');
+      if (local.length <= 2) {
+        return `${local[0] || '*'}*@${domain}`;
+      }
+      const start = local.slice(0, 2);
+      const end = local.slice(-1);
+      const maskCount = Math.max(local.length - 3, 4);
+      return `${start}${'*'.repeat(maskCount)}${end}@${domain}`;
     }
 
     // Markdown Parser Helper Function
@@ -870,6 +969,7 @@
     const navAssistant = document.getElementById('nav-assistant');
     const navProgress = document.getElementById('nav-progress');
     const navSources = document.getElementById('nav-sources');
+    const navSettings = document.getElementById('nav-settings');
 
     const sectionHome = document.getElementById('section-home');
     const sectionAssistant = document.getElementById('section-assistant');
@@ -952,6 +1052,20 @@
     const btnCloseSubtopicsModal = document.getElementById('btn-close-subtopics-modal');
     const subtopicsListContainer = document.getElementById('subtopics-list-container');
 
+    // Settings Modal Elements
+    const settingsModal = document.getElementById('settings-modal');
+    const btnCloseSettingsModal = document.getElementById('btn-close-settings-modal');
+    const settingsNameDisplay = document.getElementById('settings-name-display');
+    const settingsEmailDisplay = document.getElementById('settings-email-display');
+    const settingsStreamDisplay = document.getElementById('settings-stream-display');
+    const btnOpenPasswordDrawer = document.getElementById('btn-open-password-drawer');
+    const settingsPasswordDrawer = document.getElementById('settings-password-drawer');
+    const settingsNewPasswordInput = document.getElementById('settings-new-password-input');
+    const btnSubmitNewPassword = document.getElementById('btn-submit-new-password');
+    const btnCancelNewPassword = document.getElementById('btn-cancel-new-password');
+    const settingsPasswordFeedback = document.getElementById('settings-password-feedback');
+    const btnLogout = document.getElementById('btn-logout');
+
     const storeCardsContainer = document.getElementById('store-cards-container');
     const webLinksContainer = document.getElementById('web-links-container');
     const amazonAllLink = document.getElementById('amazon-all-link');
@@ -1030,6 +1144,91 @@
     navSources.addEventListener('click', () => setActiveTab('sources'));
 
     // =======================================================
+    // SETTINGS POPUP MODAL CONTROLLER
+    // =======================================================
+    function openSettingsModal() {
+      if (!currentUser) return;
+
+      const userName = (currentUser.user_metadata && currentUser.user_metadata.full_name)
+        ? currentUser.user_metadata.full_name
+        : (currentUser.email ? currentUser.email.split('@')[0] : 'Learner');
+
+      settingsNameDisplay.textContent = userName;
+      settingsEmailDisplay.textContent = censorEmail(currentUser.email);
+      settingsStreamDisplay.textContent = userStream;
+
+      // Reset password drawer
+      settingsPasswordDrawer.classList.add('hidden');
+      settingsNewPasswordInput.value = '';
+      settingsPasswordFeedback.classList.add('hidden');
+
+      settingsModal.classList.remove('hidden');
+    }
+
+    navSettings.addEventListener('click', openSettingsModal);
+    btnCloseSettingsModal.addEventListener('click', () => settingsModal.classList.add('hidden'));
+
+    btnOpenPasswordDrawer.addEventListener('click', () => {
+      settingsPasswordDrawer.classList.toggle('hidden');
+      if (!settingsPasswordDrawer.classList.contains('hidden')) {
+        settingsNewPasswordInput.focus();
+      }
+    });
+
+    btnCancelNewPassword.addEventListener('click', () => {
+      settingsPasswordDrawer.classList.add('hidden');
+      settingsNewPasswordInput.value = '';
+      settingsPasswordFeedback.classList.add('hidden');
+    });
+
+    btnSubmitNewPassword.addEventListener('click', async () => {
+      const newPwd = settingsNewPasswordInput.value.trim();
+      if (!newPwd || newPwd.length < 6) {
+        settingsPasswordFeedback.textContent = 'Password must be at least 6 characters.';
+        settingsPasswordFeedback.className = 'text-[11px] font-semibold text-rose-600 block mt-1';
+        settingsPasswordFeedback.classList.remove('hidden');
+        return;
+      }
+
+      btnSubmitNewPassword.disabled = true;
+      btnSubmitNewPassword.textContent = 'Saving...';
+
+      try {
+        const { error } = await supabaseClient.auth.updateUser({
+          password: newPwd
+        });
+
+        if (error) throw error;
+
+        settingsPasswordFeedback.textContent = 'Password updated successfully!';
+        settingsPasswordFeedback.className = 'text-[11px] font-semibold text-emerald-600 block mt-1';
+        settingsPasswordFeedback.classList.remove('hidden');
+        settingsNewPasswordInput.value = '';
+
+        setTimeout(() => {
+          settingsPasswordDrawer.classList.add('hidden');
+          settingsPasswordFeedback.classList.add('hidden');
+        }, 1800);
+      } catch (err) {
+        settingsPasswordFeedback.textContent = err.message || 'Failed to update password.';
+        settingsPasswordFeedback.className = 'text-[11px] font-semibold text-rose-600 block mt-1';
+        settingsPasswordFeedback.classList.remove('hidden');
+      } finally {
+        btnSubmitNewPassword.disabled = false;
+        btnSubmitNewPassword.textContent = 'Save New Password';
+      }
+    });
+
+    btnLogout.addEventListener('click', async () => {
+      btnLogout.disabled = true;
+      btnLogout.textContent = 'Logging out...';
+      try {
+        await supabaseClient.auth.signOut();
+      } catch (e) {}
+      window.location.assign('index.html');
+    });
+
+    // =======================================================
     // DYNAMIC MULTI-SKILL AI ENGINE & PLAN GENERATOR
     // =======================================================
     function generateDynamicAIPlan() {
@@ -1073,7 +1272,6 @@ No skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Trac
       // Categorize skills
       const completedSkills = detailedAnalysis.filter(a => a.isFinished);
       const inProgressSkills = detailedAnalysis.filter(a => !a.isFinished && a.completedCount > 0);
-      const notStartedSkills = detailedAnalysis.filter(a => a.completedCount === 0);
 
       let markdown = `> **Status: Holistic Multi-Skill Roadmap** · *Generated at ${timeStr}* · *Stack Coverage: ${overallStackPercent}% (${totalCompletedAcrossStack}/${totalTopicsAcrossStack} Topics Across ${enrolledSkills.length} Skills)*\n\n`;
 
@@ -2035,6 +2233,17 @@ Structure cleanly into:
       } else {
         userStream = profile.stream;
         applyStreamSources(userStream);
+
+        // Pre-fill user profile fields
+        const userName = (profile && profile.full_name) 
+          ? profile.full_name 
+          : (currentUser.user_metadata && currentUser.user_metadata.full_name)
+          ? currentUser.user_metadata.full_name
+          : (currentUser.email ? currentUser.email.split('@')[0] : 'Engineering Scholar');
+
+        settingsNameDisplay.textContent = userName;
+        settingsEmailDisplay.textContent = censorEmail(currentUser.email);
+        settingsStreamDisplay.textContent = userStream;
 
         // Restore saved AI Planner response (LocalStorage prioritized as freshest client-side state)
         let restoredPlan = null;
