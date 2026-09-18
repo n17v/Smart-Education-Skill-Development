@@ -6,21 +6,21 @@
   <title>SkillBridge AI — Dashboard</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2334d399'/%3E%3Cstop offset='100%25' stop-color='%23047857'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' stroke='%2310b981' stroke-width='3' fill='%23ecfdf5'/%3E%3Cpath d='M32 50V22' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M32 30C32 20 44 20 44 20C44 20 44 32 32 32' fill='url(%23g)'/%3E%3Cpath d='M32 38C32 28 20 28 20 28C20 28 20 40 32 40' fill='url(%23g)'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2334d399'/%3E%3Cstop offset='100%25' stop-color='%23047857'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' stroke='%2310b981' stroke-width='3' fill='%23ecfdf5'/%3E%3Cpath d='M32 50V22' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M32 30C32 20 44 20 44 20C44 20 44 32 32 32' fill='url(%23g)'/%3E%3Cpath d='M32 38C32 28 20 28 20 28C20 28 20 40 32 40' fill='url(%23g)'/%3E%3C/svg%3E" />
 
   <!-- Google Fonts: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)" />
+  <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin />
+  <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap)" rel="stylesheet" />
 
   <!-- Supabase JS v2 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="[https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2](https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2)"></script>
 
   <!-- Marked.js for Markdown Rendering -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="[https://cdn.jsdelivr.net/npm/marked/marked.min.js](https://cdn.jsdelivr.net/npm/marked/marked.min.js)"></script>
 
   <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
 
   <!-- Theme Script -->
   <script src="js/theme.js"></script>
@@ -78,7 +78,7 @@
     <div>
       <!-- Brand Header -->
       <div class="h-16 flex items-center gap-3 px-6 border-b border-slate-100">
-        <svg class="w-8 h-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="w-8 h-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)">
           <defs>
             <linearGradient id="brand-grad" x1="0%" y1="100%" x2="100%" y2="0%">
               <stop offset="0%" stop-color="#34d399" />
@@ -369,7 +369,7 @@
         <div class="flex items-center justify-between">
           <div>
             <h3 class="text-base font-bold text-slate-900">Web Links</h3>
-            <p class="text-xs text-slate-500">Live search results fetched via Tinyfish API & verified roadmaps</p>
+            <p class="text-xs text-slate-500">Live search results fetched via Netlify Functions & verified roadmaps</p>
           </div>
           <button id="btn-refresh-web" class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
@@ -567,7 +567,7 @@
         </div>
       </div>
 
-      <!-- Inline Change Password Drawer (Toggled by Button) -->
+      <!-- Inline Change Password Drawer -->
       <div id="settings-password-drawer" class="hidden mb-5 p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2.5">
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold text-slate-900">Set New Password</span>
@@ -599,18 +599,7 @@
 
   <!-- Main Controller Script -->
   <script>
-    // Supabase Configuration
-    const SUPABASE_URL = 'https://bvnwaicdzfshnmrwxguw.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2bndhaWNkemZzaG5tcnd4Z3V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MzI0MjcsImV4cCI6MjEwNTMwODQyN30.jnUaadGGbvqrxpb9nvbNcUlG5Y4M3kvZ2ITCspM1js0';
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // AI Engine Configuration
-    const AI_API_KEY = '9Ju17h2c5rOOEcZnZcTqOjz84YVw4kQF';
-    const AI_MODEL = 'mistral-small-latest';
-
-    // TinyFish Public API Key
-    const TINYFISH_API_KEY = 'sk-tinyfish-_qT52w5xTFdvuM4b74KLWnb7MV0Pk3KM';
-
+    let supabaseClient = null;
     let currentUser = null;
     let userStream = 'Computer Engineering';
     let enrolledSkills = [];
@@ -621,7 +610,7 @@
     let currentSummarySkill = '';
     let currentSummaryDomain = '';
 
-    // Rate Limiter Helper (Silent, No Alert Popups)
+    // Rate Limiter Helper
     let isAiCooldownActive = false;
 
     function startCooldown(buttonEl, spinnerEl, labelEl, defaultText, cooldownSeconds = 3) {
@@ -730,7 +719,7 @@
         {
           id: 'html-1',
           title: 'HTML Semantic Skeleton & DOCTYPE',
-          link: 'https://www.w3schools.com/html/html_intro.asp',
+          link: '[https://www.w3schools.com/html/html_intro.asp](https://www.w3schools.com/html/html_intro.asp)',
           questions: [
             { q: 'What is the purpose of the <!DOCTYPE html> declaration?', options: ['Links CSS styling', 'Declares the document to be HTML5', 'Defines the webpage title', 'Enables server communication'], answer: 1 },
             { q: 'Which element acts as the root of an HTML document?', options: ['<head>', '<body>', '<html>', '<main>'], answer: 2 },
@@ -742,7 +731,7 @@
         {
           id: 'html-2',
           title: 'Modern Elements & Attributes',
-          link: 'https://www.w3schools.com/html/html_elements.asp',
+          link: '[https://www.w3schools.com/html/html_elements.asp](https://www.w3schools.com/html/html_elements.asp)',
           questions: [
             { q: 'Which attribute sets a unique identifier for an element in the DOM?', options: ['class', 'id', 'name', 'tag'], answer: 1 },
             { q: 'What tag defines the highest level header in semantic hierarchy?', options: ['<h6>', '<head>', '<h1>', '<header>'], answer: 2 },
@@ -754,7 +743,7 @@
         {
           id: 'html-3',
           title: 'Forms, Validation & Inputs',
-          link: 'https://www.w3schools.com/html/html_forms.asp',
+          link: '[https://www.w3schools.com/html/html_forms.asp](https://www.w3schools.com/html/html_forms.asp)',
           questions: [
             { q: 'Which input type natively validates email formats?', options: ['text', 'mail', 'email', 'valid'], answer: 2 },
             { q: 'Which attribute ensures a form field cannot be left blank?', options: ['required', 'validate', 'mandatory', 'lock'], answer: 0 },
@@ -768,7 +757,7 @@
         {
           id: 'css-1',
           title: 'CSS Box Model & Selectors',
-          link: 'https://www.w3schools.com/css/css_boxmodel.asp',
+          link: '[https://www.w3schools.com/css/css_boxmodel.asp](https://www.w3schools.com/css/css_boxmodel.asp)',
           questions: [
             { q: 'Which component represents the innermost area of the CSS box model?', options: ['Margin', 'Border', 'Padding', 'Content'], answer: 3 },
             { q: 'What is the space between the content and the border called?', options: ['Margin', 'Padding', 'Outline', 'Gap'], answer: 1 },
@@ -780,7 +769,7 @@
         {
           id: 'css-2',
           title: 'Flexbox & Modern Layouts',
-          link: 'https://www.w3schools.com/css/css3_flexbox.asp',
+          link: '[https://www.w3schools.com/css/css3_flexbox.asp](https://www.w3schools.com/css/css3_flexbox.asp)',
           questions: [
             { q: 'Which display value enables Flexbox layout?', options: ['display: flex', 'display: box', 'display: grid', 'display: inline'], answer: 0 },
             { q: 'Which property aligns items along the primary axis in Flexbox?', options: ['align-items', 'justify-content', 'align-content', 'flex-align'], answer: 1 },
@@ -794,7 +783,7 @@
         {
           id: 'js-1',
           title: 'JavaScript Variables & Data Types',
-          link: 'https://www.w3schools.com/js/js_variables.asp',
+          link: '[https://www.w3schools.com/js/js_variables.asp](https://www.w3schools.com/js/js_variables.asp)',
           questions: [
             { q: 'Which keyword declares a block-scoped reassignable variable?', options: ['var', 'let', 'const', 'static'], answer: 1 },
             { q: 'Which keyword declares a block-scoped read-only constant?', options: ['let', 'const', 'var', 'immutable'], answer: 1 },
@@ -806,7 +795,7 @@
         {
           id: 'js-2',
           title: 'Functions, Arrays & Promises',
-          link: 'https://www.w3schools.com/js/js_promise.asp',
+          link: '[https://www.w3schools.com/js/js_promise.asp](https://www.w3schools.com/js/js_promise.asp)',
           questions: [
             { q: 'Which syntax defines a modern ES6 arrow function?', options: ['function() => {}', '() => {}', '=> function()', 'def() => {}'], answer: 1 },
             { q: 'Which array method transforms elements into a new array?', options: ['filter()', 'map()', 'forEach()', 'reduce()'], answer: 1 },
@@ -820,7 +809,7 @@
         {
           id: 'py-1',
           title: 'Python Syntax & Variables',
-          link: 'https://www.w3schools.com/python/python_intro.asp',
+          link: '[https://www.w3schools.com/python/python_intro.asp](https://www.w3schools.com/python/python_intro.asp)',
           questions: [
             { q: 'How is console output written in Python?', options: ['echo()', 'System.out.println()', 'print()', 'console.log()'], answer: 2 },
             { q: 'How does Python denote code blocks for functions and loops?', options: ['Curly brackets {}', 'Indentation', 'Parentheses ()', 'Semicolons ;'], answer: 1 },
@@ -839,7 +828,7 @@
         {
           id: `${safeId}-1`,
           title: `${skill} Core Foundations`,
-          link: 'https://www.w3schools.com/',
+          link: '[https://www.w3schools.com/](https://www.w3schools.com/)',
           questions: [
             { q: `What is the primary role of studying ${skill}?`, options: ['Memorizing commands only', `Mastering engineering principles in ${domain}`, 'Avoiding testing', 'Replacing design specs'], answer: 1 },
             { q: `Which documentation source provides verified references for ${skill}?`, options: ['Official Documentation & Standards', 'Unverified threads', 'Social media', 'None'], answer: 0 },
@@ -851,7 +840,7 @@
         {
           id: `${safeId}-2`,
           title: `${skill} Practical Implementation`,
-          link: 'https://www.w3schools.com/',
+          link: '[https://www.w3schools.com/](https://www.w3schools.com/)',
           questions: [
             { q: `What is the second milestone in ${skill}?`, options: ['Hands-on laboratory implementation', 'Skipping practice', 'Only theoretical reading', 'Ignoring errors'], answer: 0 },
             { q: `What is critical for production reliability in ${domain}?`, options: ['Efficiency, safety, and repeatability', 'Maximum code length', 'Zero comments', 'Random variables'], answer: 0 },
@@ -863,7 +852,6 @@
       ];
     }
 
-    // Helper: Dynamic Subtopics generator for any skill
     function getSubtopicsForSkill(skill, domain) {
       const dbEntries = SKILL_TOPICS_DATABASE[skill];
       if (dbEntries && dbEntries.length) {
@@ -926,30 +914,12 @@
       ]
     };
 
-    // Multi-page rotating web links per stream
     const STREAM_WEB_LINKS_ROTATION = {
       'Computer Engineering': [
         [
-          { title: 'Developer Roadmaps & Career Paths', url: 'https://roadmap.sh', snippet: 'Step-by-step pathways and prerequisite trees for software engineers.' },
-          { title: 'MIT OpenCourseWare: EECS Repository', url: 'https://ocw.mit.edu', snippet: 'Lecture transcripts, problem sets, and syllabi from MIT faculty.' },
-          { title: 'W3Schools Official Documentation Hub', url: 'https://www.w3schools.com', snippet: 'Web and software language tutorials with interactive code sandboxes.' }
-        ],
-        [
-          { title: 'Linux Kernel Documentation & Architecture', url: 'https://www.kernel.org/doc/html/latest/', snippet: 'System call specifications, virtual memory subsystems, and kernel internals.' },
-          { title: 'IEEE Computer Society Technical Library', url: 'https://www.computer.org', snippet: 'Peer-reviewed articles, computing standards, and modern compiler optimizations.' },
-          { title: 'GitHub Open Source Engineering Hub', url: 'https://github.com/topics/computer-engineering', snippet: 'Production architectures, open source compilers, and microservices repos.' }
-        ]
-      ],
-      'Automobile Engineering': [
-        [
-          { title: 'SAE International Mobility Knowledge Base', url: 'https://www.sae.org', snippet: 'Global automotive standards, EV powertrain papers, and ADAS guides.' },
-          { title: 'NPTEL: Automotive Dynamics & Powertrain', url: 'https://nptel.ac.in', snippet: 'Semester-long video lectures on vehicle kinetics and electric conversions.' }
-        ]
-      ],
-      'Robotics Engineering': [
-        [
-          { title: 'ROS 2 Official Rolling Documentation', url: 'https://docs.ros.org', snippet: 'Nodes, topics, actions, and DDS middleware tutorials for robotics.' },
-          { title: 'IEEE Robotics and Automation Society', url: 'https://www.ieee-ras.org', snippet: 'Conference proceedings and state-of-the-art autonomous research.' }
+          { title: 'Developer Roadmaps & Career Paths', url: '[https://roadmap.sh](https://roadmap.sh)', snippet: 'Step-by-step pathways and prerequisite trees for software engineers.' },
+          { title: 'MIT OpenCourseWare: EECS Repository', url: '[https://ocw.mit.edu](https://ocw.mit.edu)', snippet: 'Lecture transcripts, problem sets, and syllabi from MIT faculty.' },
+          { title: 'W3Schools Official Documentation Hub', url: '[https://www.w3schools.com](https://www.w3schools.com)', snippet: 'Web and software language tutorials with interactive code sandboxes.' }
         ]
       ]
     };
@@ -958,9 +928,9 @@
       const sets = STREAM_WEB_LINKS_ROTATION[stream];
       if (sets && sets.length) return sets[page % sets.length];
       return [
-        { title: `${stream} Comprehensive Roadmap & Syllabi`, url: 'https://roadmap.sh', snippet: `Curated learning pathways, semester tracks, and prerequisites for ${stream}.` },
-        { title: `MIT OpenCourseWare: ${stream} Series`, url: `https://ocw.mit.edu/search/?q=${encodeURIComponent(stream)}`, snippet: 'Free syllabus, assignments, and exam problems from MIT professors.' },
-        { title: `National Virtual Labs: ${stream}`, url: 'https://vlab.co.in', snippet: 'Interactive simulation experiments, lab practicals, and telemetry analysis.' }
+        { title: `${stream} Comprehensive Roadmap & Syllabi`, url: '[https://roadmap.sh](https://roadmap.sh)', snippet: `Curated learning pathways, semester tracks, and prerequisites for ${stream}.` },
+        { title: `MIT OpenCourseWare: ${stream} Series`, url: `[https://ocw.mit.edu/search/?q=$](https://ocw.mit.edu/search/?q=$){encodeURIComponent(stream)}`, snippet: 'Free syllabus, assignments, and exam problems from MIT professors.' },
+        { title: `National Virtual Labs: ${stream}`, url: '[https://vlab.co.in](https://vlab.co.in)', snippet: 'Interactive simulation experiments, lab practicals, and telemetry analysis.' }
       ];
     }
 
@@ -1023,7 +993,6 @@
     const quizResultDesc = document.getElementById('quiz-result-desc');
     const quizResultActions = document.getElementById('quiz-result-actions');
 
-    // AI Assistant Elements
     const tabAiPlanner = document.getElementById('tab-ai-planner');
     const tabAiSummary = document.getElementById('tab-ai-summary');
     const panelAiPlanner = document.getElementById('panel-ai-planner');
@@ -1046,13 +1015,11 @@
     const btnExplainWholeSkill = document.getElementById('btn-explain-whole-skill');
     const btnExplainSubtopics = document.getElementById('btn-explain-subtopics');
 
-    // Subtopics Pop-up Modal Elements
     const subtopicsModal = document.getElementById('subtopics-modal');
     const subtopicsModalTitle = document.getElementById('subtopics-modal-title');
     const btnCloseSubtopicsModal = document.getElementById('btn-close-subtopics-modal');
     const subtopicsListContainer = document.getElementById('subtopics-list-container');
 
-    // Settings Modal Elements
     const settingsModal = document.getElementById('settings-modal');
     const btnCloseSettingsModal = document.getElementById('btn-close-settings-modal');
     const settingsNameDisplay = document.getElementById('settings-name-display');
@@ -1080,9 +1047,8 @@
     let lastWebRefresh = 0;
     const RATE_LIMIT_MS = 3000;
 
-    // Database Persistence for Skills
     async function persistSkillsToDatabase() {
-      if (!currentUser) return;
+      if (!currentUser || !supabaseClient) return;
       try {
         localStorage.setItem(`sb_enrolled_skills_${currentUser.id}`, JSON.stringify(enrolledSkills));
       } catch (e) {}
@@ -1102,7 +1068,6 @@
       }
     }
 
-    // Navigation Switcher
     function setActiveTab(tab) {
       [sectionHome, sectionAssistant, sectionProgress, sectionSources].forEach(s => s.classList.add('hidden'));
       [navHome, navAssistant, navProgress, navSources].forEach(n => {
@@ -1143,9 +1108,6 @@
     navProgress.addEventListener('click', () => setActiveTab('progress'));
     navSources.addEventListener('click', () => setActiveTab('sources'));
 
-    // =======================================================
-    // SETTINGS POPUP MODAL CONTROLLER
-    // =======================================================
     function openSettingsModal() {
       if (!currentUser) return;
 
@@ -1157,7 +1119,6 @@
       settingsEmailDisplay.textContent = censorEmail(currentUser.email);
       settingsStreamDisplay.textContent = userStream;
 
-      // Reset password drawer
       settingsPasswordDrawer.classList.add('hidden');
       settingsNewPasswordInput.value = '';
       settingsPasswordFeedback.classList.add('hidden');
@@ -1223,18 +1184,14 @@
       btnLogout.disabled = true;
       btnLogout.textContent = 'Logging out...';
       try {
-        await supabaseClient.auth.signOut();
+        if (supabaseClient) await supabaseClient.auth.signOut();
       } catch (e) {}
       window.location.assign('index.html');
     });
 
-    // =======================================================
-    // DYNAMIC MULTI-SKILL AI ENGINE & PLAN GENERATOR
-    // =======================================================
     function generateDynamicAIPlan() {
       if (!enrolledSkills || enrolledSkills.length === 0) {
-        return `### 1. Holistic Portfolio Assessment
-No skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Track"** to build your custom engineering stack for **${userStream}**.`;
+        return `### 1. Holistic Portfolio Assessment\nNo skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Track"** to build your custom engineering stack for **${userStream}**.`;
       }
 
       const now = new Date();
@@ -1243,7 +1200,6 @@ No skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Trac
       let totalTopicsAcrossStack = 0;
       let totalCompletedAcrossStack = 0;
 
-      // Evaluate each individual enrolled skill
       const detailedAnalysis = enrolledSkills.map(s => {
         const topics = getSkillCurriculum(s.skill, s.domain);
         const validCompleted = (s.completed_topics || []).filter(id => topics.some(t => t.id === id));
@@ -1269,13 +1225,11 @@ No skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Trac
         ? Math.round((totalCompletedAcrossStack / totalTopicsAcrossStack) * 100) 
         : 0;
 
-      // Categorize skills
       const completedSkills = detailedAnalysis.filter(a => a.isFinished);
       const inProgressSkills = detailedAnalysis.filter(a => !a.isFinished && a.completedCount > 0);
 
       let markdown = `> **Status: Holistic Multi-Skill Roadmap** · *Generated at ${timeStr}* · *Stack Coverage: ${overallStackPercent}% (${totalCompletedAcrossStack}/${totalTopicsAcrossStack} Topics Across ${enrolledSkills.length} Skills)*\n\n`;
 
-      // 1. Comprehensive Portfolio Assessment
       markdown += `### 1. Comprehensive Portfolio Assessment (${userStream})\n`;
       markdown += `You currently have **${enrolledSkills.length} active skills** enrolled in your curriculum. Here is the exact status of each track:\n\n`;
       detailedAnalysis.forEach(item => {
@@ -1283,7 +1237,6 @@ No skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Trac
         markdown += `- **${item.skill}** (*${item.domain}*): ${statusBadge} — ${item.completedCount}/${item.total} topics verified.\n`;
       });
 
-      // 2. Cross-Skill Synergy & Dependency Analysis
       markdown += `\n### 2. Cross-Skill Synergy & Dependency Analysis\n`;
       markdown += `In **${userStream}**, your ${enrolledSkills.length} skills do not operate in isolation. They form a cohesive stack:\n`;
       const skillNames = detailedAnalysis.map(a => a.skill).join(' + ');
@@ -1295,10 +1248,7 @@ No skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Trac
         markdown += `- **Active Priority Gate:** Your primary bottleneck sits in **${inProgressSkills.map(c => c.skill).join(', ')}**. Clearing these modules will unlock full integration capacity.\n`;
       }
 
-      // 3. Phased Strategic Execution Roadmap
       markdown += `\n### 3. Phased Strategic Execution Roadmap\n`;
-      
-      // Phase 1
       markdown += `#### Phase 1: High-Priority Topic Sprints (Immediate)\n`;
       const immediateActions = detailedAnalysis.filter(a => !a.isFinished);
       if (immediateActions.length > 0) {
@@ -1309,30 +1259,25 @@ No skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Trac
         markdown += `- All currently tracked topics are 100% verified. Proceed directly to system integration testing.\n`;
       }
 
-      // Phase 2
       markdown += `\n#### Phase 2: Cross-Track Integration & Bridge (Mid-Term)\n`;
       markdown += `- Connect data inputs and interface logic across your active tools (${skillNames}).\n`;
       markdown += `- Establish structured error handling and boundary assertions between layers.\n`;
 
-      // Phase 3
       markdown += `\n#### Phase 3: Production Readiness & Quality Assurance (Final)\n`;
       markdown += `- Implement end-to-end automated unit tests and benchmark throughput against 2026-27 performance targets.\n`;
 
-      // 4. Unified Full-Stack Capstone Project
       markdown += `\n### 4. Unified Multi-Skill Capstone Project\n`;
       markdown += `Instead of building disjointed scripts for each technology, develop a **single integrated production utility**:\n`;
       markdown += `- **Project Name:** Modular ${userStream} Control & Telemetry Suite\n`;
       markdown += `- **Architecture:** Combines **${skillNames}** into an end-to-end pipeline with validated inputs, deterministic business logic, and structured telemetry feedback.\n`;
 
-      // 5. Weekly Milestone Matrix & Time Budget
       markdown += `\n### 5. Weekly Time Allocation & Study Matrix\n`;
       markdown += `- **Active Skill Deep-Dives:** 50% of time divided equally among non-completed tracks (${detailedAnalysis.filter(a => !a.isFinished).map(a => a.skill).join(', ') || 'Capstone refinement'}).\n`;
       markdown += `- **Interactive Knowledge Checks:** 20% of time verifying documentation and clearing W3Schools milestone tests.\n`;
       markdown += `- **Capstone Architecture:** 30% of time writing clean, test-driven implementations integrating all active skills.\n`;
 
-      // 6. Key Pitfall to Avoid
       markdown += `\n### 6. Critical Engineering Pitfall to Avoid\n`;
-      markdown += `- **Isolation Trap:** Do not study one skill in a vacuum. Always write companion code that tests how your completed tracks (${completedSkills.map(c => c.skill).join(', ') || 'baseline modules'}) consume and interact with your in-progress modules.`;
+      markdown += `- **Isolation Trap:** Do not study one skill in a vacuum. Always write companion code that tests how your completed tracks (${completedSkills.map(c => c.skill).join(', ') || 'baseline modules'}) interact with in-progress modules.`;
 
       return markdown;
     }
@@ -1341,61 +1286,25 @@ No skills enrolled yet. Head to the **Progress** tab and click **"Add Skill Trac
       const userPrompt = messages[messages.length - 1].content;
       if (userPrompt.includes('comprehensive, holistic masterclass')) {
         const skillName = currentSummarySkill || 'Engineering Skill';
-        return `### Comprehensive Mastery: ${skillName}
-
-#### 1. Architectural Foundations
-**${skillName}** forms the core backbone of modern ${userStream} systems. It governs how modules interact, how system constraints are validated, and how high-throughput workloads execute reliably.
-
-#### 2. End-to-End System Lifecycle
-- **Setup & Standardization:** Establishes strict modular interfaces and conformant build settings.
-- **Runtime Execution:** Manages memory boundaries, thread-safe asynchronous cycles, and predictable state transitions.
-- **Defensive Error Handling:** Mitigates failures early through explicit validation gates and logging.
-
-#### 3. Core Sub-disciplines to Master
-- **Foundations:** Data types, scoping, memory primitives, and basic execution flow.
-- **Integration:** Communicating with external APIs, databases, hardware buses, or telemetry sinks.
-- **Robustness:** Automated unit testing, fuzzing, and continuous static analysis.
-
-#### 4. Practical Hands-On Roadmap
-1. Build a functional proof-of-concept adhering to 2026-27 design specs.
-2. Stress test against edge cases and latency degradation.
-3. Validate each step by completing the progress milestone quizzes!`;
+        return `### Comprehensive Mastery: ${skillName}\n\n#### 1. Architectural Foundations\n**${skillName}** forms the core backbone of modern ${userStream} systems.\n\n#### 2. End-to-End System Lifecycle\n- **Setup & Standardization:** Establishes strict modular interfaces.\n- **Runtime Execution:** Manages memory boundaries and predictable state transitions.\n\n#### 3. Core Sub-disciplines to Master\n- Data types, scoping, memory primitives, and asynchronous concurrency.\n\n#### 4. Practical Hands-On Roadmap\nBuild a verified prototype adhering to 2026-27 engineering standards.`;
       } else {
         const match = userPrompt.match(/sub-topic "([^"]+)"/);
         const subTopic = match ? match[1] : null;
         const skillName = currentSummarySkill || 'Selected Skill';
         const domainName = currentSummaryDomain || 'Domain';
 
-        return `### Sub-Topic Deep Dive: ${subTopic || skillName}
-
-#### 1. Core Mechanics & Concept
-This module covers crucial operational mechanics of **${skillName}** within **${domainName}**. It ensures engineering pipelines remain clean, scalable, and deterministic.
-
-#### 2. Technical Breakdown & Principles
-- **Implementation Semantics:** Follows verified standards for syntax and architectural decoupling.
-- **Data Flow & Lifecycle:** Prevents unintended side effects, memory leaks, and race conditions.
-- **Validation:** Enforces strict boundary verification prior to executing business logic.
-
-#### 3. Practical Code / Engineering Context
-Apply modular unit tests that simulate production inputs. Ensure all configurations are externalized and that error states yield informative recovery telemetry.
-
-#### 4. Suggested Exercise
-Review the reference documentation, build a targeted test bench, and complete the milestone assessment in your Progress tab to lock in the achievement!`;
+        return `### Sub-Topic Deep Dive: ${subTopic || skillName}\n\n#### 1. Core Mechanics & Concept\nCrucial operational mechanics of **${skillName}** within **${domainName}**.\n\n#### 2. Technical Breakdown & Principles\nEnsures decoupled logic, predictable throughput, and high fault tolerance.\n\n#### 3. Real-World Engineering Exercise\nReview the specification and complete the knowledge test under the Progress tab!`;
       }
     }
 
+    // Secure Netlify Serverless Function Proxy for AI
     async function callAIAPI(messages, isPlanner = false) {
       try {
-        const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
+        const response = await fetch('/.netlify/functions/ai', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${AI_API_KEY}`
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            model: AI_MODEL,
             messages: messages,
-            temperature: 0.6,
             max_tokens: isPlanner ? 1800 : 900
           })
         });
@@ -1414,7 +1323,6 @@ Review the reference documentation, build a targeted test bench, and complete th
       }
     }
 
-    // AI Assistant View Tabs (Planner vs Summary)
     tabAiPlanner.addEventListener('click', () => {
       tabAiPlanner.className = 'w-1/2 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-brand-700 transition-all';
       tabAiSummary.className = 'w-1/2 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all';
@@ -1464,7 +1372,6 @@ Review the reference documentation, build a targeted test bench, and complete th
       summarySkillSelect.classList.add('bg-white');
     });
 
-    // 1. AI PLANNER EXECUTION (FULL MULTI-SKILL AGGREGATION & RELIABLE DUAL-TIER SYNC)
     btnRunAiPlanner.addEventListener('click', async () => {
       if (isAiCooldownActive) return;
 
@@ -1472,7 +1379,6 @@ Review the reference documentation, build a targeted test bench, and complete th
       btnPlannerSpinner.classList.remove('hidden');
       btnPlannerLabel.textContent = 'Analyzing All Skills...';
 
-      // Aggregate all enrolled skills with exact progress
       const detailedSkillsContext = enrolledSkills.map(s => {
         const topics = getSkillCurriculum(s.skill, s.domain);
         const completedCount = (s.completed_topics || []).length;
@@ -1482,7 +1388,7 @@ Review the reference documentation, build a targeted test bench, and complete th
       const promptMessages = [
         {
           role: 'system',
-          content: 'You are SkillBridge AI, a university engineering mentor and curriculum strategist. Provide exhaustive, multi-skill architectural learning roadmaps across all enrolled tracks simultaneously.'
+          content: 'You are SkillBridge AI, a university engineering mentor. Provide exhaustive, multi-skill architectural learning roadmaps across all enrolled tracks simultaneously.'
         },
         {
           role: 'user',
@@ -1493,11 +1399,11 @@ Review the reference documentation, build a targeted test bench, and complete th
 
 Do NOT limit your plan to only one skill. Analyze all enrolled skills together as an interconnected full-stack engineering portfolio.
 Structure your extensive masterplan into:
-### 1. Comprehensive Portfolio Assessment (Evaluate each enrolled skill individually and the collective stack)
-### 2. Cross-Skill Synergy & Dependency Analysis (How these exact skills interlock within ${userStream})
-### 3. Phased Strategic Execution Roadmap (Phase 1 Immediate Sprints, Phase 2 Cross-Track Integration, Phase 3 Advanced Milestones)
-### 4. Unified Multi-Skill Capstone Project (Combines all active skills into a real production system)
-### 5. Weekly Time Allocation & Study Matrix (Concrete study hours split across the enrolled skills)
+### 1. Comprehensive Portfolio Assessment
+### 2. Cross-Skill Synergy & Dependency Analysis
+### 3. Phased Strategic Execution Roadmap
+### 4. Unified Multi-Skill Capstone Project
+### 5. Weekly Time Allocation & Study Matrix
 ### 6. Critical Engineering Pitfall to Avoid`
         }
       ];
@@ -1506,20 +1412,17 @@ Structure your extensive masterplan into:
         const planText = await callAIAPI(promptMessages, true);
         savedAiPlan = planText;
 
-        // Immediately update DOM
         renderMarkdownToElement(plannerOutputBody, planText);
         renderMarkdownToElement(homeAiPlanContent, planText);
 
         const now = new Date();
         plannerSyncBadge.textContent = `Synced · ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
 
-        // Guarantee LocalStorage save
-        if (currentUser) {
+        if (currentUser && supabaseClient) {
           try {
             localStorage.setItem(`sb_ai_plan_${currentUser.id}`, planText);
           } catch (e) {}
 
-          // Dual-channel Supabase sync
           try {
             const { error: updateErr } = await supabaseClient
               .from('profiles')
@@ -1540,7 +1443,6 @@ Structure your extensive masterplan into:
       }
     });
 
-    // 2. AI SUMMARY EXECUTION
     summaryForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const domain = summaryDomainSelect.value;
@@ -1565,9 +1467,9 @@ Structure your extensive masterplan into:
         },
         {
           role: 'user',
-          content: `Explain "${skill}" under the domain "${domain}" for a student focusing on ${userStream} in the modern 2026-27 engineering landscape.
+          content: `Explain "${skill}" under the domain "${domain}" for a student focusing on ${userStream} in modern engineering.
 
-Structure your breakdown cleanly into:
+Structure into:
 ### 1. Core Concept & Architectural Importance
 ### 2. Fundamental Mechanics & Principles
 ### 3. Real-World Engineering Applications
@@ -1586,7 +1488,6 @@ Structure your breakdown cleanly into:
       }
     });
 
-    // 3. AI SUMMARY FOLLOW-UPS: EXPLAIN WHOLE SKILL
     btnExplainWholeSkill.addEventListener('click', async () => {
       if (!currentSummarySkill || isAiCooldownActive) return;
 
@@ -1598,11 +1499,11 @@ Structure your breakdown cleanly into:
       const promptMessages = [
         {
           role: 'system',
-          content: 'You are SkillBridge AI, an expert engineering educator. Provide comprehensive, end-to-end holistic deep-dives into entire engineering disciplines.'
+          content: 'You are SkillBridge AI, an expert engineering educator. Provide comprehensive holistic deep-dives.'
         },
         {
           role: 'user',
-          content: `Provide a comprehensive, holistic masterclass on the entire skill "${currentSummarySkill}" within the domain "${currentSummaryDomain}" for a student pursuing ${userStream}.
+          content: `Provide a comprehensive, holistic masterclass on the entire skill "${currentSummarySkill}" within domain "${currentSummaryDomain}" for ${userStream}.
 
 Structure cleanly into:
 ### 1. High-Level Architectural Foundations & Scope
@@ -1623,7 +1524,6 @@ Structure cleanly into:
       }
     });
 
-    // 4. AI SUMMARY FOLLOW-UPS: EXPLAIN SUB TOPICS (POPUP MENU)
     btnExplainSubtopics.addEventListener('click', () => {
       if (!currentSummarySkill) return;
 
@@ -1667,11 +1567,11 @@ Structure cleanly into:
       const promptMessages = [
         {
           role: 'system',
-          content: 'You are SkillBridge AI, a technical engineering educator. Provide detailed, laser-focused explanations of specific sub-topics with mechanics and clear code or schematic examples.'
+          content: 'You are SkillBridge AI, a technical engineering educator. Provide detailed, laser-focused explanations with mechanics and code.'
         },
         {
           role: 'user',
-          content: `Provide a detailed breakdown of the sub-topic "${subTopicName}" belonging to the skill "${currentSummarySkill}" (Domain: "${currentSummaryDomain}") for an engineering student in ${userStream}.
+          content: `Provide a detailed breakdown of "${subTopicName}" belonging to "${currentSummarySkill}" for a student in ${userStream}.
 
 Structure cleanly into:
 ### 1. Conceptual Mechanics & Purpose
@@ -1691,9 +1591,6 @@ Structure cleanly into:
       }
     }
 
-    // ==========================================
-    // ADD SKILL MODAL
-    // ==========================================
     function openSkillModal() {
       skillModalStreamTag.textContent = userStream;
       const curriculum = STREAM_CURRICULUM[userStream] || STREAM_CURRICULUM['Computer Engineering'];
@@ -1771,9 +1668,6 @@ Structure cleanly into:
       homeSkillsCount.textContent = `${enrolledSkills.length} Tracked`;
     });
 
-    // ===================================================
-    // PROGRESS: ENROLLED SKILLS GRID & CURRICULUM
-    // ===================================================
     function renderEnrolledSkills() {
       if (!enrolledSkills.length) return;
 
@@ -1904,9 +1798,6 @@ Structure cleanly into:
       });
     }
 
-    // ==========================================
-    // COMPACT STEPPER QUIZ MODAL
-    // ==========================================
     let activeQuizData = null;
     let quizCurrentIndex = 0;
     let quizSelectedAnswers = {};
@@ -2067,16 +1958,13 @@ Structure cleanly into:
       renderQuizStep();
     };
 
-    // ==========================================
-    // SOURCES: AMAZON STORE & WEB LINKS
-    // ==========================================
     function applyStreamSources(stream) {
       topStreamLabel.textContent = stream;
       sidebarStreamName.textContent = stream;
       homeStreamDisplay.textContent = stream;
 
       const q = encodeURIComponent(`${stream} textbooks fundamentals`);
-      amazonAllLink.href = `https://www.amazon.com/s?k=${q}`;
+      amazonAllLink.href = `[https://www.amazon.com/s?k=$](https://www.amazon.com/s?k=$){q}`;
 
       renderStoreBooks(stream, 0);
       fetchLiveOrCuratedWebLinks(stream, 0);
@@ -2089,7 +1977,7 @@ Structure cleanly into:
       const count = 3;
       for (let i = 0; i < count; i++) {
         const book = books[(offset + i) % books.length];
-        const amazonUrl = `https://www.amazon.com/s?k=${encodeURIComponent(book.title + ' ' + book.author)}`;
+        const amazonUrl = `[https://www.amazon.com/s?k=$](https://www.amazon.com/s?k=$){encodeURIComponent(book.title + ' ' + book.author)}`;
 
         const card = document.createElement('div');
         card.className = 'p-4 bg-white rounded-2xl border border-slate-200/80 hover:border-brand-500/40 hover:shadow-sm transition-all flex flex-col justify-between';
@@ -2110,32 +1998,28 @@ Structure cleanly into:
       }
     }
 
+    // Secure Netlify Serverless Function Proxy for Search
     async function fetchLiveOrCuratedWebLinks(stream, rotationIdx = 0) {
       const queryAngles = [
         `${stream} syllabus curriculum documentation 2026-27`,
         `${stream} laboratory practical experiments virtual labs`,
-        `${stream} open source github frameworks industry tools`,
-        `${stream} IEEE academic papers research breakthroughs`
+        `${stream} open source github frameworks industry tools`
       ];
 
       const activeQuery = queryAngles[rotationIdx % queryAngles.length];
 
       webLinksContainer.innerHTML = `
         <div class="p-5 text-center text-slate-400 bg-white rounded-xl border border-slate-200/80">
-          <svg class="animate-spin w-4 h-4 mx-auto text-brand-500 mb-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg class="animate-spin w-4 h-4 mx-auto text-brand-500 mb-1.5" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          <span class="text-[11px] font-medium">Fetching fresh web results for ${stream}...</span>
+          <span class="text-[11px] font-medium">Fetching verified resources for ${stream}...</span>
         </div>
       `;
 
       try {
-        const response = await fetch(`https://api.search.tinyfish.ai?query=${encodeURIComponent(activeQuery)}&location=US`, {
-          method: 'GET',
-          headers: { 'X-API-Key': TINYFISH_API_KEY }
-        });
-
+        const response = await fetch(`/.netlify/functions/search?query=${encodeURIComponent(activeQuery)}`);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         const results = data.results || [];
@@ -2210,10 +2094,23 @@ Structure cleanly into:
       }, lastWebRefresh);
     });
 
-    // ==========================================
-    // INITIALIZATION & SESSION RESTORE
-    // ==========================================
+    // Dynamic Initialization via Netlify Config
     async function initDashboardSession() {
+      try {
+        const cfgRes = await fetch('/.netlify/functions/config');
+        const config = await cfgRes.json();
+        if (config.supabaseUrl && config.supabaseAnonKey) {
+          supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+        }
+      } catch (err) {
+        console.warn('Config fetch notice:', err.message);
+      }
+
+      if (!supabaseClient) {
+        console.error('Supabase client could not be initialized from Netlify environment variables.');
+        return;
+      }
+
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (!session) {
         window.location.assign('index.html');
@@ -2234,7 +2131,6 @@ Structure cleanly into:
         userStream = profile.stream;
         applyStreamSources(userStream);
 
-        // Pre-fill user profile fields
         const userName = (profile && profile.full_name) 
           ? profile.full_name 
           : (currentUser.user_metadata && currentUser.user_metadata.full_name)
@@ -2245,7 +2141,6 @@ Structure cleanly into:
         settingsEmailDisplay.textContent = censorEmail(currentUser.email);
         settingsStreamDisplay.textContent = userStream;
 
-        // Restore saved AI Planner response (LocalStorage prioritized as freshest client-side state)
         let restoredPlan = null;
         try {
           restoredPlan = localStorage.getItem(`sb_ai_plan_${currentUser.id}`);
@@ -2261,7 +2156,6 @@ Structure cleanly into:
           renderMarkdownToElement(plannerOutputBody, restoredPlan);
         }
 
-        // Restore enrolled skills
         if (Array.isArray(profile.enrolled_skills) && profile.enrolled_skills.length > 0) {
           enrolledSkills = profile.enrolled_skills;
         } else {
@@ -2289,7 +2183,6 @@ Structure cleanly into:
       }
     }
 
-    // Onboarding Form
     function syncOnboardBtn() {
       if (termsCheckbox.checked && streamSelect.value) {
         btnProceed.disabled = false;
@@ -2305,7 +2198,7 @@ Structure cleanly into:
 
     onboardingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (!termsCheckbox.checked || !streamSelect.value || !currentUser) return;
+      if (!termsCheckbox.checked || !streamSelect.value || !currentUser || !supabaseClient) return;
 
       btnProceed.disabled = true;
       btnProceed.textContent = 'Saving stream...';
