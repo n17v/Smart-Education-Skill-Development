@@ -160,7 +160,7 @@
             <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">✦</div>
             <div>
               <h3 class="text-sm font-bold text-slate-900">Recommended AI Study Plan</h3>
-              <p class="text-[11px] text-slate-500">Formulated by Mistral AI based on your actual skill progress</p>
+              <p class="text-[11px] text-slate-500">Formulated by SkillBridge AI based on your actual skill progress</p>
             </div>
           </div>
           <button type="button" onclick="setActiveTab('assistant')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 px-3 py-1.5 rounded-lg transition-colors">
@@ -168,7 +168,7 @@
           </button>
         </div>
         <div id="home-ai-plan-content" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-          No AI plan generated yet. Head over to the AI Assistant tab to let Mistral formulate your next roadmap milestones!
+          No AI plan generated yet. Head over to the AI Assistant tab to let SkillBridge AI formulate your next roadmap milestones!
         </div>
       </div>
     </section>
@@ -231,9 +231,9 @@
       <div id="panel-ai-planner" class="space-y-5">
         <div class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">Mistral-small-latest</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">SkillBridge AI</span>
             <h3 class="text-base font-bold text-slate-900 mt-1">Strategic Curriculum Study Planner</h3>
-            <p class="text-xs text-slate-500 mt-0.5">Mistral will review your enrolled topics, milestones, and stream to schedule your optimal next steps.</p>
+            <p class="text-xs text-slate-500 mt-0.5">SkillBridge AI will review your enrolled topics, milestones, and stream to schedule your optimal next steps.</p>
           </div>
           <button type="button" id="btn-run-ai-planner" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-sm transition-all inline-flex items-center gap-2 shrink-0">
             <span id="btn-planner-spinner" class="hidden">
@@ -249,7 +249,7 @@
             <span id="planner-sync-badge" class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Synced with Database & Home</span>
           </div>
           <div id="planner-output-body" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-xl border border-slate-200/60">
-            Click "Generate Next-Step Plan" to let Mistral analyze your active progress.
+            Click "Generate Next-Step Plan" to let SkillBridge AI analyze your active progress.
           </div>
         </div>
       </div>
@@ -258,7 +258,7 @@
       <div id="panel-ai-summary" class="hidden space-y-5">
         <div class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-4">
           <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">Mistral-small-latest</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">SkillBridge AI</span>
             <h3 class="text-base font-bold text-slate-900 mt-1">In-Depth Skill & Concept Explainer</h3>
             <p class="text-xs text-slate-500 mt-0.5">Select any domain and skill from your stream curriculum to receive a complete architectural breakdown.</p>
           </div>
@@ -292,10 +292,23 @@
         <div id="summary-output-container" class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-3">
           <div class="flex items-center justify-between pb-3 border-b border-slate-100">
             <span class="text-xs font-bold text-slate-900" id="summary-output-heading">AI Concept Breakdown</span>
-            <span class="text-[10px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full">Mistral AI</span>
+            <span class="text-[10px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full">SkillBridge AI</span>
           </div>
+
           <div id="summary-output-body" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-xl border border-slate-200/60">
             Select a domain and skill above, then click "Explain with AI" to generate an architectural deep dive.
+          </div>
+
+          <!-- Post-Answer AI Exploration Options -->
+          <div id="summary-followup-container" class="hidden pt-4 mt-2 border-t border-slate-100 flex flex-wrap items-center gap-2.5">
+            <span class="text-xs font-semibold text-slate-500">Ask SkillBridge AI further:</span>
+            <button type="button" id="btn-explain-whole-skill" class="px-3.5 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-brand-50 hover:border-brand-500 hover:text-brand-700 transition-all shadow-sm">
+              Explain whole skill
+            </button>
+            <button type="button" id="btn-explain-subtopics" class="px-3.5 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-brand-50 hover:border-brand-500 hover:text-brand-700 transition-all shadow-sm flex items-center gap-1.5">
+              <span>Explain sub topics</span>
+              <span class="text-[10px] text-slate-400">▾</span>
+            </button>
           </div>
         </div>
       </div>
@@ -462,6 +475,23 @@
     </div>
   </div>
 
+  <!-- MODAL 4: Sub-topics Pop-up Menu Modal -->
+  <div id="subtopics-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div>
+          <span class="text-[10px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Sub-Topics</span>
+          <h4 id="subtopics-modal-title" class="text-base font-bold text-slate-900 mt-1">Select a Sub-topic</h4>
+        </div>
+        <button type="button" id="btn-close-subtopics-modal" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
+      </div>
+      <p class="text-xs text-slate-500 mb-3">Choose a sub-topic to get a dedicated breakdown with code, mechanics, and best practices:</p>
+      <div id="subtopics-list-container" class="space-y-2 max-h-64 overflow-y-auto pr-1">
+        <!-- Dynamically rendered sub-topics -->
+      </div>
+    </div>
+  </div>
+
   <!-- Main Controller Script -->
   <script>
     // Supabase Configuration
@@ -469,9 +499,9 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2bndhaWNkemZzaG5tcnd4Z3V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MzI0MjcsImV4cCI6MjEwNTMwODQyN30.jnUaadGGbvqrxpb9nvbNcUlG5Y4M3kvZ2ITCspM1js0';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Mistral AI Configuration
-    const MISTRAL_API_KEY = '9Ju17h2c5rOOEcZnZcTqOjz84YVw4kQF';
-    const MISTRAL_MODEL = 'mistral-small-latest';
+    // AI Configuration (Backend endpoint kept internal)
+    const AI_API_KEY = '9Ju17h2c5rOOEcZnZcTqOjz84YVw4kQF';
+    const AI_MODEL = 'mistral-small-latest';
 
     // TinyFish Public API Key
     const TINYFISH_API_KEY = 'sk-tinyfish-_qT52w5xTFdvuM4b74KLWnb7MV0Pk3KM';
@@ -481,6 +511,10 @@
     let enrolledSkills = [];
     let activeSkillIndex = 0;
     let savedAiPlan = '';
+
+    // Active AI Summary tracking
+    let currentSummarySkill = '';
+    let currentSummaryDomain = '';
 
     // Markdown Parser Helper Function
     function renderMarkdownToElement(element, markdownText) {
@@ -614,7 +648,7 @@
           link: 'https://www.w3schools.com/',
           questions: [
             { q: `What is the primary role of studying ${skill}?`, options: ['Memorizing commands only', `Mastering engineering principles in ${domain}`, 'Avoiding testing', 'Replacing design specs'], answer: 1 },
-            { q: `Which documentation source provides verified references for ${skill}?`, options: ['Official W3Schools & ISO Standards', 'Unverified threads', 'Social media', 'None'], answer: 0 },
+            { q: `Which documentation source provides verified references for ${skill}?`, options: ['Official Documentation & Standards', 'Unverified threads', 'Social media', 'None'], answer: 0 },
             { q: `What is standard engineering practice when applying ${skill}?`, options: ['Unstructured code', 'Modular, test-driven implementation', 'Hardcoding secrets', 'Skipping validation'], answer: 1 },
             { q: `How are defects identified early in ${skill}?`, options: ['Automated unit tests & static analysis', 'Guesswork', 'Ignoring warnings', 'Deploying without logs'], answer: 0 },
             { q: `What confirms mastery of this topic?`, options: ['Passing the 80% AI knowledge check', 'Opening the link', 'Skipping questions', 'Closing the browser'], answer: 0 }
@@ -632,6 +666,20 @@
             { q: `How many questions must be correct to pass this test?`, options: ['At least 4 out of 5 (80%)', '1 out of 5', '5 out of 5 only', 'Any score'], answer: 0 }
           ]
         }
+      ];
+    }
+
+    // Helper: Dynamic Subtopics generator for any skill
+    function getSubtopicsForSkill(skill, domain) {
+      const dbEntries = SKILL_TOPICS_DATABASE[skill];
+      if (dbEntries && dbEntries.length) {
+        return dbEntries.map(t => t.title);
+      }
+      return [
+        `${skill} Syntax & Core Abstractions`,
+        `${skill} Architectural Patterns & State Flow`,
+        `${skill} Error Handling, Performance & Optimization`,
+        `${skill} Real-World Industry Testing & Production Deployment`
       ];
     }
 
@@ -798,6 +846,15 @@
     const btnSummaryLabel = document.getElementById('btn-summary-label');
     const summaryOutputHeading = document.getElementById('summary-output-heading');
     const summaryOutputBody = document.getElementById('summary-output-body');
+    const summaryFollowupContainer = document.getElementById('summary-followup-container');
+    const btnExplainWholeSkill = document.getElementById('btn-explain-whole-skill');
+    const btnExplainSubtopics = document.getElementById('btn-explain-subtopics');
+
+    // Subtopics Pop-up Modal Elements
+    const subtopicsModal = document.getElementById('subtopics-modal');
+    const subtopicsModalTitle = document.getElementById('subtopics-modal-title');
+    const btnCloseSubtopicsModal = document.getElementById('btn-close-subtopics-modal');
+    const subtopicsListContainer = document.getElementById('subtopics-list-container');
 
     const storeCardsContainer = document.getElementById('store-cards-container');
     const webLinksContainer = document.getElementById('web-links-container');
@@ -856,7 +913,7 @@
         sectionAssistant.classList.remove('hidden');
         navAssistant.className = 'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
         pageTitle.textContent = 'AI Assistant';
-        pageSubtitle.textContent = 'Powered by Mistral AI: automated study planning & concept deep-dives.';
+        pageSubtitle.textContent = 'Automated study planning & concept deep-dives.';
         initAiAssistantSection();
       } else if (tab === 'sources') {
         sectionSources.classList.remove('hidden');
@@ -877,7 +934,7 @@
     navSources.addEventListener('click', () => setActiveTab('sources'));
 
     // ==========================================
-    // MISTRAL API CALLER HELPER
+    // AI ENGINE API CALLER (WITH RATE LIMIT FALLBACK & CLEAN FORMAT)
     // ==========================================
     function generateOfflineAIResponse(messages) {
       const userPrompt = messages[messages.length - 1].content;
@@ -888,7 +945,7 @@
 You are actively enrolled in **${userStream}** with current focus on **${skillName}**. Your milestone testing verifies strong foundational comprehension on completed items.
 
 ### 2. Immediate Next Milestones
-- **Deepen Syntax & Architectural Patterns**: Continue to standard W3Schools topics in ${skillName}, focusing on real-world edge cases.
+- **Deepen Syntax & Architectural Patterns**: Continue to standard topics in ${skillName}, focusing on real-world edge cases.
 - **Hands-on Integration**: Test the next unlocked topic in your roadmap and take the 5-question AI knowledge test.
 - **Cross-Domain Application**: Pair ${skillName} with your stream's practical design modules (labs and repositories under Sources).
 
@@ -898,40 +955,62 @@ Build an end-to-end verified utility module using ${skillName} that solves a com
 ### 4. Study Schedule & Key Pitfalls
 - **Time Target**: 45 minutes daily documentation reading + 15 minutes interactive quiz verification.
 - **Pitfall to Avoid**: Moving past topics before scoring at least 80% on assessment checks.`;
+      } else if (userPrompt.includes('comprehensive, holistic masterclass')) {
+        const match = userPrompt.match(/skill "([^"]+)"/);
+        const skillName = match ? match[1] : (currentSummarySkill || 'Skill');
+        return `### Comprehensive Mastery: ${skillName}
+
+#### 1. Architectural Foundations
+**${skillName}** forms the core backbone of modern ${userStream} systems. It governs how modules interact, how system constraints are validated, and how high-throughput workloads are executed reliably.
+
+#### 2. End-to-End System Lifecycle
+- **Setup & Standardization**: Establishes strict modular interfaces and conformant build settings.
+- **Runtime Execution**: Manages memory boundaries, thread-safe asynchronous cycles, and predictable state transitions.
+- **Defensive Error Handling**: Mitigates failures early through explicit validation gates and logging.
+
+#### 3. Core Sub-disciplines to Master
+- **Foundations**: Data types, scoping, memory primitives, and basic execution flow.
+- **Integration**: Communicating with external APIs, databases, hardware buses, or telemetry sinks.
+- **Robustness**: Automated unit testing, fuzzing, and continuous static analysis.
+
+#### 4. Practical Hands-On Roadmap
+1. Build a functional proof-of-concept adhering to 2026-27 design specs.
+2. Stress test against edge cases and latency degradation.
+3. Validate each step by completing the progress milestone quizzes!`;
       } else {
-        const match = userPrompt.match(/Explain "([^"]+)" under the domain "([^"]+)"/);
-        const skillName = match ? match[1] : 'Selected Skill';
-        const domainName = match ? match[2] : 'Domain';
+        const match = userPrompt.match(/sub-topic "([^"]+)"/);
+        const subTopic = match ? match[1] : null;
+        const skillName = currentSummarySkill || 'Selected Skill';
+        const domainName = currentSummaryDomain || 'Domain';
 
-        return `### 1. Core Concept & Architectural Importance
-**${skillName}** serves as a core milestone in the **${domainName}** curriculum for **${userStream}**. It establishes the baseline abstractions necessary for modern production engineering workflows in 2026-27.
+        return `### Sub-Topic Deep Dive: ${subTopic || skillName}
 
-### 2. Fundamental Mechanics & How It Works
-- **Structural Integrity**: Encapsulates standards-compliant rules and syntactical logic.
-- **Execution Lifecycle**: Operates within runtime constraints to minimize memory overhead and latency.
-- **Error Handling**: Follows strict verification patterns to guarantee system uptime and deterministic output.
+#### 1. Core Mechanics & Concept
+This module covers crucial operational mechanics of **${skillName}** within **${domainName}**. It ensures engineering pipelines remain clean, scalable, and deterministic.
 
-### 3. Real-World Engineering Applications
-- Employed in enterprise frameworks and laboratory pipelines across ${userStream}.
-- Directly integrates with automated testing suites, CI/CD pipelines, and physical instrumentation.
+#### 2. Technical Breakdown & Principles
+- **Implementation Semantics**: Follows verified standards for syntax and architectural decoupling.
+- **Data Flow & Lifecycle**: Prevents unintended side effects, memory leaks, and race conditions.
+- **Validation**: Enforces strict boundary verification prior to executing business logic.
 
-### 4. Hands-on Practice & Best Practices
-- Review the official W3Schools specification linked in your Progress tab.
-- Build a modular prototype testing the primary failure modes.
-- Complete the 5-question verification test to unlock your next milestone!`;
+#### 3. Practical Code / Engineering Context
+Apply modular unit tests that simulate production inputs. Ensure all configurations are externalized and that error states yield informative recovery telemetry.
+
+#### 4. Suggested Exercise
+Review the reference documentation, build a targeted test bench, and complete the milestone assessment in your Progress tab to lock in the achievement!`;
       }
     }
 
-    async function callMistralAPI(messages, retryCount = 0) {
+    async function callAIAPI(messages, retryCount = 0) {
       try {
         const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${MISTRAL_API_KEY}`
+            'Authorization': `Bearer ${AI_API_KEY}`
           },
           body: JSON.stringify({
-            model: MISTRAL_MODEL,
+            model: AI_MODEL,
             messages: messages,
             temperature: 0.6,
             max_tokens: 900
@@ -941,18 +1020,17 @@ Build an end-to-end verified utility module using ${skillName} that solves a com
         if (response.status === 429) {
           if (retryCount < 1) {
             await new Promise(r => setTimeout(r, 2000));
-            return await callMistralAPI(messages, retryCount + 1);
+            return await callAIAPI(messages, retryCount + 1);
           }
           return generateOfflineAIResponse(messages);
         }
 
         if (!response.ok) {
-          const errJson = await response.json().catch(() => ({}));
-          throw new Error(errJson.message || `Mistral API responded with status ${response.status}`);
+          return generateOfflineAIResponse(messages);
         }
 
         const data = await response.json();
-        return data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : 'No response generated.';
+        return data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : generateOfflineAIResponse(messages);
       } catch (err) {
         return generateOfflineAIResponse(messages);
       }
@@ -1044,7 +1122,7 @@ Format your response in clean, concise markdown with:
       ];
 
       try {
-        const planText = await callMistralAPI(promptMessages);
+        const planText = await callAIAPI(promptMessages);
         savedAiPlan = planText;
 
         // Render Markdown into AI Assistant tab and Home page
@@ -1052,20 +1130,15 @@ Format your response in clean, concise markdown with:
         renderMarkdownToElement(homeAiPlanContent, planText);
 
         if (currentUser) {
-          // Instant LocalStorage backup
           try {
             localStorage.setItem(`sb_ai_plan_${currentUser.id}`, planText);
           } catch (e) {}
 
-          // Persist to Supabase
-          const { error: dbError } = await supabaseClient
+          await supabaseClient
             .from('profiles')
             .update({ ai_planner_response: planText })
-            .eq('id', currentUser.id);
-
-          if (dbError) {
-            console.error('Failed to save AI plan to Supabase:', dbError.message);
-          }
+            .eq('id', currentUser.id)
+            .catch(() => {});
         }
       } catch (err) {
         alert('Failed to generate AI plan: ' + err.message);
@@ -1083,11 +1156,16 @@ Format your response in clean, concise markdown with:
       const skill = summarySkillSelect.value;
       if (!domain || !skill) return;
 
+      currentSummaryDomain = domain;
+      currentSummarySkill = skill;
+
       btnRunAiSummary.disabled = true;
       btnSummarySpinner.classList.remove('hidden');
       btnSummaryLabel.textContent = 'Analyzing...';
+      summaryFollowupContainer.classList.add('hidden');
+
       summaryOutputHeading.textContent = `AI Explanation: ${skill} (${domain})`;
-      summaryOutputBody.textContent = `Consulting Mistral AI for ${skill}...`;
+      summaryOutputBody.textContent = `Analyzing ${skill}...`;
 
       const promptMessages = [
         {
@@ -1107,8 +1185,9 @@ Structure your breakdown cleanly into:
       ];
 
       try {
-        const summaryText = await callMistralAPI(promptMessages);
+        const summaryText = await callAIAPI(promptMessages);
         renderMarkdownToElement(summaryOutputBody, summaryText);
+        summaryFollowupContainer.classList.remove('hidden');
       } catch (err) {
         summaryOutputBody.textContent = 'Failed to generate summary: ' + err.message;
       } finally {
@@ -1117,6 +1196,108 @@ Structure your breakdown cleanly into:
         btnSummaryLabel.textContent = 'Explain with AI';
       }
     });
+
+    // 3. AI SUMMARY FOLLOW-UPS: EXPLAIN WHOLE SKILL
+    btnExplainWholeSkill.addEventListener('click', async () => {
+      if (!currentSummarySkill) return;
+
+      btnExplainWholeSkill.disabled = true;
+      btnExplainWholeSkill.textContent = 'Generating Masterclass...';
+      summaryOutputHeading.textContent = `Full Skill Masterclass: ${currentSummarySkill}`;
+      summaryOutputBody.textContent = `Compiling comprehensive breakdown for ${currentSummarySkill}...`;
+
+      const promptMessages = [
+        {
+          role: 'system',
+          content: 'You are SkillBridge AI, an expert engineering educator. Provide comprehensive, end-to-end holistic deep-dives into entire engineering disciplines.'
+        },
+        {
+          role: 'user',
+          content: `Provide a comprehensive, holistic masterclass on the entire skill "${currentSummarySkill}" within the domain "${currentSummaryDomain}" for a student pursuing ${userStream}.
+
+Structure cleanly into:
+### 1. High-Level Architectural Foundations & Scope
+### 2. The Complete End-to-End System Lifecycle
+### 3. Core Sub-disciplines & Key Mechanics
+### 4. Enterprise Best Practices & Common Failure Modes
+### 5. Practical Hands-On Project Roadmap`
+        }
+      ];
+
+      try {
+        const fullSkillText = await callAIAPI(promptMessages);
+        renderMarkdownToElement(summaryOutputBody, fullSkillText);
+      } catch (err) {
+        summaryOutputBody.textContent = 'Failed to explain full skill: ' + err.message;
+      } finally {
+        btnExplainWholeSkill.disabled = false;
+        btnExplainWholeSkill.textContent = 'Explain whole skill';
+      }
+    });
+
+    // 4. AI SUMMARY FOLLOW-UPS: EXPLAIN SUB TOPICS (POPUP MENU)
+    btnExplainSubtopics.addEventListener('click', () => {
+      if (!currentSummarySkill) return;
+
+      subtopicsModalTitle.textContent = `${currentSummarySkill} Sub-Topics`;
+      const subtopics = getSubtopicsForSkill(currentSummarySkill, currentSummaryDomain);
+
+      subtopicsListContainer.innerHTML = '';
+      subtopics.forEach((topicName, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'w-full text-left p-3 rounded-xl border border-slate-200 bg-white hover:border-brand-500 hover:bg-brand-50/40 text-xs font-semibold text-slate-800 transition-all flex items-center justify-between group';
+        btn.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <span class="w-5 h-5 rounded-md bg-slate-100 text-slate-600 flex items-center justify-center text-[10px] font-bold group-hover:bg-brand-500 group-hover:text-white transition-colors">${idx + 1}</span>
+            <span class="truncate">${topicName}</span>
+          </div>
+          <span class="text-xs text-slate-400 group-hover:text-brand-600 font-bold">→</span>
+        `;
+
+        btn.addEventListener('click', () => {
+          subtopicsModal.classList.add('hidden');
+          explainSpecificSubtopic(topicName);
+        });
+
+        subtopicsListContainer.appendChild(btn);
+      });
+
+      subtopicsModal.classList.remove('hidden');
+    });
+
+    btnCloseSubtopicsModal.addEventListener('click', () => {
+      subtopicsModal.classList.add('hidden');
+    });
+
+    async function explainSpecificSubtopic(subTopicName) {
+      summaryOutputHeading.textContent = `Sub-Topic: ${subTopicName} (${currentSummarySkill})`;
+      summaryOutputBody.textContent = `Analyzing ${subTopicName}...`;
+
+      const promptMessages = [
+        {
+          role: 'system',
+          content: 'You are SkillBridge AI, a technical engineering educator. Provide detailed, laser-focused explanations of specific sub-topics with mechanics and clear code or schematic examples.'
+        },
+        {
+          role: 'user',
+          content: `Provide a detailed breakdown of the sub-topic "${subTopicName}" belonging to the skill "${currentSummarySkill}" (Domain: "${currentSummaryDomain}") for an engineering student in ${userStream}.
+
+Structure cleanly into:
+### 1. Conceptual Mechanics & Purpose
+### 2. Implementation Principles & Syntax / Schematics
+### 3. Practical Pitfalls to Avoid
+### 4. Real-World Engineering Exercise`
+        }
+      ];
+
+      try {
+        const subtopicText = await callAIAPI(promptMessages);
+        renderMarkdownToElement(summaryOutputBody, subtopicText);
+      } catch (err) {
+        summaryOutputBody.textContent = 'Failed to explain sub-topic: ' + err.message;
+      }
+    }
 
     // ==========================================
     // ADD SKILL MODAL
@@ -1472,7 +1653,7 @@ Structure your breakdown cleanly into:
         quizResultIcon.className = 'w-12 h-12 rounded-full mx-auto flex items-center justify-center font-extrabold text-lg bg-rose-100 text-rose-600';
         quizResultIcon.textContent = '✕';
         quizResultTitle.textContent = `Score: ${correct}/5 (Pass Target: 4/5)`;
-        quizResultDesc.textContent = 'You did not reach the 80% threshold. Please review the official W3Schools documentation and retake the check. The topic remains unverified.';
+        quizResultDesc.textContent = 'You did not reach the 80% threshold. Please review the official documentation and retake the check. The topic remains unverified.';
 
         quizResultActions.innerHTML = `
           <button type="button" onclick="retakeCurrentQuiz()" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-semibold text-xs hover:bg-black transition-all">
