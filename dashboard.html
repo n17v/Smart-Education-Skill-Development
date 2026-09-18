@@ -38,8 +38,8 @@
           </defs>
           <circle cx="32" cy="32" r="30" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.25" />
           <path d="M32 50V22" stroke="url(#brand-grad)" stroke-width="3.5" stroke-linecap="round" />
-          <path d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32" fill="url(#brand-grad)" />
-          <path d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40" fill="url(#brand-grad)" />
+          <path d="M32 30C32 20 44 20 44 20C44 20 44 32 32 32' fill='url(#brand-grad)' />
+          <path d="M32 38C32 28 20 28 20 28C20 28 20 40 32 40' fill='url(#brand-grad)' />
         </svg>
         <div class="flex items-center gap-1.5">
           <span class="text-base font-bold tracking-tight text-slate-900">SkillBridge</span>
@@ -125,14 +125,23 @@
         </div>
       </div>
 
-      <div class="p-6 bg-gradient-to-r from-brand-50/80 via-white to-emerald-50/40 rounded-2xl border border-brand-100 flex items-center justify-between">
-        <div>
-          <h3 class="text-base font-bold text-slate-900">Ready to level up your engineering skills?</h3>
-          <p class="text-xs text-slate-600 mt-1">Add curriculum skills, review official W3Schools documentation, and take 5-question AI milestone tests.</p>
+      <!-- AI Planner Home Integration Card -->
+      <div class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">✦</div>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">Recommended AI Study Plan</h3>
+              <p class="text-[11px] text-slate-500">Formulated by Mistral AI based on your actual skill progress</p>
+            </div>
+          </div>
+          <button type="button" onclick="setActiveTab('assistant')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 px-3 py-1.5 rounded-lg transition-colors">
+            Generate / Update Plan →
+          </button>
         </div>
-        <button type="button" onclick="setActiveTab('progress')" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-sm transition-all shrink-0">
-          Open Progress Tab →
-        </button>
+        <div id="home-ai-plan-content" class="text-xs text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/60 whitespace-pre-line">
+          No AI plan generated yet. Head over to the AI Assistant tab to let Mistral formulate your next roadmap milestones!
+        </div>
       </div>
     </section>
 
@@ -149,12 +158,8 @@
         </button>
       </div>
 
-      <!-- Compact Multi-Skill Cards Grid -->
-      <div id="enrolled-skills-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-        <!-- Rendered dynamically with dynamic color rings -->
-      </div>
+      <div id="enrolled-skills-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
 
-      <!-- Active Skill Curriculum Section -->
       <div id="curriculum-container" class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
         <div class="flex items-center justify-between pb-4 border-b border-slate-100">
           <div>
@@ -165,7 +170,6 @@
             <p class="text-xs text-slate-500 mt-1">Read the documentation, then click "Done" to initiate the 5-question test.</p>
           </div>
           
-          <!-- Dynamic Color Graph in Curriculum Header -->
           <div class="flex items-center gap-3">
             <div class="relative w-10 h-10 flex items-center justify-center shrink-0">
               <svg class="w-10 h-10 transform -rotate-90" viewBox="0 0 36 36">
@@ -180,27 +184,100 @@
           </div>
         </div>
 
-        <!-- Topics List -->
-        <div id="topics-list-container" class="space-y-2.5">
-          <!-- Rendered dynamically -->
-        </div>
+        <div id="topics-list-container" class="space-y-2.5"></div>
       </div>
     </section>
 
-    <!-- VIEW 3: AI Assistant -->
+    <!-- VIEW 3: AI Assistant (Mistral AI Powered: AI Planner & AI Summary) -->
     <section id="section-assistant" class="hidden space-y-6">
-      <div class="p-12 bg-white rounded-2xl border border-slate-200/80 text-center">
-        <div class="w-10 h-10 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center mx-auto mb-3">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-        </div>
-        <h3 class="text-base font-bold text-slate-900">AI Assistant Workspace</h3>
-        <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1">Integrated AI mentors and interactive learning path generators will activate in this view.</p>
+      
+      <!-- Mode Selection Tabs -->
+      <div class="flex p-1 bg-slate-100 rounded-xl max-w-sm">
+        <button type="button" id="tab-ai-planner" class="w-1/2 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-brand-700 transition-all">
+          AI Planner
+        </button>
+        <button type="button" id="tab-ai-summary" class="w-1/2 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all">
+          AI Summary
+        </button>
       </div>
+
+      <!-- PANEL 1: AI Planner -->
+      <div id="panel-ai-planner" class="space-y-5">
+        <div class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">Mistral-small-latest</span>
+            <h3 class="text-base font-bold text-slate-900 mt-1">Strategic Curriculum Study Planner</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Mistral will review your enrolled topics, milestones, and stream to schedule your optimal next steps.</p>
+          </div>
+          <button type="button" id="btn-run-ai-planner" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-sm transition-all inline-flex items-center gap-2 shrink-0">
+            <span id="btn-planner-spinner" class="hidden">
+              <svg class="animate-spin w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            </span>
+            <span id="btn-planner-label">Generate Next-Step Plan</span>
+          </button>
+        </div>
+
+        <div id="planner-output-container" class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-3">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <span class="text-xs font-bold text-slate-900">Generated Study Plan</span>
+            <span id="planner-sync-badge" class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Synced with Database & Home</span>
+          </div>
+          <div id="planner-output-body" class="text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-xl border border-slate-200/60 whitespace-pre-line">
+            Click "Generate Next-Step Plan" to let Mistral analyze your active progress.
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: AI Summary -->
+      <div id="panel-ai-summary" class="hidden space-y-5">
+        <div class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-4">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">Mistral-small-latest</span>
+            <h3 class="text-base font-bold text-slate-900 mt-1">In-Depth Skill & Concept Explainer</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Select any domain and skill from your stream curriculum to receive a complete architectural breakdown.</p>
+          </div>
+
+          <form id="summary-form" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label for="summary-domain-select" class="block text-xs font-semibold text-slate-700 mb-1">Domain</label>
+              <select id="summary-domain-select" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 cursor-pointer focus:outline-none focus:border-brand-500">
+                <option value="" disabled selected>Select domain</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="summary-skill-select" class="block text-xs font-semibold text-slate-700 mb-1">Specific Skill</label>
+              <select id="summary-skill-select" required disabled class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 cursor-pointer focus:outline-none focus:border-brand-500">
+                <option value="" disabled selected>Choose domain first</option>
+              </select>
+            </div>
+
+            <div class="flex items-end">
+              <button type="submit" id="btn-run-ai-summary" class="w-full py-2 px-4 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-sm transition-all inline-flex items-center justify-center gap-2">
+                <span id="btn-summary-spinner" class="hidden">
+                  <svg class="animate-spin w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </span>
+                <span id="btn-summary-label">Explain with AI</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="summary-output-container" class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-3">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <span class="text-xs font-bold text-slate-900" id="summary-output-heading">AI Concept Breakdown</span>
+            <span class="text-[10px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full">Mistral AI</span>
+          </div>
+          <div id="summary-output-body" class="text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-xl border border-slate-200/60 whitespace-pre-line">
+            Select a domain and skill above, then click "Explain with AI" to generate an architectural deep dive.
+          </div>
+        </div>
+      </div>
+
     </section>
 
     <!-- VIEW 4: Sources -->
     <section id="section-sources" class="hidden space-y-8">
-      <!-- Store Section -->
       <div class="space-y-3.5">
         <div class="flex items-center justify-between">
           <div>
@@ -220,7 +297,6 @@
         <div id="store-cards-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- Web Link Section -->
       <div class="space-y-3.5 pt-4 border-t border-slate-200/70">
         <div class="flex items-center justify-between">
           <div>
@@ -253,9 +329,7 @@
 
       <form id="onboarding-form" class="space-y-4">
         <div>
-          <label for="stream-select" class="block text-xs font-semibold text-slate-700 mb-1">
-            What stream you are focusing on?
-          </label>
+          <label for="stream-select" class="block text-xs font-semibold text-slate-700 mb-1">What stream you are focusing on?</label>
           <div class="relative">
             <select id="stream-select" required class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 cursor-pointer focus:outline-none focus:border-brand-500">
               <option value="" disabled selected>Select your engineering stream</option>
@@ -287,7 +361,7 @@
     </div>
   </div>
 
-  <!-- MODAL 2: Add Skill Modal (Auto-tied to stream) -->
+  <!-- MODAL 2: Add Skill Modal -->
   <div id="skill-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100">
       <div class="flex items-center justify-between mb-4">
@@ -302,7 +376,6 @@
       </div>
 
       <form id="skill-form" class="space-y-4">
-        <!-- Domain Category -->
         <div>
           <label for="domain-select" class="block text-xs font-semibold text-slate-700 mb-1">What skill domain are you learning?</label>
           <select id="domain-select" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 cursor-pointer focus:outline-none focus:border-brand-500">
@@ -310,7 +383,6 @@
           </select>
         </div>
 
-        <!-- Specific Skill -->
         <div>
           <label for="specific-skill-select" class="block text-xs font-semibold text-slate-700 mb-1">Name the skill specifically</label>
           <select id="specific-skill-select" required disabled class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 cursor-pointer focus:outline-none focus:border-brand-500">
@@ -325,11 +397,9 @@
     </div>
   </div>
 
-  <!-- MODAL 3: Compact Stepper Test Modal (Question 1 of 5) -->
+  <!-- MODAL 3: Compact Stepper Test Modal -->
   <div id="quiz-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 flex flex-col justify-between max-h-[90vh]">
-      
-      <!-- Stepper Top Bar -->
       <div>
         <div class="flex items-center justify-between pb-3 border-b border-slate-100">
           <div>
@@ -339,23 +409,16 @@
           <button type="button" id="btn-close-quiz" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
         </div>
 
-        <!-- Linear Progress Indicator -->
         <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden my-3.5">
           <div id="quiz-progress-bar" class="bg-brand-500 h-full transition-all duration-300" style="width: 20%;"></div>
         </div>
       </div>
 
-      <!-- Question Body Area -->
       <div id="quiz-question-area" class="py-2 space-y-4 my-auto">
-        <p id="quiz-question-text" class="text-xs font-bold text-slate-900 leading-relaxed">
-          Loading question...
-        </p>
-        <div id="quiz-options-container" class="space-y-2">
-          <!-- Compact options rendered dynamically -->
-        </div>
+        <p id="quiz-question-text" class="text-xs font-bold text-slate-900 leading-relaxed">Loading question...</p>
+        <div id="quiz-options-container" class="space-y-2"></div>
       </div>
 
-      <!-- Result Screen -->
       <div id="quiz-result-area" class="hidden py-6 text-center space-y-3">
         <div id="quiz-result-icon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center font-extrabold text-lg"></div>
         <h4 id="quiz-result-title" class="text-base font-bold text-slate-900"></h4>
@@ -363,19 +426,13 @@
         <div id="quiz-result-actions" class="pt-2"></div>
       </div>
 
-      <!-- Stepper Controls -->
       <div id="quiz-footer-controls" class="pt-3 border-t border-slate-100 flex items-center justify-between">
         <span class="text-[11px] text-slate-400 font-medium">Pass target: ≥ 4/5 Correct</span>
         <div class="flex items-center gap-2">
-          <button type="button" id="btn-prev-question" disabled class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-300 cursor-not-allowed">
-            Back
-          </button>
-          <button type="button" id="btn-next-question" class="px-3.5 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-black text-xs font-semibold transition-all">
-            Next
-          </button>
+          <button type="button" id="btn-prev-question" disabled class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-300 cursor-not-allowed">Back</button>
+          <button type="button" id="btn-next-question" class="px-3.5 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-black text-xs font-semibold transition-all">Next</button>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -386,6 +443,10 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2bndhaWNkemZzaG5tcnd4Z3V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MzI0MjcsImV4cCI6MjEwNTMwODQyN30.jnUaadGGbvqrxpb9nvbNcUlG5Y4M3kvZ2ITCspM1js0';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    // Mistral AI Configuration
+    const MISTRAL_API_KEY = '9Ju17h2c5rOOEcZnZcTqOjz84YVw4kQF';
+    const MISTRAL_MODEL = 'mistral-small-latest';
+
     // TinyFish Public API Key
     const TINYFISH_API_KEY = 'sk-tinyfish-_qT52w5xTFdvuM4b74KLWnb7MV0Pk3KM';
 
@@ -393,33 +454,16 @@
     let userStream = 'Computer Engineering';
     let enrolledSkills = [];
     let activeSkillIndex = 0;
+    let savedAiPlan = '';
 
-    // ==========================================
-    // DYNAMIC COLOR COMPUTATION ENGINE
-    // < 30%: Red | 30% - 68%: Yellow | > 68%: Green
-    // ==========================================
+    // Dynamic Progress Color Computation
     function getProgressColor(percent) {
       if (percent < 30) {
-        return {
-          stroke: 'text-rose-500',
-          text: 'text-rose-600',
-          bg: 'bg-rose-50',
-          border: 'border-rose-200'
-        };
+        return { stroke: 'text-rose-500', text: 'text-rose-600', bg: 'bg-rose-50', border: 'border-rose-200' };
       } else if (percent <= 68) {
-        return {
-          stroke: 'text-amber-500',
-          text: 'text-amber-600',
-          bg: 'bg-amber-50',
-          border: 'border-amber-200'
-        };
+        return { stroke: 'text-amber-500', text: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-200' };
       } else {
-        return {
-          stroke: 'text-emerald-500',
-          text: 'text-emerald-600',
-          bg: 'bg-emerald-50',
-          border: 'border-emerald-200'
-        };
+        return { stroke: 'text-emerald-500', text: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-200' };
       }
     }
 
@@ -468,7 +512,7 @@
       }
     };
 
-    // Topics & 5-question verified database per skill
+    // Topics & 5-question database per skill
     const SKILL_TOPICS_DATABASE = {
       'HTML': [
         {
@@ -562,8 +606,7 @@
         { title: 'Operating Systems: Three Easy Pieces', author: 'Remzi Arpaci-Dusseau', tag: 'Systems' },
         { title: 'Computer Networking: A Top-Down Approach', author: 'James Kurose', tag: 'Networking' },
         { title: 'Introduction to Algorithms (CLRS)', author: 'Thomas H. Cormen', tag: 'Algorithms' },
-        { title: 'Designing Data-Intensive Applications', author: 'Martin Kleppmann', tag: 'Distributed' },
-        { title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson', tag: 'Foundations' }
+        { title: 'Designing Data-Intensive Applications', author: 'Martin Kleppmann', tag: 'Distributed' }
       ],
       'Automobile Engineering': [
         { title: 'Automotive Engineering Fundamentals', author: 'Richard Stone', tag: 'Powertrain' },
@@ -576,8 +619,7 @@
         { title: 'Introduction to Autonomous Mobile Robots', author: 'Roland Siegwart', tag: 'Navigation' },
         { title: 'Modern Robotics: Mechanics and Control', author: 'Kevin M. Lynch', tag: 'Kinematics' },
         { title: 'Probabilistic Robotics', author: 'Sebastian Thrun', tag: 'Perception' },
-        { title: 'Robot Modeling and Control', author: 'Mark W. Spong', tag: 'Control' },
-        { title: 'ROS 2 Robotics By Example', author: 'Fairchild & Martin', tag: 'Software' }
+        { title: 'Robot Modeling and Control', author: 'Mark W. Spong', tag: 'Control' }
       ],
       'Chemical Engineering': [
         { title: 'Elements of Chemical Reaction Engineering', author: 'H. Scott Fogler', tag: 'Reactions' },
@@ -636,9 +678,7 @@
 
     function getWebLinksForStream(stream, page) {
       const sets = STREAM_WEB_LINKS_ROTATION[stream];
-      if (sets && sets.length) {
-        return sets[page % sets.length];
-      }
+      if (sets && sets.length) return sets[page % sets.length];
       return [
         { title: `${stream} Comprehensive Roadmap & Syllabi`, url: 'https://roadmap.sh', snippet: `Curated learning pathways, semester tracks, and prerequisites for ${stream}.` },
         { title: `MIT OpenCourseWare: ${stream} Series`, url: `https://ocw.mit.edu/search/?q=${encodeURIComponent(stream)}`, snippet: 'Free syllabus, assignments, and exam problems from MIT professors.' },
@@ -663,6 +703,7 @@
     const sidebarStreamName = document.getElementById('sidebar-stream-name');
     const homeStreamDisplay = document.getElementById('home-stream-display');
     const homeSkillsCount = document.getElementById('home-skills-count');
+    const homeAiPlanContent = document.getElementById('home-ai-plan-content');
 
     const onboardingModal = document.getElementById('onboarding-modal');
     const onboardingForm = document.getElementById('onboarding-form');
@@ -703,6 +744,25 @@
     const quizResultDesc = document.getElementById('quiz-result-desc');
     const quizResultActions = document.getElementById('quiz-result-actions');
 
+    // AI Assistant Elements
+    const tabAiPlanner = document.getElementById('tab-ai-planner');
+    const tabAiSummary = document.getElementById('tab-ai-summary');
+    const panelAiPlanner = document.getElementById('panel-ai-planner');
+    const panelAiSummary = document.getElementById('panel-ai-summary');
+    const btnRunAiPlanner = document.getElementById('btn-run-ai-planner');
+    const btnPlannerSpinner = document.getElementById('btn-planner-spinner');
+    const btnPlannerLabel = document.getElementById('btn-planner-label');
+    const plannerOutputBody = document.getElementById('planner-output-body');
+
+    const summaryForm = document.getElementById('summary-form');
+    const summaryDomainSelect = document.getElementById('summary-domain-select');
+    const summarySkillSelect = document.getElementById('summary-skill-select');
+    const btnRunAiSummary = document.getElementById('btn-run-ai-summary');
+    const btnSummarySpinner = document.getElementById('btn-summary-spinner');
+    const btnSummaryLabel = document.getElementById('btn-summary-label');
+    const summaryOutputHeading = document.getElementById('summary-output-heading');
+    const summaryOutputBody = document.getElementById('summary-output-body');
+
     const storeCardsContainer = document.getElementById('store-cards-container');
     const webLinksContainer = document.getElementById('web-links-container');
     const amazonAllLink = document.getElementById('amazon-all-link');
@@ -717,31 +777,23 @@
     let lastWebRefresh = 0;
     const RATE_LIMIT_MS = 3000;
 
-    // Database Persistence Helper
+    // Database Persistence
     async function persistSkillsToDatabase() {
       if (!currentUser) return;
-
       try {
         localStorage.setItem(`sb_enrolled_skills_${currentUser.id}`, JSON.stringify(enrolledSkills));
       } catch (e) {}
 
       const active = enrolledSkills[activeSkillIndex] || enrolledSkills[0];
-
       try {
-        const payload = {
-          enrolled_skills: enrolledSkills
-        };
+        const payload = { enrolled_skills: enrolledSkills };
         if (active) {
           payload.skill_domain = active.domain;
           payload.skill_name = active.skill;
           payload.completed_topics = active.completed_topics || [];
           payload.progress_percentage = active.progress || 0;
         }
-
-        await supabaseClient
-          .from('profiles')
-          .update(payload)
-          .eq('id', currentUser.id);
+        await supabaseClient.from('profiles').update(payload).eq('id', currentUser.id);
       } catch (err) {
         console.warn('Database sync status:', err.message);
       }
@@ -768,7 +820,8 @@
         sectionAssistant.classList.remove('hidden');
         navAssistant.className = 'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
         pageTitle.textContent = 'AI Assistant';
-        pageSubtitle.textContent = 'Real-time personalized learning and skill gap analysis.';
+        pageSubtitle.textContent = 'Powered by Mistral AI: automated study planning & concept deep-dives.';
+        initAiAssistantSection();
       } else if (tab === 'sources') {
         sectionSources.classList.remove('hidden');
         navSources.className = 'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 transition-colors text-left';
@@ -786,6 +839,187 @@
     navAssistant.addEventListener('click', () => setActiveTab('assistant'));
     navProgress.addEventListener('click', () => setActiveTab('progress'));
     navSources.addEventListener('click', () => setActiveTab('sources'));
+
+    // ==========================================
+    // MISTRAL API CALLER HELPER
+    // ==========================================
+    async function callMistralAPI(messages) {
+      const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${MISTRAL_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: MISTRAL_MODEL,
+          messages: messages,
+          temperature: 0.6,
+          max_tokens: 900
+        })
+      });
+
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => ({}));
+        throw new Error(errJson.message || `Mistral API responded with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : 'No response generated.';
+    }
+
+    // AI Assistant View Tabs (Planner vs Summary)
+    tabAiPlanner.addEventListener('click', () => {
+      tabAiPlanner.className = 'w-1/2 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-brand-700 transition-all';
+      tabAiSummary.className = 'w-1/2 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all';
+      panelAiPlanner.classList.remove('hidden');
+      panelAiSummary.classList.add('hidden');
+    });
+
+    tabAiSummary.addEventListener('click', () => {
+      tabAiSummary.className = 'w-1/2 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-brand-700 transition-all';
+      tabAiPlanner.className = 'w-1/2 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all';
+      panelAiSummary.classList.remove('hidden');
+      panelAiPlanner.classList.add('hidden');
+    });
+
+    function initAiAssistantSection() {
+      // Sync Summary dropdowns with user's stream
+      const curriculum = STREAM_CURRICULUM[userStream] || STREAM_CURRICULUM['Computer Engineering'];
+      const domains = Object.keys(curriculum);
+
+      summaryDomainSelect.innerHTML = '<option value="" disabled selected>Select domain</option>';
+      domains.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        summaryDomainSelect.appendChild(opt);
+      });
+
+      summarySkillSelect.innerHTML = '<option value="" disabled selected>Choose domain first</option>';
+      summarySkillSelect.disabled = true;
+      summarySkillSelect.classList.add('bg-slate-50');
+      summarySkillSelect.classList.remove('bg-white');
+    }
+
+    summaryDomainSelect.addEventListener('change', () => {
+      const curriculum = STREAM_CURRICULUM[userStream] || STREAM_CURRICULUM['Computer Engineering'];
+      const skills = curriculum[summaryDomainSelect.value] || [];
+
+      summarySkillSelect.innerHTML = '<option value="" disabled selected>Choose a skill</option>';
+      skills.forEach(sk => {
+        const opt = document.createElement('option');
+        opt.value = sk;
+        opt.textContent = sk;
+        summarySkillSelect.appendChild(opt);
+      });
+
+      summarySkillSelect.disabled = false;
+      summarySkillSelect.classList.remove('bg-slate-50');
+      summarySkillSelect.classList.add('bg-white');
+    });
+
+    // 1. AI PLANNER EXECUTION
+    btnRunAiPlanner.addEventListener('click', async () => {
+      btnRunAiPlanner.disabled = true;
+      btnPlannerSpinner.classList.remove('hidden');
+      btnPlannerLabel.textContent = 'Generating Plan...';
+
+      // Build context from user's actual progress
+      const progressSummary = enrolledSkills.map(s => ({
+        skill: s.skill,
+        domain: s.domain,
+        progress: `${s.progress || 0}%`,
+        completedTopicsCount: (s.completed_topics || []).length
+      }));
+
+      const promptMessages = [
+        {
+          role: 'system',
+          content: 'You are SkillBridge AI, an elite university engineering mentor. You create crisp, actionable, structured next-step study plans for engineering students based on their real progress.'
+        },
+        {
+          role: 'user',
+          content: `Here is my current learning state:
+- Engineering Stream: ${userStream}
+- Current Tracked Skills: ${JSON.stringify(progressSummary)}
+
+Analyze this progress and plan what I should do next. 
+Format your response in clean, concise markdown with:
+1. Progress Assessment (Briefly evaluate where I stand)
+2. Immediate Next Milestones (3-4 high-priority topics to tackle)
+3. Practical Exercise / Mini-Project Recommendation
+4. Estimated Study Time & Key Pitfalls to Avoid in ${userStream}.`
+        }
+      ];
+
+      try {
+        const planText = await callMistralAPI(promptMessages);
+        savedAiPlan = planText;
+
+        // Display in AI Assistant tab
+        plannerOutputBody.textContent = planText;
+
+        // Display in Home page
+        homeAiPlanContent.textContent = planText;
+
+        // Save into Supabase
+        if (currentUser) {
+          await supabaseClient
+            .from('profiles')
+            .update({ ai_planner_response: planText })
+            .eq('id', currentUser.id)
+            .catch(() => {});
+        }
+      } catch (err) {
+        alert('Failed to generate AI plan: ' + err.message);
+      } finally {
+        btnRunAiPlanner.disabled = false;
+        btnPlannerSpinner.classList.add('hidden');
+        btnPlannerLabel.textContent = 'Generate Next-Step Plan';
+      }
+    });
+
+    // 2. AI SUMMARY EXECUTION
+    summaryForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const domain = summaryDomainSelect.value;
+      const skill = summarySkillSelect.value;
+      if (!domain || !skill) return;
+
+      btnRunAiSummary.disabled = true;
+      btnSummarySpinner.classList.remove('hidden');
+      btnSummaryLabel.textContent = 'Analyzing...';
+      summaryOutputHeading.textContent = `AI Explanation: ${skill} (${domain})`;
+      summaryOutputBody.textContent = `Consulting Mistral AI for ${skill}...`;
+
+      const promptMessages = [
+        {
+          role: 'system',
+          content: 'You are SkillBridge AI, a technical engineering educator. Provide detailed, clear, industry-grade explanations with practical code or schematic principles.'
+        },
+        {
+          role: 'user',
+          content: `Explain "${skill}" under the domain "${domain}" for a student focusing on ${userStream} in the modern 2026-27 engineering landscape.
+
+Structure your breakdown cleanly into:
+1. Core Concept & Architectural Importance
+2. How It Works (Fundamental Mechanics / Syntax / Principles)
+3. Real-World Engineering Applications
+4. Recommended Hands-on Practice & Best Practices`
+        }
+      ];
+
+      try {
+        const summaryText = await callMistralAPI(promptMessages);
+        summaryOutputBody.textContent = summaryText;
+      } catch (err) {
+        summaryOutputBody.textContent = 'Failed to generate summary: ' + err.message;
+      } finally {
+        btnRunAiSummary.disabled = false;
+        btnSummarySpinner.classList.add('hidden');
+        btnSummaryLabel.textContent = 'Explain with AI';
+      }
+    });
 
     // ==========================================
     // ADD SKILL MODAL
@@ -868,7 +1102,7 @@
     });
 
     // ===================================================
-    // PROGRESS: ENROLLED SKILLS GRID (DYNAMIC COLORS)
+    // PROGRESS: ENROLLED SKILLS GRID & CURRICULUM
     // ===================================================
     function renderEnrolledSkills() {
       if (!enrolledSkills.length) return;
@@ -878,7 +1112,6 @@
         const isActive = index === activeSkillIndex;
         const topics = getSkillCurriculum(item.skill, item.domain);
 
-        // Filter completed_topics strictly to valid topic IDs in this skill
         const validCompleted = (item.completed_topics || []).filter(id => 
           topics.some(t => t.id === id)
         );
@@ -888,7 +1121,6 @@
         const percent = topics.length > 0 ? Math.round((doneCount / topics.length) * 100) : 0;
         item.progress = percent;
 
-        // Compute dynamic color (< 30% Red, 30%-68% Yellow, > 68% Green)
         const color = getProgressColor(percent);
 
         const card = document.createElement('div');
@@ -907,7 +1139,6 @@
             <p class="text-[11px] text-slate-400 mt-0.5">${doneCount} of ${topics.length} topics</p>
           </div>
 
-          <!-- Dynamic Micro SVG Progress Ring -->
           <div class="relative w-11 h-11 flex items-center justify-center shrink-0">
             <svg class="w-11 h-11 transform -rotate-90" viewBox="0 0 36 36">
               <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
@@ -928,9 +1159,6 @@
       renderActiveSkillCurriculum();
     }
 
-    // ===================================================
-    // ACTIVE SKILL CURRICULUM & STRICT PROGRESS SYNC
-    // ===================================================
     function renderActiveSkillCurriculum() {
       const current = enrolledSkills[activeSkillIndex];
       if (!current) return;
@@ -940,7 +1168,6 @@
 
       const topics = getSkillCurriculum(current.skill, current.domain);
 
-      // Sanitize completed topics against valid IDs
       const validCompleted = (current.completed_topics || []).filter(id => 
         topics.some(t => t.id === id)
       );
@@ -949,7 +1176,6 @@
       const percent = topics.length > 0 ? Math.round((validCompleted.length / topics.length) * 100) : 0;
       current.progress = percent;
 
-      // Update counter and header circle with dynamic color
       const color = getProgressColor(percent);
       activeSkillCounter.textContent = `${validCompleted.length} / ${topics.length} Completed`;
       
@@ -1110,7 +1336,6 @@
       quizModal.classList.add('hidden');
     });
 
-    // Score Evaluation (≥ 4/5 required)
     async function evaluateQuizSubmission() {
       let correct = 0;
       activeQuizData.questions.forEach((qObj, idx) => {
@@ -1135,7 +1360,6 @@
           current.completed_topics.push(activeQuizData.topicId);
         }
 
-        // Sanitize to valid curriculum topics only
         current.completed_topics = current.completed_topics.filter(id => topics.some(t => t.id === id));
         current.progress = Math.round((current.completed_topics.length / topics.length) * 100);
 
@@ -1147,11 +1371,11 @@
 
         await persistSkillsToDatabase();
       } else {
-        // FAIL (< 4)
+        // FAIL
         quizResultIcon.className = 'w-12 h-12 rounded-full mx-auto flex items-center justify-center font-extrabold text-lg bg-rose-100 text-rose-600';
         quizResultIcon.textContent = '✕';
         quizResultTitle.textContent = `Score: ${correct}/5 (Pass Target: 4/5)`;
-        quizResultDesc.textContent = 'You did not reach the 80% threshold. Please review the official W3Schools documentation and retake the check. The topic remains unverified.';
+        quizResultDesc.textContent = 'You did not reach the 80% threshold. Please review the official W3Schools documentation and retake the check. The topic remains locked.';
 
         quizResultActions.innerHTML = `
           <button type="button" onclick="retakeCurrentQuiz()" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-semibold text-xs hover:bg-black transition-all">
@@ -1241,9 +1465,7 @@
       try {
         const response = await fetch(`https://api.search.tinyfish.ai?query=${encodeURIComponent(activeQuery)}&location=US`, {
           method: 'GET',
-          headers: {
-            'X-API-Key': TINYFISH_API_KEY
-          }
+          headers: { 'X-API-Key': TINYFISH_API_KEY }
         });
 
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -1344,7 +1566,14 @@
         userStream = profile.stream;
         applyStreamSources(userStream);
 
-        // Retrieve skills and sanitize completed topics
+        // Restore saved AI Planner response if exists
+        if (profile.ai_planner_response) {
+          savedAiPlan = profile.ai_planner_response;
+          homeAiPlanContent.textContent = profile.ai_planner_response;
+          plannerOutputBody.textContent = profile.ai_planner_response;
+        }
+
+        // Restore enrolled skills
         if (Array.isArray(profile.enrolled_skills) && profile.enrolled_skills.length > 0) {
           enrolledSkills = profile.enrolled_skills;
         } else {
@@ -1357,7 +1586,7 @@
             enrolledSkills = localSkills;
           } else if (profile.skill_name) {
             enrolledSkills = [{
-              domain: profile.skill_domain || 'Core',
+              domain: profile.skill_domain || 'Foundations',
               skill: profile.skill_name,
               completed_topics: profile.completed_topics || [],
               progress: profile.progress_percentage || 0
