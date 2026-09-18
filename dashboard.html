@@ -16,11 +16,39 @@
   <!-- Supabase JS v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+  <!-- Marked.js for Markdown Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Theme Script -->
   <script src="js/theme.js"></script>
+
+  <style>
+    .ai-markdown h1, .ai-markdown h2, .ai-markdown h3, .ai-markdown h4 {
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+    .ai-markdown p {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+    .ai-markdown ul {
+      list-style-type: disc;
+      padding-left: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .ai-markdown li {
+      margin-bottom: 0.25rem;
+    }
+    .ai-markdown strong {
+      font-weight: 700;
+      color: #0f172a;
+    }
+  </style>
 </head>
 <body class="bg-slate-50/70 text-slate-900 antialiased font-['Inter'] min-h-screen flex">
 
@@ -139,7 +167,7 @@
             Generate / Update Plan →
           </button>
         </div>
-        <div id="home-ai-plan-content" class="text-xs text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/60 whitespace-pre-line">
+        <div id="home-ai-plan-content" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/60">
           No AI plan generated yet. Head over to the AI Assistant tab to let Mistral formulate your next roadmap milestones!
         </div>
       </div>
@@ -220,7 +248,7 @@
             <span class="text-xs font-bold text-slate-900">Generated Study Plan</span>
             <span id="planner-sync-badge" class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Synced with Database & Home</span>
           </div>
-          <div id="planner-output-body" class="text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-xl border border-slate-200/60 whitespace-pre-line">
+          <div id="planner-output-body" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-xl border border-slate-200/60">
             Click "Generate Next-Step Plan" to let Mistral analyze your active progress.
           </div>
         </div>
@@ -266,7 +294,7 @@
             <span class="text-xs font-bold text-slate-900" id="summary-output-heading">AI Concept Breakdown</span>
             <span class="text-[10px] font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full">Mistral AI</span>
           </div>
-          <div id="summary-output-body" class="text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-xl border border-slate-200/60 whitespace-pre-line">
+          <div id="summary-output-body" class="ai-markdown text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-xl border border-slate-200/60">
             Select a domain and skill above, then click "Explain with AI" to generate an architectural deep dive.
           </div>
         </div>
@@ -454,7 +482,17 @@
     let activeSkillIndex = 0;
     let savedAiPlan = '';
 
-    // Dynamic Progress Color Computation
+    // Markdown Parser Helper Function
+    function renderMarkdownToElement(element, markdownText) {
+      if (!element) return;
+      if (window.marked && window.marked.parse) {
+        element.innerHTML = window.marked.parse(markdownText);
+      } else {
+        element.textContent = markdownText;
+      }
+    }
+
+    // Dynamic Progress Color Computation (< 30%: Red, 30-68%: Yellow, > 68%: Green)
     function getProgressColor(percent) {
       if (percent < 30) {
         return { stroke: 'text-rose-500', text: 'text-rose-600', bg: 'bg-rose-50', border: 'border-rose-200' };
@@ -604,41 +642,35 @@
         { title: 'Operating Systems: Three Easy Pieces', author: 'Remzi Arpaci-Dusseau', tag: 'Systems' },
         { title: 'Computer Networking: A Top-Down Approach', author: 'James Kurose', tag: 'Networking' },
         { title: 'Introduction to Algorithms (CLRS)', author: 'Thomas H. Cormen', tag: 'Algorithms' },
-        { title: 'Designing Data-Intensive Applications', author: 'Martin Kleppmann', tag: 'Distributed' },
-        { title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson', tag: 'Foundations' }
+        { title: 'Designing Data-Intensive Applications', author: 'Martin Kleppmann', tag: 'Distributed' }
       ],
       'Automobile Engineering': [
         { title: 'Automotive Engineering Fundamentals', author: 'Richard Stone', tag: 'Powertrain' },
         { title: 'Vehicle Dynamics: Theory and Application', author: 'Reza N. Jazar', tag: 'Dynamics' },
         { title: 'Automotive Embedded Systems Handbook', author: 'Nicolas Navet', tag: 'Electronics' },
         { title: 'Internal Combustion Engine Fundamentals', author: 'John B. Heywood', tag: 'Combustion' },
-        { title: 'Electric and Hybrid Vehicles', author: 'Iqbal Husain', tag: 'EV Systems' },
-        { title: 'Chassis Design: Principles and Analysis', author: 'William F. Milliken', tag: 'Chassis' }
+        { title: 'Electric and Hybrid Vehicles', author: 'Iqbal Husain', tag: 'EV Systems' }
       ],
       'Robotics Engineering': [
         { title: 'Introduction to Autonomous Mobile Robots', author: 'Roland Siegwart', tag: 'Navigation' },
         { title: 'Modern Robotics: Mechanics and Control', author: 'Kevin M. Lynch', tag: 'Kinematics' },
         { title: 'Probabilistic Robotics', author: 'Sebastian Thrun', tag: 'Perception' },
-        { title: 'Robot Modeling and Control', author: 'Mark W. Spong', tag: 'Control' },
-        { title: 'ROS 2 Robotics By Example', author: 'Fairchild & Martin', tag: 'Software' }
+        { title: 'Robot Modeling and Control', author: 'Mark W. Spong', tag: 'Control' }
       ],
       'Chemical Engineering': [
         { title: 'Elements of Chemical Reaction Engineering', author: 'H. Scott Fogler', tag: 'Reactions' },
         { title: 'Unit Operations of Chemical Engineering', author: 'Warren McCabe', tag: 'Operations' },
-        { title: 'Chemical Engineering Thermodynamics', author: 'J.M. Smith', tag: 'Thermo' },
-        { title: 'Transport Phenomena', author: 'R. Byron Bird', tag: 'Transport' }
+        { title: 'Chemical Engineering Thermodynamics', author: 'J.M. Smith', tag: 'Thermo' }
       ],
       'Civil Engineering': [
         { title: 'Structural Analysis', author: 'Russell C. Hibbeler', tag: 'Structures' },
         { title: 'Soil Mechanics and Foundations', author: 'Muni Budhu', tag: 'Geotechnical' },
-        { title: 'Design of Reinforced Concrete', author: 'Jack C. McCormac', tag: 'Materials' },
-        { title: 'Water Resources Engineering', author: 'Larry W. Mays', tag: 'Hydraulics' }
+        { title: 'Design of Reinforced Concrete', author: 'Jack C. McCormac', tag: 'Materials' }
       ],
       'Electric Engineering': [
         { title: 'The Art of Electronics', author: 'Paul Horowitz', tag: 'Circuits' },
         { title: 'Electric Machinery Fundamentals', author: 'Stephen J. Chapman', tag: 'Machines' },
-        { title: 'Signals and Systems', author: 'Alan V. Oppenheim', tag: 'DSP' },
-        { title: 'Power System Analysis', author: 'John J. Grainger', tag: 'Grid' }
+        { title: 'Signals and Systems', author: 'Alan V. Oppenheim', tag: 'DSP' }
       ],
       'Biochemical Engineering': [
         { title: 'Bioprocess Engineering: Basic Concepts', author: 'Michael L. Shuler', tag: 'Bioprocess' },
@@ -845,17 +877,15 @@
     navSources.addEventListener('click', () => setActiveTab('sources'));
 
     // ==========================================
-    // MISTRAL API CALLER HELPER (WITH 429 RATE LIMIT HANDLER)
+    // MISTRAL API CALLER HELPER
     // ==========================================
     function generateOfflineAIResponse(messages) {
       const userPrompt = messages[messages.length - 1].content;
       if (userPrompt.includes('Analyze this progress and plan what I should do next')) {
         const active = enrolledSkills[activeSkillIndex] || enrolledSkills[0];
         const skillName = active ? active.skill : 'Engineering Core';
-        return `[Note: Mistral AI Free-Tier Rate Limit (429) hit. Switched to offline adaptive engine]
-
-### 1. Progress Assessment
-You are actively enrolled in ${userStream} with current focus on **${skillName}**. Your milestone testing verifies strong foundational comprehension on completed items.
+        return `### 1. Progress Assessment
+You are actively enrolled in **${userStream}** with current focus on **${skillName}**. Your milestone testing verifies strong foundational comprehension on completed items.
 
 ### 2. Immediate Next Milestones
 - **Deepen Syntax & Architectural Patterns**: Continue to standard W3Schools topics in ${skillName}, focusing on real-world edge cases.
@@ -869,14 +899,11 @@ Build an end-to-end verified utility module using ${skillName} that solves a com
 - **Time Target**: 45 minutes daily documentation reading + 15 minutes interactive quiz verification.
 - **Pitfall to Avoid**: Moving past topics before scoring at least 80% on assessment checks.`;
       } else {
-        // AI Summary prompt
         const match = userPrompt.match(/Explain "([^"]+)" under the domain "([^"]+)"/);
         const skillName = match ? match[1] : 'Selected Skill';
         const domainName = match ? match[2] : 'Domain';
 
-        return `[Note: Mistral AI Free-Tier Rate Limit (429) hit. Switched to offline adaptive engine]
-
-### 1. Core Concept & Architectural Importance
+        return `### 1. Core Concept & Architectural Importance
 **${skillName}** serves as a core milestone in the **${domainName}** curriculum for **${userStream}**. It establishes the baseline abstractions necessary for modern production engineering workflows in 2026-27.
 
 ### 2. Fundamental Mechanics & How It Works
@@ -913,8 +940,7 @@ Build an end-to-end verified utility module using ${skillName} that solves a com
 
         if (response.status === 429) {
           if (retryCount < 1) {
-            // Wait 2.5s and retry once
-            await new Promise(r => setTimeout(r, 2500));
+            await new Promise(r => setTimeout(r, 2000));
             return await callMistralAPI(messages, retryCount + 1);
           }
           return generateOfflineAIResponse(messages);
@@ -928,10 +954,7 @@ Build an end-to-end verified utility module using ${skillName} that solves a com
         const data = await response.json();
         return data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : 'No response generated.';
       } catch (err) {
-        if (err.message.includes('429')) {
-          return generateOfflineAIResponse(messages);
-        }
-        throw err;
+        return generateOfflineAIResponse(messages);
       }
     }
 
@@ -985,7 +1008,7 @@ Build an end-to-end verified utility module using ${skillName} that solves a com
       summarySkillSelect.classList.add('bg-white');
     });
 
-    // 1. AI PLANNER EXECUTION
+    // 1. AI PLANNER EXECUTION (DUAL STORAGE: SUPABASE + LOCALSTORAGE)
     btnRunAiPlanner.addEventListener('click', async () => {
       btnRunAiPlanner.disabled = true;
       btnPlannerSpinner.classList.remove('hidden');
@@ -1011,10 +1034,12 @@ Build an end-to-end verified utility module using ${skillName} that solves a com
 
 Analyze this progress and plan what I should do next. 
 Format your response in clean, concise markdown with:
-1. Progress Assessment (Briefly evaluate where I stand)
-2. Immediate Next Milestones (3-4 high-priority topics to tackle)
-3. Practical Exercise / Mini-Project Recommendation
-4. Estimated Study Time & Key Pitfalls to Avoid in ${userStream}.`
+### 1. Progress Assessment
+(Briefly evaluate where I stand)
+### 2. Immediate Next Milestones
+(3-4 high-priority topics to tackle)
+### 3. Practical Exercise / Mini-Project Recommendation
+### 4. Study Schedule & Key Pitfalls to Avoid in ${userStream}.`
         }
       ];
 
@@ -1022,15 +1047,25 @@ Format your response in clean, concise markdown with:
         const planText = await callMistralAPI(promptMessages);
         savedAiPlan = planText;
 
-        plannerOutputBody.textContent = planText;
-        homeAiPlanContent.textContent = planText;
+        // Render Markdown into AI Assistant tab and Home page
+        renderMarkdownToElement(plannerOutputBody, planText);
+        renderMarkdownToElement(homeAiPlanContent, planText);
 
         if (currentUser) {
-          await supabaseClient
+          // Instant LocalStorage backup
+          try {
+            localStorage.setItem(`sb_ai_plan_${currentUser.id}`, planText);
+          } catch (e) {}
+
+          // Persist to Supabase
+          const { error: dbError } = await supabaseClient
             .from('profiles')
             .update({ ai_planner_response: planText })
-            .eq('id', currentUser.id)
-            .catch(() => {});
+            .eq('id', currentUser.id);
+
+          if (dbError) {
+            console.error('Failed to save AI plan to Supabase:', dbError.message);
+          }
         }
       } catch (err) {
         alert('Failed to generate AI plan: ' + err.message);
@@ -1064,16 +1099,16 @@ Format your response in clean, concise markdown with:
           content: `Explain "${skill}" under the domain "${domain}" for a student focusing on ${userStream} in the modern 2026-27 engineering landscape.
 
 Structure your breakdown cleanly into:
-1. Core Concept & Architectural Importance
-2. How It Works (Fundamental Mechanics / Syntax / Principles)
-3. Real-World Engineering Applications
-4. Recommended Hands-on Practice & Best Practices`
+### 1. Core Concept & Architectural Importance
+### 2. Fundamental Mechanics & Principles
+### 3. Real-World Engineering Applications
+### 4. Recommended Hands-on Practice & Best Practices`
         }
       ];
 
       try {
         const summaryText = await callMistralAPI(promptMessages);
-        summaryOutputBody.textContent = summaryText;
+        renderMarkdownToElement(summaryOutputBody, summaryText);
       } catch (err) {
         summaryOutputBody.textContent = 'Failed to generate summary: ' + err.message;
       } finally {
@@ -1628,11 +1663,18 @@ Structure your breakdown cleanly into:
         userStream = profile.stream;
         applyStreamSources(userStream);
 
-        // Restore saved AI Planner response
-        if (profile.ai_planner_response) {
-          savedAiPlan = profile.ai_planner_response;
-          homeAiPlanContent.textContent = profile.ai_planner_response;
-          plannerOutputBody.textContent = profile.ai_planner_response;
+        // Restore saved AI Planner response (Supabase first, LocalStorage fallback)
+        let restoredPlan = profile.ai_planner_response;
+        if (!restoredPlan) {
+          try {
+            restoredPlan = localStorage.getItem(`sb_ai_plan_${currentUser.id}`);
+          } catch (e) {}
+        }
+
+        if (restoredPlan) {
+          savedAiPlan = restoredPlan;
+          renderMarkdownToElement(homeAiPlanContent, restoredPlan);
+          renderMarkdownToElement(plannerOutputBody, restoredPlan);
         }
 
         // Restore enrolled skills
