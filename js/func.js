@@ -15,7 +15,7 @@ if (window.supabase && window.supabase.createClient) {
 }
 
 // Redirect target compatible with root, subpaths, and GitHub Pages
-const DASHBOARD_URL = 'dashboard.html';
+const DASHBOARD_URL = 'dashboard';
 
 function redirectToDashboard() {
   const currentPath = window.location.pathname;
