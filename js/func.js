@@ -14,11 +14,13 @@ if (window.supabase && window.supabase.createClient) {
   console.warn('Supabase JS library not loaded.');
 }
 
-// Redirect target
-const DASHBOARD_URL = '/dashboard';
+// Redirect target compatible with root, subpaths, and GitHub Pages
+const DASHBOARD_URL = 'dashboard.html';
 
 function redirectToDashboard() {
-  window.location.href = DASHBOARD_URL;
+  const currentPath = window.location.pathname;
+  const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+  window.location.assign(basePath + DASHBOARD_URL);
 }
 
 let toastTimeout = null;
@@ -209,7 +211,7 @@ async function handleLogin(e) {
     if (error) throw error;
 
     showToast('Signed in successfully! Redirecting…', 'success');
-    setTimeout(redirectToDashboard, 800);
+    setTimeout(redirectToDashboard, 600);
   } catch (err) {
     showToast(err.message || 'Failed to log in. Please check your credentials.', 'error');
   } finally {
@@ -228,6 +230,7 @@ async function handleRegister(e) {
   setButtonLoading(submitBtn, true);
 
   try {
+    // 1. Create the user
     const { data: authData, error: authError } = await supabaseClient.auth.signUp({
       email,
       password,
@@ -238,7 +241,7 @@ async function handleRegister(e) {
 
     if (authError) throw authError;
 
-    // Optional profile insertion if user returned immediately
+    // 2. Insert record to profiles table if user is present
     if (authData?.user) {
       await supabaseClient
         .from('profiles')
@@ -246,18 +249,18 @@ async function handleRegister(e) {
         .catch(() => {});
     }
 
-    // If auto-confirmed session is returned, go straight to dashboard
-    if (authData?.session) {
-      showToast('Registration complete! Redirecting…', 'success');
-      setTimeout(redirectToDashboard, 800);
-    } else {
-      showToast('Account created! Please check your email to confirm.', 'success');
-      form.reset();
-      initFloatingLabels();
-      setTimeout(() => switchView('login'), 1500);
-    }
+    // 3. Authenticate immediately to obtain an active session without email verification
+    const { error: loginError } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (loginError) throw loginError;
+
+    showToast('Account created! Redirecting…', 'success');
+    setTimeout(redirectToDashboard, 600);
   } catch (err) {
-    showToast(err.message || 'Failed to create account.', 'error');
+    showToast(err.message || 'Failed to complete registration.', 'error');
   } finally {
     setButtonLoading(submitBtn, false);
   }
@@ -306,7 +309,7 @@ async function handleResetPassword(e) {
 
     if (error) throw error;
     showToast('Password updated! Redirecting…', 'success');
-    setTimeout(redirectToDashboard, 1000);
+    setTimeout(redirectToDashboard, 600);
   } catch (err) {
     showToast(err.message || 'Failed to update password.', 'error');
   } finally {
@@ -314,7 +317,7 @@ async function handleResetPassword(e) {
   }
 }
 
-// 9. Session Verification (Auto-redirect if logged in)
+// 9. Session Verification (Auto-redirect if already logged in)
 async function checkExistingSession() {
   if (!supabaseClient) return;
 
