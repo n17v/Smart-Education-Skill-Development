@@ -3,25 +3,16 @@
  * TECHNEXA 2026 Hackathon
  */
 
-// 1. Supabase Initialization
-const SUPABASE_URL = 'https://bvnwaicdzfshnmrwxguw.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2bndhaWNkemZzaG5tcnd4Z3V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MzI0MjcsImV4cCI6MjEwNTMwODQyN30.jnUaadGGbvqrxpb9nvbNcUlG5Y4M3kvZ2ITCspM1js0';
-
 let supabaseClient = null;
-if (window.supabase && window.supabase.createClient) {
-  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-} else {
-  console.warn('Supabase JS library not loaded.');
-}
+const DASHBOARD_URL = '/dashboard.html';
 
-// Redirect using standard relative file path for GitHub Pages compatibility
 function redirectToDashboard() {
-  window.location.assign('dashboard.html');
+  window.location.href = DASHBOARD_URL;
 }
 
 let toastTimeout = null;
 
-// 2. Toast Notifications Engine
+// 1. Toast Notifications Engine
 function showToast(message, type = 'info') {
   const toast = document.getElementById('toast');
   const toastMessage = document.getElementById('toast-message');
@@ -52,7 +43,7 @@ function showToast(message, type = 'info') {
   }, 3200);
 }
 
-// 3. Sliding Tab Pill Controller
+// 2. Sliding Tab Pill Controller
 function updateTabPill(activeTab) {
   const tabIndicator = document.getElementById('tab-indicator');
   const tabLogin = document.getElementById('tab-login');
@@ -83,7 +74,7 @@ function updateTabPill(activeTab) {
   }
 }
 
-// 4. View Switcher with Reflow & Safe DOM queries
+// 3. View Switcher
 function switchView(viewName) {
   const views = {
     login: document.getElementById('view-login'),
@@ -98,7 +89,7 @@ function switchView(viewName) {
     if (!el) return;
     if (name === viewName) {
       el.classList.remove('hidden');
-      void el.offsetWidth;
+      void el.offsetWidth; // Force reflow
       el.classList.add('is-active');
 
       setTimeout(() => {
@@ -121,7 +112,7 @@ function switchView(viewName) {
   }
 }
 
-// 5. Floating Label State Controller
+// 4. Floating Label State Controller
 function initFloatingLabels() {
   const inputs = document.querySelectorAll('.field input');
   inputs.forEach((input) => {
@@ -140,7 +131,7 @@ function initFloatingLabels() {
   });
 }
 
-// 6. Button Loading State Helper
+// 5. Button Loading Helper
 function setButtonLoading(button, isLoading) {
   if (!button) return;
   if (isLoading) {
@@ -160,7 +151,7 @@ function setButtonLoading(button, isLoading) {
   }
 }
 
-// 7. Logo Vector Animation (Anime.js)
+// 6. Logo Vector Animation (Anime.js)
 function runLogoAnimation() {
   if (typeof anime === 'undefined') return;
 
@@ -188,9 +179,14 @@ function runLogoAnimation() {
     );
 }
 
-// 8. Auth Actions
+// 7. Auth Handlers
 async function handleLogin(e) {
   e.preventDefault();
+  if (!supabaseClient) {
+    showToast('Initializing connection. Please retry in a moment.', 'info');
+    return;
+  }
+
   const form = e.target;
   const submitBtn = form.querySelector('button[type="submit"]');
   const email = form.email.value.trim();
@@ -207,7 +203,7 @@ async function handleLogin(e) {
     if (error) throw error;
 
     showToast('Signed in successfully! Redirecting…', 'success');
-    setTimeout(redirectToDashboard, 500);
+    setTimeout(redirectToDashboard, 800);
   } catch (err) {
     showToast(err.message || 'Failed to log in. Please check your credentials.', 'error');
   } finally {
@@ -217,6 +213,11 @@ async function handleLogin(e) {
 
 async function handleRegister(e) {
   e.preventDefault();
+  if (!supabaseClient) {
+    showToast('Initializing connection. Please retry in a moment.', 'info');
+    return;
+  }
+
   const form = e.target;
   const submitBtn = form.querySelector('button[type="submit"]');
   const fullName = form.fullname.value.trim();
@@ -226,7 +227,6 @@ async function handleRegister(e) {
   setButtonLoading(submitBtn, true);
 
   try {
-    // 1. Create the user
     const { data: authData, error: authError } = await supabaseClient.auth.signUp({
       email,
       password,
@@ -237,7 +237,6 @@ async function handleRegister(e) {
 
     if (authError) throw authError;
 
-    // 2. Insert record into profiles table
     if (authData?.user) {
       await supabaseClient
         .from('profiles')
@@ -245,18 +244,17 @@ async function handleRegister(e) {
         .catch(() => {});
     }
 
-    // 3. Immediately sign in to establish active session without waiting for confirmation
-    const { error: loginError } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (loginError) throw loginError;
-
-    showToast('Account created! Redirecting…', 'success');
-    setTimeout(redirectToDashboard, 500);
+    if (authData?.session) {
+      showToast('Registration complete! Redirecting…', 'success');
+      setTimeout(redirectToDashboard, 800);
+    } else {
+      showToast('Account created! Please check your email to confirm.', 'success');
+      form.reset();
+      initFloatingLabels();
+      setTimeout(() => switchView('login'), 1500);
+    }
   } catch (err) {
-    showToast(err.message || 'Failed to complete registration.', 'error');
+    showToast(err.message || 'Failed to create account.', 'error');
   } finally {
     setButtonLoading(submitBtn, false);
   }
@@ -264,6 +262,8 @@ async function handleRegister(e) {
 
 async function handleForgotPassword(e) {
   e.preventDefault();
+  if (!supabaseClient) return;
+
   const form = e.target;
   const submitBtn = form.querySelector('button[type="submit"]');
   const email = form.email.value.trim();
@@ -286,6 +286,8 @@ async function handleForgotPassword(e) {
 
 async function handleResetPassword(e) {
   e.preventDefault();
+  if (!supabaseClient) return;
+
   const form = e.target;
   const submitBtn = form.querySelector('button[type="submit"]');
   const newPassword = form['new-password'].value;
@@ -305,7 +307,7 @@ async function handleResetPassword(e) {
 
     if (error) throw error;
     showToast('Password updated! Redirecting…', 'success');
-    setTimeout(redirectToDashboard, 500);
+    setTimeout(redirectToDashboard, 1000);
   } catch (err) {
     showToast(err.message || 'Failed to update password.', 'error');
   } finally {
@@ -313,21 +315,40 @@ async function handleResetPassword(e) {
   }
 }
 
-// 9. Session Verification (Auto-redirect if already logged in)
-async function checkExistingSession() {
-  if (!supabaseClient) return;
+// 8. Dynamic Supabase Init via Netlify Function
+async function initSupabaseFromNetlify() {
+  try {
+    const res = await fetch('/.netlify/functions/config');
+    if (res.ok) {
+      const cfg = await res.json();
+      if (cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase) {
+        supabaseClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
 
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (session) {
-    redirectToDashboard();
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session) {
+          redirectToDashboard();
+        }
+
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+          if (event === 'PASSWORD_RECOVERY') {
+            switchView('reset');
+            showToast('Please enter your new password.', 'info');
+          } else if (event === 'SIGNED_IN' && session) {
+            redirectToDashboard();
+          }
+        });
+      }
+    }
+  } catch (err) {
+    console.warn('Config fetch notice:', err.message);
   }
 }
 
-// 10. Initialization
+// 9. DOM Initialization
 document.addEventListener('DOMContentLoaded', () => {
-  checkExistingSession();
   initFloatingLabels();
   runLogoAnimation();
+  initSupabaseFromNetlify();
 
   const tabLogin = document.getElementById('tab-login');
   const tabRegister = document.getElementById('tab-register');
@@ -358,15 +379,4 @@ document.addEventListener('DOMContentLoaded', () => {
   if (formRegister) formRegister.addEventListener('submit', handleRegister);
   if (formForgot) formForgot.addEventListener('submit', handleForgotPassword);
   if (formReset) formReset.addEventListener('submit', handleResetPassword);
-
-  if (supabaseClient) {
-    supabaseClient.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        switchView('reset');
-        showToast('Please enter your new password.', 'info');
-      } else if (event === 'SIGNED_IN' && session) {
-        redirectToDashboard();
-      }
-    });
-  }
 });
