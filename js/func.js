@@ -14,11 +14,21 @@ if (window.supabase && window.supabase.createClient) {
   console.warn('Supabase JS library not loaded.');
 }
 
-// Redirect target
-const DASHBOARD_URL = '/dashboard';
-
+// Redirect target specifically handling GitHub Pages subpath
 function redirectToDashboard() {
-  window.location.href = DASHBOARD_URL;
+  const origin = window.location.origin;
+  const pathname = window.location.pathname;
+
+  // Extract base project path (e.g., /Smart-Education-Skill-Development/)
+  let basePath = pathname;
+  if (basePath.endsWith('index.html')) {
+    basePath = basePath.substring(0, basePath.lastIndexOf('index.html'));
+  }
+  if (!basePath.endsWith('/')) {
+    basePath += '/';
+  }
+
+  window.location.href = `${origin}${basePath}dashboard/`;
 }
 
 let toastTimeout = null;
@@ -54,7 +64,7 @@ function showToast(message, type = 'info') {
   }, 3200);
 }
 
-// 3. Sliding Tab Pill Controller (Guarded against null elements)
+// 3. Sliding Tab Pill Controller
 function updateTabPill(activeTab) {
   const tabIndicator = document.getElementById('tab-indicator');
   const tabLogin = document.getElementById('tab-login');
@@ -100,7 +110,7 @@ function switchView(viewName) {
     if (!el) return;
     if (name === viewName) {
       el.classList.remove('hidden');
-      void el.offsetWidth; // Force reflow to re-trigger CSS animation
+      void el.offsetWidth;
       el.classList.add('is-active');
 
       setTimeout(() => {
@@ -209,7 +219,7 @@ async function handleLogin(e) {
     if (error) throw error;
 
     showToast('Signed in successfully! Redirecting…', 'success');
-    setTimeout(redirectToDashboard, 600);
+    setTimeout(redirectToDashboard, 500);
   } catch (err) {
     showToast(err.message || 'Failed to log in. Please check your credentials.', 'error');
   } finally {
@@ -247,7 +257,7 @@ async function handleRegister(e) {
         .catch(() => {});
     }
 
-    // 3. Authenticate immediately to obtain an active session without email verification
+    // 3. Immediately sign in to establish active session without waiting for confirmation
     const { error: loginError } = await supabaseClient.auth.signInWithPassword({
       email,
       password
@@ -256,7 +266,7 @@ async function handleRegister(e) {
     if (loginError) throw loginError;
 
     showToast('Account created! Redirecting…', 'success');
-    setTimeout(redirectToDashboard, 600);
+    setTimeout(redirectToDashboard, 500);
   } catch (err) {
     showToast(err.message || 'Failed to complete registration.', 'error');
   } finally {
@@ -307,7 +317,7 @@ async function handleResetPassword(e) {
 
     if (error) throw error;
     showToast('Password updated! Redirecting…', 'success');
-    setTimeout(redirectToDashboard, 600);
+    setTimeout(redirectToDashboard, 500);
   } catch (err) {
     showToast(err.message || 'Failed to update password.', 'error');
   } finally {
