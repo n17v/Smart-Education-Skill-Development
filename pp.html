@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Privacy Policy — SkillBridge AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5FAF3;
+    --surface:#FFFFFF;
+    --border:#DCEBD8;
+    --text:#173321;
+    --text-dim:#4C6656;
+    --text-faint:#7E9C8C;
+    --green-deep:#1F8A4C;
+    --green:#3FB56A;
+    --green-lime:#8DD65B;
+    --grad: linear-gradient(135deg, var(--green-deep), var(--green-lime));
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 500px at 88% -8%, rgba(63,181,106,0.12), transparent 60%),
+      radial-gradient(700px 420px at -8% 18%, rgba(141,214,91,0.14), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', system-ui, sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--green-deep); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--green); outline-offset:3px; border-radius:4px;}
+
+  header.top{
+    position:sticky; top:0; z-index:10;
+    backdrop-filter: blur(10px);
+    background:rgba(245,250,243,0.85);
+    border-bottom:1px solid var(--border);
+  }
+  .top-inner{
+    max-width:880px; margin:0 auto; padding:16px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Sora', sans-serif; font-weight:700; font-size:1.05rem; color:var(--text);}
+  .brand svg{flex-shrink:0;}
+  nav.top-nav{display:flex; gap:22px; font-size:0.92rem;}
+  nav.top-nav a{color:var(--text-dim);}
+  nav.top-nav a.current{color:var(--text); position:relative;}
+  nav.top-nav a.current::after{
+    content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; background:var(--grad); border-radius:2px;
+  }
+
+  main{max-width:720px; margin:0 auto; padding:64px 24px 100px;}
+
+  .doc-head{margin-bottom:44px;}
+  .doc-head .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.85rem; color:var(--text-dim); margin-bottom:14px;
+  }
+  .doc-head .kicker .dot{width:6px; height:6px; border-radius:50%; background:var(--grad);}
+  h1{
+    font-family:'Sora', sans-serif; font-weight:800;
+    font-size:clamp(1.9rem, 4vw, 2.6rem);
+    line-height:1.15; margin:0 0 14px;
+    letter-spacing:-0.01em;
+    color:var(--text);
+  }
+  .doc-head p{color:var(--text-dim); margin:0; font-size:1.02rem; max-width:56ch;}
+
+  section.clause{
+    padding:34px 0; border-top:1px solid var(--border);
+    scroll-margin-top:90px;
+  }
+  section.clause:first-of-type{border-top:none;}
+  section.clause h2{
+    font-family:'Sora', sans-serif; font-weight:700; font-size:1.25rem;
+    display:flex; align-items:baseline; gap:10px; margin:0 0 14px;
+    color:var(--text);
+  }
+  section.clause h2 .idx{color:var(--green-deep); font-size:1rem; font-weight:600;}
+  section.clause p, section.clause li{color:var(--text-dim); font-size:0.98rem;}
+  section.clause p{margin:0 0 14px;}
+  section.clause ul{margin:0 0 14px; padding-left:22px;}
+  section.clause li{margin:6px 0;}
+  section.clause strong{color:var(--text); font-weight:600;}
+
+  table.data-table{width:100%; border-collapse:collapse; margin:8px 0 18px; font-size:0.92rem;}
+  table.data-table th, table.data-table td{
+    text-align:left; padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:top;
+  }
+  table.data-table th{color:var(--text); font-family:'Sora',sans-serif; font-weight:600; font-size:0.85rem;}
+  table.data-table td{color:var(--text-dim);}
+
+  .callout{
+    border:1px solid var(--border); border-left:3px solid; border-image: var(--grad) 1;
+    background:var(--surface); border-radius:10px; padding:16px 18px; margin:22px 0 8px;
+    font-size:0.93rem; color:var(--text-dim);
+  }
+
+  footer{
+    border-top:1px solid var(--border); margin-top:20px;
+    padding:32px 24px; text-align:center;
+  }
+  footer p{color:var(--text-faint); font-size:0.85rem; margin:4px 0;}
+  footer .foot-links a{color:var(--text-faint); margin:0 8px;}
+
+  @media (max-width:640px){
+    nav.top-nav{display:none;}
+    main{padding:44px 18px 80px;}
+    table.data-table{font-size:0.85rem;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="doc-head">
+    <span class="kicker"><span class="dot"></span>Legal · Last updated September 19, 2026</span>
+    <h1>Privacy Policy</h1>
+    <p>What SkillBridge AI collects, how it's used to generate your learning plans, and the choices you have.</p>
+  </div>
+
+  <div class="callout">
+    SkillBridge AI is a hackathon project built for TECHNEXA 2026. Treat this policy as describing how a prototype handles your data, not the privacy program of a large company — but we've written it honestly and specifically, based on what the app actually does.
+  </div>
+
+  <section class="clause" id="overview">
+    <h2><span class="idx">01</span>Overview</h2>
+    <p>SkillBridge AI collects the information it needs to run your account, track which skills you're studying, and generate personalized AI roadmaps and assessments. This page explains what that includes and how it's handled.</p>
+  </section>
+
+  <section class="clause" id="collect">
+    <h2><span class="idx">02</span>Information we collect</h2>
+    <table class="data-table">
+      <tr><th>Category</th><th>Examples</th></tr>
+      <tr><td>Account details</td><td>Full name, email address, password (stored hashed, never in plain text)</td></tr>
+      <tr><td>Learning profile</td><td>Your selected engineering stream, enrolled skills, and study progress</td></tr>
+      <tr><td>Assessment activity</td><td>Quiz answers, scores, and "verified topic" milestones from AI-generated tests</td></tr>
+      <tr><td>AI interactions</td><td>Prompts sent to the AI Assistant and Concept Explainer, and the plans/explanations returned</td></tr>
+    </table>
+    <p>We don't intentionally collect payment details, government IDs, or precise location — none of those are needed for the app to work.</p>
+  </section>
+
+  <section class="clause" id="use">
+    <h2><span class="idx">03</span>How we use it</h2>
+    <ul>
+      <li>To create and secure your account, and to let you log back in.</li>
+      <li>To generate your skill roadmap, study plan, and concept explanations tailored to your stream and progress.</li>
+      <li>To grade quiz attempts and show your progress on the dashboard.</li>
+      <li>To recommend books and web/lab resources relevant to what you're studying.</li>
+    </ul>
+    <p>We don't sell your data or use it for advertising.</p>
+  </section>
+
+  <section class="clause" id="ai-processing">
+    <h2><span class="idx">04</span>AI processing</h2>
+    <p>When you generate a study plan, ask the AI Assistant a question, or request a concept breakdown, relevant details — your selected stream, enrolled skills, and progress — are sent to an AI model to produce a response. That processing happens through the AI provider's API and is used only to generate your answer, not to build an advertising profile.</p>
+  </section>
+
+  <section class="clause" id="third-party">
+    <h2><span class="idx">05</span>Third-party services</h2>
+    <p>SkillBridge AI links out to, or pulls references from, a small number of outside services:</p>
+    <ul>
+      <li><strong>Amazon</strong> — for recommended textbook listings. Clicking through takes you to Amazon directly; we don't receive your purchase details.</li>
+      <li><strong>W3Schools and general web search</strong> — for curated documentation and lab links tied to your skills.</li>
+      <li><strong>Hosting &amp; database infrastructure</strong> — used to store your account and progress data securely.</li>
+    </ul>
+    <p>These services have their own privacy practices, which we don't control.</p>
+  </section>
+
+  <section class="clause" id="storage">
+    <h2><span class="idx">06</span>Storage &amp; security</h2>
+    <p>Your data is stored in our database provider and protected with standard access controls and password hashing. As with any hackathon-stage project, we can't offer the guarantees of an audited, enterprise-grade security program — please avoid storing sensitive personal information beyond what the app asks for.</p>
+  </section>
+
+  <section class="clause" id="retention">
+    <h2><span class="idx">07</span>Retention</h2>
+    <p>We keep your account and progress data for as long as your account exists, so your roadmap and history stay intact between visits. If you delete your account, we remove your personal data within a reasonable time, except where we need to keep minimal records to prevent abuse.</p>
+  </section>
+
+  <section class="clause" id="rights">
+    <h2><span class="idx">08</span>Your rights &amp; choices</h2>
+    <ul>
+      <li><strong>Access &amp; correction</strong> — update your name, email, stream, or password anytime in Account Settings.</li>
+      <li><strong>Deletion</strong> — log out and request full account and data deletion through the app.</li>
+      <li><strong>Opting out of AI features</strong> — you can use the dashboard to track skills manually without generating AI plans or explanations.</li>
+    </ul>
+  </section>
+
+  <section class="clause" id="cookies">
+    <h2><span class="idx">09</span>Cookies &amp; local storage</h2>
+    <p>We use cookies or browser storage only to keep you logged in and to remember interface preferences (like your last-viewed tab). We don't use third-party tracking or advertising cookies.</p>
+  </section>
+
+  <section class="clause" id="children">
+    <h2><span class="idx">10</span>Children's privacy</h2>
+    <p>SkillBridge AI is intended for students old enough to independently choose an engineering learning path (generally 13 and up). We don't knowingly collect data from young children. If you believe a child has created an account without appropriate consent, please reach out so we can remove it.</p>
+  </section>
+
+  <section class="clause" id="changes">
+    <h2><span class="idx">11</span>Changes to this policy</h2>
+    <p>As the project evolves, we may update this policy. The "last updated" date at the top reflects the current version. Significant changes will be reflected here.</p>
+  </section>
+
+  <section class="clause" id="contact">
+    <h2><span class="idx">12</span>Contact</h2>
+    <p>Questions about your data or this policy? Reach the SkillBridge AI team through the project's TECHNEXA Hackathon submission page.</p>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 SkillBridge AI · Built for the TECHNEXA Hackathon</p>
+  <p class="foot-links"><a href="tos.html">Terms</a>·<a href="privacypolicy.html">Privacy Policy</a></p>
+</footer>
+
+</body>
+</html>
