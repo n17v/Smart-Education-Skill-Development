@@ -1,7 +1,7 @@
 // ===== SUPABASE CLIENT =====
 const SUPABASE_URL = 'https://bvnwaicdzfshnmrwxguw.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_ctl7qUMdyhyCEXZKRbXoeg_8sd4uAuH'; // <-- from Supabase Settings → API
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_ANON_KEY = 'sb_publishable_ctl7qUMdyhyCEXZKRbXoeg_8sd4uAuH'; // <-- replace with yours
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ===== LOADING HELPER =====
 function setLoading(btn, loading) {
@@ -22,7 +22,7 @@ async function handleLogin(btn) {
   if (!email || !password) return toast('Please fill in all fields', 'error');
 
   setLoading(btn, true);
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { error } = await sb.auth.signInWithPassword({ email, password });
   setLoading(btn, false);
 
   if (error) return toast(error.message, 'error');
@@ -39,7 +39,7 @@ async function handleRegister(btn) {
   if (password.length < 6) return toast('Password must be at least 6 characters', 'error');
 
   setLoading(btn, true);
-  const { error } = await supabase.auth.signUp({
+  const { error } = await sb.auth.signUp({
     email, password,
     options: { data: { full_name: name } }
   });
@@ -55,7 +55,7 @@ async function handleForgot(btn) {
   if (!email) return toast('Enter your email', 'error');
 
   setLoading(btn, true);
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
     redirectTo: window.location.origin + window.location.pathname
   });
   setLoading(btn, false);
@@ -65,7 +65,7 @@ async function handleForgot(btn) {
   setTimeout(() => showView('login'), 1400);
 }
 
-// ===== RESET PASSWORD (after clicking recovery link) =====
+// ===== RESET PASSWORD =====
 async function handleReset(btn) {
   const p1 = document.getElementById('newPassword').value;
   const p2 = document.getElementById('confirmPassword').value;
@@ -73,7 +73,7 @@ async function handleReset(btn) {
   if (p1 !== p2) return toast('Passwords do not match', 'error');
 
   setLoading(btn, true);
-  const { error } = await supabase.auth.updateUser({ password: p1 });
+  const { error } = await sb.auth.updateUser({ password: p1 });
   setLoading(btn, false);
 
   if (error) return toast(error.message, 'error');
@@ -81,7 +81,7 @@ async function handleReset(btn) {
   setTimeout(() => window.location.href = 'dashboard.html', 900);
 }
 
-// ===== HANDLE RECOVERY LINK =====
-supabase.auth.onAuthStateChange((event) => {
+// ===== RECOVERY LINK HANDLER =====
+sb.auth.onAuthStateChange((event) => {
   if (event === 'PASSWORD_RECOVERY') showView('reset');
 });
