@@ -230,3 +230,4 @@ A score beneath $80\%$ prevents module advancement, directing the student to the
 ## License
 
 This project is licensed under the MIT License. Developed for the **TECHNEXA Hackathon 2026**.
+
