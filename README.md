@@ -184,7 +184,7 @@ SEARCH_API_KEY=your-search-api-key
 
 1. Clone the repository to your development machine:
    ```bash
-   git clone https://github.com/your-username/skillbridge-ai.git
+   git clone https://github.com/n17v/Smart-Education-Skill-Development
    cd skillbridge-ai
    ```
 
